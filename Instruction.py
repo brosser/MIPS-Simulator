@@ -120,8 +120,13 @@ Nop = Nop()
 class InstructionParser(object):
     def __init__(self):
         self.instructionSet = {
-            'rtype': ['add', 'sub', 'and', 'or', 'jr', 'nor', 'slt'],
-            'itype': ['addi', 'subi', 'ori', 'bne', 'beq', 'lw', 'sw'],
+            'rtype': ['add', 'sub', 'and', 'or', 'jr', 'nor', 'slt',
+                      'addu', 'subu', 'sltu', 'xor',
+                      'sll', 'srl', 'sra', 'sllv', 'srlv', 'srav',
+                      'jr', 'nop'],
+            'itype': ['addi', 'subi', 'ori', 'lw', 'sw',
+                        'addiu', 'slti', 'sltiu', 'andi', 'xori', 'lui', 'li',
+                        'bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'move'],
             'jtype': ['j']
         }    
 
@@ -131,6 +136,10 @@ class InstructionParser(object):
             
             instructions = [self.parse(a.replace(',',' ')) for a in data]
             return instructions
+
+    def parseLines(self, lines):
+        instructions = [self.parse(a.replace(',',' ')) for a in lines]
+        return instructions
 
     def parse(self, s):
         s = s.split()
@@ -144,31 +153,40 @@ class InstructionParser(object):
         elif instr in self.instructionSet['jtype']:
             return self.createJTypeInstruction(s)
         else:
+            print "PROBLEM: ", instr
             raise ParseError("Invalid parse instruction")
 
     #TODO should be figuring out controls dynamically based on the op
     def createRTypeInstruction(self, s):
         if s[0] == "jr":
             return Instruction(op=s[0], s1 = s[1], regRead = 1, aluop=1)
+        if(s[0] == "nop"):
+            return Nop
         return Instruction(op=s[0], dest=s[1], s1=s[2], s2=s[3], regRead=1, regWrite=1, aluop=1)
 
     def createITypeInstruction(self, s):
-        memread = s[0] == "lw" 
+        memread = s[0] == "lw"
         memwrite = s[0] == "sw"
         if (memread or memwrite):
             import re 
             regex = re.compile("(\d+)\((\$r\d+)\)")
             match = regex.match(s[2])
-            
             immedval = match.group(1) 
             sval = match.group(2)
             if s[0] == "lw" :
                 return Instruction(op=s[0], dest = s[1], s1=sval, immed = immedval, regRead = 1,regWrite = 1, aluop=1,  readMem = 1)
-            else :
+            else:
                 return Instruction(op=s[0],  s1 = s[1], s2=sval,immed = immedval, regRead = 1, aluop=1, writeMem = 1)
 
-        if ( s[0] == 'bne' or s[0] == 'beq') :
+        if ( s[0] in ['bne', 'beq'] ) :
+                        # or s[0] == 'beq' or s[0] == 'bnez') :
             return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1)
+        if( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
+            return Instruction(op=s[0], s1=s[1], immed= s[2], regRead = 1, aluop = 1)
+        if( s[0] == "move" ) :
+            return Instruction(op="addi", dest=s[1], s1=s[2], immed=0, regRead=1, regWrite=1, aluop=1)
+        if( s[0] == "li") :
+            return Instruction(op=s[0], dest=s[1], s1=s[2], immed=s[2], regRead=0, regWrite=1, aluop=1)
         return Instruction(op=s[0], dest=s[1], s1=s[2], immed=s[3], regRead=1, regWrite=1, aluop=1)
 
     def createJTypeInstruction(self, s):
