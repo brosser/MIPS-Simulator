@@ -108,7 +108,9 @@ class PipelineSimulator(object):
         while not self.__done:
             self.step()
             self.debug_lite()
-            #self.debug()
+        for index, item in sorted(self.instructionMemory.iteritems()):
+            if item != 0:
+                print index, ": ", str(item)
         self.debug()
     
     def getForwardVal(self, regName):
@@ -267,14 +269,14 @@ class ExecStage(PipelineStage):
             #if we have a hazard in either s1 or s2, 
             # grab the value from the other instructions
             # in the pipeline
-            if self.instr.s1 in self.simulator.hazardList :
+            if self.instr.s1 in self.simulator.hazardList and self.instr.s1 is not '$r0':
                 forwardVal = self.simulator.getForwardVal(self.instr.s1)
                 if forwardVal != "GAH":
                     self.instr.source1RegValue = forwardVal
                 else :
                     self.simulator.stall = True
                     return
-            if self.instr.s2 in self.simulator.hazardList :
+            if self.instr.s2 in self.simulator.hazardList and self.instr.s2 is not '$r0' :
                 forwardVal = self.simulator.getForwardVal(self.instr.s2)
                 if forwardVal != "GAH" :
                     self.instr.source2RegValue = forwardVal

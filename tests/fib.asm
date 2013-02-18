@@ -64,26 +64,20 @@ int main ()
   68:	8fc30008 	lw	v1,8(s8)
   6c:	8fc2000c 	lw	v0,12(s8)
   70:	00000000 	nop
-  74: 00000000  nop
+  74:	0062102a 	slt	v0,v1,v0
   78: 00000000  nop
-  7c: 00000000  nop
-  80:	0062102a 	slt	v0,v1,v0
-  84: 00000000  nop
-  88: 00000000  nop
-  8c: 00000000  nop
-  90: 00000000  nop
-  94:	1440ffec 	bnez	v0,2c <main+0x2c>
-  98:	00000000 	nop
+  7c:	1440ffec 	bnez	v0,2c <main+0x2c>
+  80:	00000000 	nop
     //printf("a: %d, b: %d, sum: %d\n", a, b, sum);
   }
 
   /* Finally, return 0 */
 
   return 0;
-  9c:	00001021 	move	v0,zero
+  84:	00001021 	move	v0,zero
 }
-  100:	03c0e821 	move	sp,s8
-  104:	8fbe001c 	lw	s8,28(sp)
-  108:	27bd0020 	addiu	sp,sp,32
- // 10c:	03e00008 	jr	ra
-  110:	00000000 	nop
+  88:	03c0e821 	move	sp,s8
+  8c:	8fbe001c 	lw	s8,28(sp)
+  90:	27bd0020 	addiu	sp,sp,32
+ // 94:	03e00008 	jr	ra
+  98:	00000000 	nop
