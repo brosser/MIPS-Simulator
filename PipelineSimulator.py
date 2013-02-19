@@ -38,11 +38,14 @@ class PipelineSimulator(object):
         self.registers = dict([("$r%s" % x, 0) for x in range(32)]) 
 
 # !!    # Stack Initalization
-        self.registers["$r29"] = 0x900
+        self.registers["$r29"] = 0x0
         
         # set up the main memory construct, a list index starting at 0
         # and continuing to 0xffc
         self.mainmemory = dict([(x*4, 0) for x in range(0xffc/4)])
+
+        self.dataMemory = dict([(x*4, 0) for x in range(0xffc/4)])
+        self.instructionMemory = dict([(x*4, 0) for x in range(0xffc/4)])
 
         # programCounter to state where in the instruction collection
         # we are. to find correct spot in mainmemory add 0x100  
@@ -56,7 +59,7 @@ class PipelineSimulator(object):
         # starting at 0x1000
         y=0
         for instr in self.instrCollection:
-           self.mainmemory[0x0 + y] = instr
+           self.instructionMemory[0x0 + y] = instr
            self.accessedMem.append(0x0 + y)
            y += 4
     
@@ -137,7 +140,7 @@ class PipelineSimulator(object):
         #self.printStageCollection()     
         self.printRegFile()
         self.printPipeline()   
-        print "\n<Final Program Counter> : ", self.programCounter
+        print "\n<Final Program Counter> : ", hex(self.programCounter)
         print "<Cycles> : " , float(self.cycles)
         print "<Instructions Executed> : " , float(self.instrCount)
         print "<CPI> : " , float(self.cycles) / float(self.instrCount) , "\n"
@@ -148,17 +151,19 @@ class PipelineSimulator(object):
     def printInstructionMemory(self):
         print "<Accessed Instructions>"
         self.accessedMem = sorted(self.accessedMem)
-        for k,v in sorted(self.mainmemory.iteritems()):
+        for k,v in sorted(self.instructionMemory.iteritems()):
             if k in self.accessedMem:
                 print k, ":" , v
 
     def printDataMemory(self):
         print "\n<Accessed Data>"
         self.accessedDataMem = sorted(self.accessedDataMem)
-        for k,v in sorted(self.mainmemory.iteritems()):
-            if k in self.accessedDataMem:
-                print k, ":" , v
+        for k,v in sorted(self.dataMemory.iteritems()):
+            if k in self.accessedDataMem and k is not None:
+                print hex(int(str(k), 10)), ":" , v
+                #print struct.unpack('!i', binascii.unhexlify(x))[0]
 
+                
     def printPipeline(self):
         print "\n<Pipeline>"
         print repr(self.pipeline[0]) 
@@ -185,7 +190,7 @@ class PipelineSimulator(object):
                 
     def printStageCollection(self):
         print "\n<Instruction Collection>"
-        for index, item in sorted(self.mainmemory.iteritems()):
+        for index, item in sorted(self.instructionMemory.iteritems()):
             if item != 0:
                 print index, ": ", str(item)
 
@@ -206,7 +211,7 @@ class FetchStage(PipelineStage):
         Fetch the next instruction according to simulator program counter
         """
         if self.simulator.programCounter < (len(self.simulator.instrCollection) * 4 + 0x0):
-            self.instr = self.simulator.mainmemory[self.simulator.programCounter]
+            self.instr = self.simulator.instructionMemory[self.simulator.programCounter]
             if(self.instr and self.instr.op != "nop"):
                 self.simulator.instrCount += 1
         else:
@@ -325,8 +330,9 @@ class ExecStage(PipelineStage):
     def doBranch(self):
         # Set the program counter to the target address
         targetval = 0
-        if ("a" in self.instr.immed or "b" in self.instr.immed or "c" in self.instr.immed 
-        or "d" in self.instr.immed or "e" in self.instr.immed or "f" in self.instr.immed):
+        if(self.instr.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez']) :
+        #if ("a" in self.instr.immed or "b" in self.instr.immed or "c" in self.instr.immed 
+        #or "d" in self.instr.immed or "e" in self.instr.immed or "f" in self.instr.immed):
             targetval = int(self.instr.immed, 16)
         else :
             targetval = int(self.instr.immed)
@@ -347,7 +353,7 @@ class DataStage(PipelineStage):
         and then read from main memory second
         """
         if(self.instr.op == "li"):
-            self.simulator.mainmemory[self.instr.source1RegValue] = self.instr.immed
+            self.simulator.dataMemory[self.instr.source1RegValue] = self.instr.immed
             self.simulator.accessedDataMem.append(self.instr.source1RegValue)
             checked = []
             for e in self.simulator.accessedDataMem:
@@ -356,7 +362,7 @@ class DataStage(PipelineStage):
             self.simulator.accessedDataMem = checked
 
         if self.instr.writeMem:
-            self.simulator.mainmemory[self.instr.source2RegValue] = self.instr.source1RegValue
+            self.simulator.dataMemory[self.instr.source2RegValue] = self.instr.source1RegValue
             self.simulator.accessedDataMem.append(self.instr.source2RegValue)
             checked = []
             for e in self.simulator.accessedDataMem:
@@ -365,7 +371,7 @@ class DataStage(PipelineStage):
             self.simulator.accessedDataMem = checked
 
         elif self.instr.readMem:
-            self.instr.result = self.simulator.mainmemory[self.instr.source1RegValue]
+            self.instr.result = self.simulator.dataMemory[self.instr.source1RegValue]
 
     def __str__(self):
         return 'Main Memory'

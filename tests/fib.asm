@@ -11,7 +11,8 @@ Disassembly of section .text:
 
 int main ()
 {
-   0:	27bdffe0 	addiu	sp,sp,-32
+   //0:	27bdffe0 	addiu	sp,sp,-32
+   0: 27bdffe0  addiu sp,sp,32
    4:	afbe001c 	sw	s8,28(sp)
    8:	03a0f021 	move	s8,sp
   /* Notice that we need to declare our variables, and their type */
