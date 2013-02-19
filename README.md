@@ -8,7 +8,7 @@ Original repo: https://github.com/maguire/MIPS-Simulator'
 * Fixed bugs in existing implementation
 
 ### Justification
-* A imulator to model and accurately predict the behavior of instructions execution.
+* A simulator to model and accurately predict the behavior of instructions execution.
 * Starts with a mips model, and will progressively modify according to the idea model (still no idea how).
 * Main motivations:
 	- to obtain instruction count.
