@@ -24,6 +24,7 @@ class Instruction(object):
         
         self.source1RegValue = None 
         self.source2RegValue = None
+        self.sourceAddr = None
         self.values = {
                        'op': None,
                        'dest': None,
@@ -118,6 +119,7 @@ class Nop(Instruction):
 Nop = Nop()
 
 class InstructionParser(object):
+
     def __init__(self):
         self.instructionSet = {
             'rtype': ['add', 'sub', 'and', 'or', 'jr', 'nor', 'slt',
@@ -129,7 +131,15 @@ class InstructionParser(object):
                         'bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz', 'bltz',
                         'move'],
             'jtype': ['j']
-        }    
+        }
+        self.loglines = { 
+            "MEM": "Memory dependency between instructions at memory locations ",
+            "WAR": "WAR dependency between instructions at memory locations ",
+            "RAW": "RAW dependency between instructions at memory locations ",
+            "WAW": "WAW dependency between instructions at memory locations ",
+            "END": "End of logfile"
+            }
+        self.nopInserts = []
 
     def parseFile(self, filename):
         with open(filename) as f:
@@ -140,6 +150,7 @@ class InstructionParser(object):
 
     def parseLines(self, lines):
         instructions = [self.parse(a.replace(',',' ')) for a in lines]
+        instructions = self.checkDependencies(instructions)
         return instructions
 
     def parse(self, s):
@@ -186,7 +197,13 @@ class InstructionParser(object):
             return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1)
         elif( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
             return Instruction(op=s[0], s1=s[1], immed= s[2], regRead = 1, aluop = 1)
+<<<<<<< HEAD
         elif( s[0] == "move" ) :
+=======
+
+        # Pseudoinstructions
+        if( s[0] == "move" ) :
+>>>>>>> dependencyCheck
             return Instruction(op="addi", dest=s[1], s1=s[2], immed=0, regRead=1, regWrite=1, aluop=1)
         elif( s[0] in ["li", "lui"]) :
             return Instruction(op=s[0], dest=s[1], s1=s[2], immed=s[2], regRead=0, regWrite=1, aluop=1)
@@ -195,6 +212,54 @@ class InstructionParser(object):
 
     def createJTypeInstruction(self, s):
         return Instruction(op=s[0], target=s[1])
+
+
+##########################################################
+#
+#   DEPENDENCY CHECKING
+#
+##########################################################
+
+    # Checking for WAR, RAW and Memory depencences between consecutive instructions
+    def checkDependencies(self, instructions):
+
+        print "###################### Preprocessing Logfile ######################\n"
+        print "<Data Dependencies>"
+        for i in range(0, len(instructions)-2):
+            current = instructions[i]
+            next = instructions[i+1]
+            
+            # Check memory dependencies
+            # If writing to a memory location being written to or read in the next instruction
+            if(current.writeMem) :
+                if(next.writeMem and (current.s2 == next.s2) and 
+                        (abs(int(current.immed) - int(next.immed)) <= 4)) :
+                    self.addDep(i+1, "MEM")
+                if(next.readMem and (current.s2 == next.s1) and 
+                        (abs(int(current.immed) - int(next.immed)) <= 4)) :
+                    self.addDep(i+1, "MEM")
+            if(current.dest == next.s1 or current.dest == next.s2) :
+                self.addDep(i+1, "RAW")
+            if(next.dest == current.s1 or next.dest == current.s2) :
+                self.addDep(i+1, "WAR")
+            if(next.dest == current.dest) :
+                self.addDep(i+1, "WAW")
+        return self.insertNOPs(instructions)
+
+    # Insert NOPs
+    def insertNOPs(self, instructions):
+        for i in range(0, len(self.nopInserts)):
+            #instructions.insert(self.nopInserts[i], Nop)
+            for j in range(i, len(self.nopInserts)):
+                self.nopInserts[j] += 1
+        return instructions
+
+    def addDep(self, i, logstr):
+        print (self.loglines[logstr] + hex(4*(i+1)) + " and " + hex(4*(i+2)))
+        print "Inserting NOP"
+        if(i not in self.nopInserts) :
+            self.nopInserts.append(i)
+        return
 
 class ParseError(Exception):
     def __init__(self, value):
