@@ -6,6 +6,7 @@ class PipelineSimulator(object):
                     'addu':'+', 'addiu':'+', 'subu':'-', 'subiu':'-',
                     'and':'&',  'andi':'&',   'or':'|',   'ori':'|',
                     'sll':'<<', 'sllv':'<<', 'srl':'>>', 'srlv':'>>',
+                    'sra':'>>', 'srav':'>>',
                     'div':'/',   'mul':'*',  'xor':'^',  'xori':'^'  }
                   
     def __init__(self,instrCollection):
@@ -37,7 +38,12 @@ class PipelineSimulator(object):
         # ex: {'$r0' : 0, '$r1' : 0 ... '$r31' : 0 }
         self.registers = dict([("$r%s" % x, 0) for x in range(32)]) 
 
-# !!    # Stack Initalization
+        # LO special register
+        self.lo = 0
+        # HI special register
+        self.hi = 0
+
+        # Stack Initalization
         self.registers["$r29"] = 0x0
         
         # set up the main memory construct, a list index starting at 0
@@ -85,7 +91,7 @@ class PipelineSimulator(object):
                 pi.advance()
         #now that everything is done, remove the register from
         # the hazard list
-        if (self.pipeline[1].instr.regWrite) :
+        if (self.pipeline[1].instr.regWrite and len(self.hazardList)>0) :
             self.hazardList.pop(0)
         
         self.checkDone()
@@ -159,7 +165,7 @@ class PipelineSimulator(object):
         print "\n<Accessed Data>"
         self.accessedDataMem = sorted(self.accessedDataMem)
         for k,v in sorted(self.dataMemory.iteritems()):
-            if k in self.accessedDataMem and k is not None:
+            if k in self.accessedDataMem and k is not None and v != 0:
                 print hex(int(str(k), 10)), ":" , v
                 #print struct.unpack('!i', binascii.unhexlify(x))[0]
 
@@ -234,13 +240,17 @@ class ReadStage(PipelineStage):
                 #these instructions require special treatment
                 (self.instr.op not in ['lw', 'sw', 'bne', 'beq', 'beqz', 'bnez', 'blez', 
                     'bgtz', 'bltz', 'bgez'])):
-                 #not( self.instr.op == 'bne' or self.instr.op == 'beq' 
-                  #   or self.instr.op =='lw' or self.instr.op =='sw')): 
                 #check to see if it is a hex value
                 if "0x" in self.instr.immed:
                     self.instr.source2RegValue = int(self.instr.immed,16)
                 else :
                     self.instr.source2RegValue = int(self.instr.immed)
+            if(self.instr.op in ['srl', 'sll']):
+                if "0x" in self.instr.s2:
+                    self.instr.source2RegValue = int(self.instr.s2,16)
+                else :
+                    self.instr.source2RegValue = int(self.instr.s2)
+
             elif self.instr.s2:
                 self.instr.source2RegValue = self.simulator.registers[self.instr.s2]
                     
@@ -262,7 +272,6 @@ class ExecStage(PipelineStage):
         Execute the instruction according to its mapping of 
         assembly operation to Python operation
         """
-
         if self.instr is not Nop and self.instr.aluop:
             #if we have a hazard in either s1 or s2, 
             # grab the value from the other instructions
@@ -305,17 +314,45 @@ class ExecStage(PipelineStage):
             elif self.instr.op == 'bnez':
                 if self.instr.source1RegValue != 0:
                     self.doBranch()
+            elif self.instr.op == 'beqz':
+                if self.instr.source1RegValue == 0:
+                    self.doBranch()
+            elif self.instr.op == 'bltz':
+                if self.instr.source1RegValue < 0:
+                    self.doBranch()
             elif (self.instr.op == 'li'):
                 self.instr.result = self.instr.immed
+            elif (self.instr.op == 'lui'):
+                if("0x" in str(self.instr.immed)):
+                    self.instr.result = int(self.instr.immed, 16) & 0xFFFF0000
+                else:
+                    self.instr.result = int(self.instr.immed, 10) & 0xFFFF0000
+                print "LUI RESULTS!", self.instr.result
             elif (self.instr.op == "addi"):
                 self.instr.result = self.instr.source1RegValue + self.instr.immed
             elif (self.instr.op == "addu"):
-                #print self
                 self.instr.result = int(self.instr.source1RegValue) + int(self.instr.source2RegValue)
-            else :         
-                if (self.instr.op == 'slt'):
+            elif (self.instr.op == "mflo"):
+                self.instr.result = self.lo
+            elif (self.instr.op == "mfhi"):
+                self.instr.result = self.hi
+            elif (self.instr.op in ["mult", "multu"]):
                     a = int(self.instr.source1RegValue)
                     b = int(self.instr.source2RegValue)
+                    z = a * b
+                    self.lo = z & 0x0000FFFF
+                    self.hi = z & 0x0000FFFF
+            else :         
+                if (self.instr.op in ['slt', 'sltu']):
+                    a = int(self.instr.source1RegValue)
+                    b = int(self.instr.source2RegValue)
+                    if(a<b):
+                        self.instr.result = 1
+                    else:
+                        self.instr.result = 0
+                elif (self.instr.op in ['slti', 'sltiu']):
+                    a = int(self.instr.source1RegValue)
+                    b = int(self.instr.immed)
                     if(a<b):
                         self.instr.result = 1
                     else:
@@ -352,6 +389,7 @@ class DataStage(PipelineStage):
         If we have to write to main memory, write it first
         and then read from main memory second
         """
+
         if(self.instr.op == "li"):
             self.simulator.dataMemory[self.instr.source1RegValue] = self.instr.immed
             self.simulator.accessedDataMem.append(self.instr.source1RegValue)
@@ -360,7 +398,7 @@ class DataStage(PipelineStage):
                 if e not in checked:
                     checked.append(e)
             self.simulator.accessedDataMem = checked
-
+        
         if self.instr.writeMem:
             self.simulator.dataMemory[self.instr.source2RegValue] = self.instr.source1RegValue
             self.simulator.accessedDataMem.append(self.instr.source2RegValue)
@@ -386,6 +424,8 @@ class WriteStage(PipelineStage):
             if self.instr.dest == '$r0':
                 #Edit: don't raise exception just ignore it
                 #raise Exception('Cannot assign to register $r0')    
+                pass
+            if (self.instr.op == "mult"):
                 pass
             elif self.instr.dest:
                 self.simulator.registers[self.instr.dest] = self.instr.result

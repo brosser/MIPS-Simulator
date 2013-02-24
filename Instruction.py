@@ -123,10 +123,11 @@ class InstructionParser(object):
             'rtype': ['add', 'sub', 'and', 'or', 'jr', 'nor', 'slt',
                       'addu', 'subu', 'sltu', 'xor',
                       'sll', 'srl', 'sra', 'sllv', 'srlv', 'srav',
-                      'jr', 'nop'],
+                      'jr', 'nop', 'mult', 'multu', 'mflo', 'mfhi'],
             'itype': ['addi', 'subi', 'ori', 'lw', 'sw',
                         'addiu', 'slti', 'sltiu', 'andi', 'xori', 'lui', 'li',
-                        'bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'move'],
+                        'bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz', 'bltz',
+                        'move'],
             'jtype': ['j']
         }    
 
@@ -162,6 +163,10 @@ class InstructionParser(object):
             return Instruction(op=s[0], s1 = s[1], regRead = 1, aluop=1)
         if(s[0] == "nop"):
             return Nop
+        if(s[0] in ["mult", "multu"]):
+            return Instruction(op=s[0], dest=s[1], s1=s[1], s2=s[2], regRead=1, regWrite=1, aluop=1)
+        if(s[0] in ["mflo", "mfhi"]):
+            return Instruction(op=s[0], dest=s[1], s1=None, s2=None, regRead=1, regWrite=1, aluop=1)
         return Instruction(op=s[0], dest=s[1], s1=s[2], s2=s[3], regRead=1, regWrite=1, aluop=1)
 
     def createITypeInstruction(self, s):
@@ -177,17 +182,16 @@ class InstructionParser(object):
                 return Instruction(op=s[0], dest = s[1], s1=sval, immed = immedval, regRead = 1,regWrite = 1, aluop=1,  readMem = 1)
             else:
                 return Instruction(op=s[0],  s1 = s[1], s2=sval,immed = immedval, regRead = 1, aluop=1, writeMem = 1)
-
         if ( s[0] in ['bne', 'beq'] ) :
-                        # or s[0] == 'beq' or s[0] == 'bnez') :
             return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1)
-        if( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
+        elif( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
             return Instruction(op=s[0], s1=s[1], immed= s[2], regRead = 1, aluop = 1)
-        if( s[0] == "move" ) :
+        elif( s[0] == "move" ) :
             return Instruction(op="addi", dest=s[1], s1=s[2], immed=0, regRead=1, regWrite=1, aluop=1)
-        if( s[0] == "li") :
+        elif( s[0] in ["li", "lui"]) :
             return Instruction(op=s[0], dest=s[1], s1=s[2], immed=s[2], regRead=0, regWrite=1, aluop=1)
-        return Instruction(op=s[0], dest=s[1], s1=s[2], immed=s[3], regRead=1, regWrite=1, aluop=1)
+        else :
+            return Instruction(op=s[0], dest=s[1], s1=s[2], immed=s[3], regRead=1, regWrite=1, aluop=1)
 
     def createJTypeInstruction(self, s):
         return Instruction(op=s[0], target=s[1])
