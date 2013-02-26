@@ -37,7 +37,8 @@ class Instruction(object):
                          'regRead' : None,
                          'regWrite': None,
                          'readMem' : None,
-                         'writeMem': None, }
+                         'writeMem': None,
+                         'branch'  : None  }
 
         for key in input:
             if key in self.values.keys():
@@ -100,6 +101,10 @@ class Instruction(object):
         """ Get this Instruction's control to decide to write memory """
         return self.controls['writeMem']
     
+    @property
+    def branch(self):
+        """ Get this Instruction's control to decide if branch instr """
+        return self.controls['branch']
     
     def __str__(self):
         str = "%s\t%s %s %s %s %s" % (self.values['op'],
@@ -171,7 +176,7 @@ class InstructionParser(object):
     #TODO should be figuring out controls dynamically based on the op
     def createRTypeInstruction(self, s):
         if s[0] == "jr":
-            return Instruction(op=s[0], s1 = s[1], regRead = 1, aluop=1)
+            return Instruction(op=s[0], s1 = s[1], regRead = 1, aluop=1, branch=1)
         if(s[0] == "nop"):
             return Nop
         if(s[0] in ["mult", "multu"]):
@@ -194,16 +199,11 @@ class InstructionParser(object):
             else:
                 return Instruction(op=s[0],  s1 = s[1], s2=sval,immed = immedval, regRead = 1, aluop=1, writeMem = 1)
         if ( s[0] in ['bne', 'beq'] ) :
-            return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1)
+            return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1, branch=1)
         elif( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
-            return Instruction(op=s[0], s1=s[1], immed= s[2], regRead = 1, aluop = 1)
-<<<<<<< HEAD
-        elif( s[0] == "move" ) :
-=======
-
+            return Instruction(op=s[0], s1=s[1], immed= s[2], regRead = 1, aluop = 1, branch=1)
         # Pseudoinstructions
         if( s[0] == "move" ) :
->>>>>>> dependencyCheck
             return Instruction(op="addi", dest=s[1], s1=s[2], immed=0, regRead=1, regWrite=1, aluop=1)
         elif( s[0] in ["li", "lui"]) :
             return Instruction(op=s[0], dest=s[1], s1=s[2], immed=s[2], regRead=0, regWrite=1, aluop=1)
@@ -211,7 +211,7 @@ class InstructionParser(object):
             return Instruction(op=s[0], dest=s[1], s1=s[2], immed=s[3], regRead=1, regWrite=1, aluop=1)
 
     def createJTypeInstruction(self, s):
-        return Instruction(op=s[0], target=s[1])
+        return Instruction(op=s[0], target=s[1], branch=1)
 
 
 ##########################################################
@@ -248,9 +248,22 @@ class InstructionParser(object):
 
     # Insert NOPs
     def insertNOPs(self, instructions):
-        for i in range(0, len(self.nopInserts)):
-            #instructions.insert(self.nopInserts[i], Nop)
-            for j in range(i, len(self.nopInserts)):
+        for k in range(0, len(self.nopInserts)):
+            instructions.insert(self.nopInserts[k], Nop)
+            # WORK WORK! 
+            for i in instructions:
+                if i.branch:
+                    if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez']) :
+                        targetval = int(i.immed, 16)
+                    elif(i.op == 'j'):
+                        targetval = int(i.target)
+                    elif(i.op == 'jr'):
+                        targetval = i.source1RegValue
+                    else:
+                        targetval = 0
+                    if(targetval >= self.nopInserts[k]*4):
+                        targetval += 4
+            for j in range(k, len(self.nopInserts)):
                 self.nopInserts[j] += 1
         return instructions
 

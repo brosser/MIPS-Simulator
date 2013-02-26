@@ -263,7 +263,7 @@ class ReadStage(PipelineStage):
             #else :
             #        targetval = int(self.instr.target)
             self.simulator.programCounter = targetval
-            # Set the other instructions currently in the pipeline to a Nop
+            # Set the o  instructions currently in the pipeline to a Nop
             self.simulator.pipeline[0] = FetchStage(Nop, self)
     def __str__(self):
         return 'Read from Register'

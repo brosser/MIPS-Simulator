@@ -5,6 +5,7 @@ Original repo: https://github.com/maguire/MIPS-Simulator
 (credit to user 'maguire')
 
 ### Major Additions and modifications
+* Add support for more instructions
 * Read and convert from elf32-bigmips
 * Fixed bugs in existing implementation
 * Adding preprocessing and data dependency checking
@@ -18,4 +19,4 @@ Original repo: https://github.com/maguire/MIPS-Simulator
 	- to identify hazards / data dependencies.
 	- to ensure logical and functional correctness.
 	- to analyse opportunity for composite instructions.
-* Cycle-accurate simulator is not needed for now. If the simulator doesn't fulfill the requirements above, then we will move on to a cycle-accurate one. 
+* Cycle-accurate simulator is not needed for now. If the simulator doesn't fulfill the requirements above, then we will move on to a cycle-accurate one. 98
