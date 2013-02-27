@@ -270,8 +270,8 @@ class InstructionParser(object):
     def addDep(self, i, logstr):
         print (self.loglines[logstr] + hex(4*(i+1)) + " and " + hex(4*(i+2)))
         print "Inserting NOP"
-        if(i not in self.nopInserts) :
-            self.nopInserts.append(i)
+        #if(i not in self.nopInserts) :
+            #self.nopInserts.append(i)
         return
 
 class ParseError(Exception):
