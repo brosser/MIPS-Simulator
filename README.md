@@ -23,17 +23,10 @@ Original repo: https://github.com/maguire/MIPS-Simulator
 
 ### Sections of the Simulator (May change. Not set in stone)
 * Assembler
-	* Pre-processing tasks
-		Reads the MIPs asm code generated and grabs the necessary values
-	* Analysis
-		Dependency checks
-		Nop insertions
-	* Code optimization (this step is bypassed for now)
-		Profiler that checks for opportunities for composite instructions
-	* Code generation
-		Generates the code for simulator.
-		Generates the code for IM and DM.
-
+	* Pre-processing tasks: Reads the MIPs asm code generated and grabs the necessary values
+	* Analysis: Dependency checks and nop insertions
+	* Code optimization: Profiler that checks for opportunities for composite instructions
+	* Code generation: Generates the code for simulator, and for IM and DM.
 * Simulator
 	* Accepts the asm code generated and emulates the execution of the code instructions.
 	* Dumps a log file of instruction pipelines.
