@@ -1,0 +1,36 @@
+Register	Name	Function
+R0			zero	Always contains 0
+R1			at		Assembler temporary
+R2			v0		Function return value
+R3			v1		Function return value
+R4			a0		Function parameters
+R5			a1		Function parameters
+R6			a2		Function parameters
+R7			a3		Function parameters
+R8			t0		Function temporary values
+R9			t1		Function temporary values
+R10			t2		Function temporary values
+R11			t3		Function temporary values
+R12			t4		Function temporary values
+R13			t5		Function temporary values
+R14			t6		Function temporary values
+R15			t7		Function temporary values
+R16			s0		Saved registers across function calls
+R17			s1		Saved registers across function calls
+R18			s2		Saved registers across function calls
+R19			s3		Saved registers across function calls
+R20			s4		Saved registers across function calls
+R21			s5		Saved registers across function calls
+R22			s6		Saved registers across function calls
+R23			s7		Saved registers across function calls
+R24			t8		Function temporary values
+R25			t9		Function temporary values
+R26			k0		Reserved for interrupt handler
+R27			k1		Reserved for interrupt handler
+R28			gp		Global pointer
+R29			sp		Stack Pointer
+R30			s8		Saved register across function calls
+R31			ra		Return address from function call
+HI-LO		lo-hi	Multiplication/division results
+PC			Program Counter	Points at 8 bytes past current instruction
+EPC			epc		Exception program counter return address
