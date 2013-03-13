@@ -45,7 +45,7 @@ class Instruction(object):
                 self.values[key] = input[key]
             else:
                 self.controls[key] = input[key]
-    
+
     @property
     def op(self):
         """ Get this Instruction's name """
@@ -201,7 +201,8 @@ class InstructionParser(object):
         if ( s[0] in ['bne', 'beq'] ) :
             return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1, branch=1)
         elif( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
-            return Instruction(op=s[0], s1=s[1], immed= s[2], regRead = 1, aluop = 1, branch=1)
+                                                        # HEX
+            return Instruction(op=s[0], s1=s[1], immed= int(str(s[2]), 16), regRead = 1, aluop = 1, branch=1)
         # Pseudoinstructions
         if( s[0] == "move" ) :
             return Instruction(op="addi", dest=s[1], s1=s[2], immed=0, regRead=1, regWrite=1, aluop=1)
@@ -224,7 +225,14 @@ class InstructionParser(object):
     def checkDependencies(self, instructions):
 
         print "###################### Preprocessing Logfile ######################\n"
-        print "<Data Dependencies>"
+
+        print "\n<Unprocessed Instructions>"
+        addr = 0x0
+        for i in instructions:
+            print hex(addr), ": ", i
+            addr += 0x4
+
+        print "\n<Data Dependencies>"
         for i in range(0, len(instructions)-2):
             current = instructions[i]
             next = instructions[i+1]
@@ -248,30 +256,44 @@ class InstructionParser(object):
 
     # Insert NOPs
     def insertNOPs(self, instructions):
+        print self.nopInserts
         for k in range(0, len(self.nopInserts)):
             instructions.insert(self.nopInserts[k], Nop)
             # WORK WORK! 
             for i in instructions:
+                targetval = 0
+                vstr = ''
                 if i.branch:
                     if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez']) :
-                        targetval = int(i.immed, 16)
+                        targetval = int(i.immed)
+                        vstr = 'immed'
                     elif(i.op == 'j'):
                         targetval = int(i.target)
-                    elif(i.op == 'jr'):
-                        targetval = i.source1RegValue
+                        vstr = 'target'
                     else:
                         targetval = 0
-                    if(targetval >= self.nopInserts[k]*4):
-                        targetval += 4
-            for j in range(k, len(self.nopInserts)):
+                if(targetval >= (self.nopInserts[k])*4):
+                    targetval += 4
+                    i.values[vstr] = targetval
+                    print "Recalculating targetval for ", i, ": ", targetval
+                
+            for j in range(k+1, len(self.nopInserts)):
                 self.nopInserts[j] += 1
+
+        print "\n<Processed Instructions>"
+        addr = 0x0
+        for i in instructions:
+            print hex(addr), ": ", i
+            addr += 0x4
+
+        print self.nopInserts
         return instructions
 
     def addDep(self, i, logstr):
         print (self.loglines[logstr] + hex(4*(i+1)) + " and " + hex(4*(i+2)))
-        print "Inserting NOP"
-        #if(i not in self.nopInserts) :
-            #self.nopInserts.append(i)
+        if(i not in self.nopInserts) :
+            print "Inserting NOP"
+            self.nopInserts.append(i)
         return
 
 class ParseError(Exception):

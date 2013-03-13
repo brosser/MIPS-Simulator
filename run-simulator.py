@@ -3,13 +3,16 @@
 import elf32toSim
 import PipelineSimulator
 import Instruction
+import InstructionParser
+import Sourceline
+
 import os
 import sys
 
 def main() :
 
 	# Convert elf32-bigmips to simulator friendly format
-	iparser = Instruction.InstructionParser()
+	iparser = InstructionParser.InstructionParser()
 	eparser = elf32toSim.elf32_parser()
 	lines = eparser.convertToSimASM(sys.argv[1])
 
@@ -17,17 +20,21 @@ def main() :
 	PPLogFileName = sys.argv[3] if len(sys.argv) > 3 else "preprocLog.txt"
 	PPLogFile = open(PPLogFileName, 'w')
 	sys.stdout = PPLogFile
+
+	# Get line by line
 	#lines = iparser.parseLines(lines)
 
 	pipelinesim = PipelineSimulator.PipelineSimulator(iparser.parseLines(lines))
 	
-	
-	# Run simulation
+	# Set logfile
 	simulationFileName = sys.argv[2] if len(sys.argv) > 2 else "simrun.txt"
 	simulationFile = open(simulationFileName, 'w')
 	sys.stdout = simulationFile
+
+	# Run simulation
 	pipelinesim.run()
 
+	# Print out line by line
 	#print lines
 
 	simulationFile.close()
@@ -35,3 +42,4 @@ def main() :
 
 if __name__ == "__main__":
     main()
+    

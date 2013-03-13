@@ -258,10 +258,10 @@ class ReadStage(PipelineStage):
                     
         if self.instr.op == 'j':
             # Set the program counter to the raw target address
-            #if "0x" in self.instr.target:
-            targetval = int(self.instr.target, 16)
-            #else :
-            #        targetval = int(self.instr.target)
+            if "0x" in str(self.instr.target):
+                targetval = int(self.instr.target, 16)
+            else :
+                targetval = int(self.instr.target)
             self.simulator.programCounter = targetval
             # Set the o  instructions currently in the pipeline to a Nop
             self.simulator.pipeline[0] = FetchStage(Nop, self)
@@ -370,11 +370,10 @@ class ExecStage(PipelineStage):
         # Set the program counter to the target address
         targetval = 0
         if(self.instr.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez']) :
-        #if ("a" in self.instr.immed or "b" in self.instr.immed or "c" in self.instr.immed 
-        #or "d" in self.instr.immed or "e" in self.instr.immed or "f" in self.instr.immed):
-            targetval = int(self.instr.immed, 16)
-        else :
-            targetval = int(self.instr.immed)
+            if any(x in ["a","b","c","d","e","f"] for x in str(self.instr.immed)) :
+                targetval = int(self.instr.immed, 16)
+            else :
+                targetval = int(self.instr.immed)
         #self.simulator.programCounter = self.simulator.programCounter + (targetval * 4) - 8
         self.simulator.programCounter = targetval + 4
         # Set the other instructions currently in the pipeline to Nops
