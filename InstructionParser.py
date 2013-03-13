@@ -15,6 +15,7 @@ class InstructionParser(object):
                         'move'],
             'jtype': ['j']
         }
+        
         self.loglines = { 
             "MEM": "Memory dependency between instructions at memory locations ",
             "WAR": "WAR dependency between instructions at memory locations ",
@@ -22,6 +23,7 @@ class InstructionParser(object):
             "WAW": "WAW dependency between instructions at memory locations ",
             "END": "End of logfile"
             }
+
         self.nopInserts = []
 
     def parseFile(self, filename):

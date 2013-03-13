@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import elf32toSim
+import elf32parser
 import PipelineSimulator
 import Instruction
 import InstructionParser
@@ -13,7 +13,7 @@ def main() :
 
 	# Convert elf32-bigmips to simulator friendly format
 	iparser = InstructionParser.InstructionParser()
-	eparser = elf32toSim.elf32_parser()
+	eparser = elf32parser.elf32parser()
 	lines = eparser.convertToSimASM(sys.argv[1])
 
 	# Parse in lines and check for dependencies
@@ -42,4 +42,3 @@ def main() :
 
 if __name__ == "__main__":
     main()
-    

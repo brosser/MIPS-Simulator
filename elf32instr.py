@@ -4,7 +4,7 @@
 import sys
 import re
 
-class elf32_instr:
+class elf32instr:
 
 	def __init__(self, label, address, opcode, mnemonic, nOperands, operands, indirect):
 		self.label = label;
@@ -68,49 +68,3 @@ class elf32_instr:
 		if(self.indirect is not None):
 			printStr += ("(" + self.registerMapping[self.indirect.strip('()')] + ")")
 		return printStr
-
-class elf32_parser:
-
-	def __init__(self):	
-		self.inputFile = None
-		self.instructions = []
-
-	# Parse instructions from file
-	def parseInstructions(self):
-
-		# Read line by line in file, stripping the newline character
-		lines = [line.strip() for line in self.inputFile]
-
-		for line in lines:
-			# Find assembly instructions (ignoring whitespace lines, C-code and assembler directives)
-			# Normal instruction
-			match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + '(\w+)' + '\s+' + '((\w+)(,\s*-?\w+)*)(\([a-zA-Z0-9_]+\))*', line)
-			if match:
-				operands = [x.strip() for x in match.group(4).split(',')]
-				self.instructions.append(elf32_instr('', match.group(1), match.group(2), match.group(3), len(operands), operands, match.group(7)))
-				continue
-			# NOPs and instructions without operands
-			match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + '(\w+)' + '\s?', line)
-			if match:
-				self.instructions.append(elf32_instr('', match.group(1), match.group(2), match.group(3), 0, [], None))	
-		return
-
-	# Convert from elf32-bigmips to simulator friendly format
-	def convertToSimASM(self, inputFileName):
-
-		lines = []
-
-		# Open the input file
-		try:
-		    self.inputFile = open(inputFileName, "r");
-		except IOError:
-		    print "There was an error opening the input file."
-		    sys.exit()
-
-		self.parseInstructions()
-		self.inputFile.close()
-
-		for instruction in self.instructions:
-			lines.append(instruction.getSimData())
-
-		return lines

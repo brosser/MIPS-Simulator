@@ -45,4 +45,3 @@ class Sourceline(object):
     def __str__(self):
         str = "%s %s\t %s %s %s" % (self.line, self.addr, ":", self.opcode, self.instr, self.comment)
         return str
-
