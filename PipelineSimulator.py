@@ -11,6 +11,7 @@ class PipelineSimulator(object):
                   
     def __init__(self,instrCollection):
         self.instrCount = 0
+        self.nopCount = 0
         self.cycles = 0
         self.hazardList = []
         self.__done = False
@@ -121,7 +122,7 @@ class PipelineSimulator(object):
     
     def getForwardVal(self, regName):
         """ Forward the proper value based on the given register name
-            If the value is not ready, return "GAH" 
+            If the value is not ready, return "NOVAL" 
         """
         if (self.pipeline[4] is not Nop 
                 and self.pipeline[4].instr.result is not None
@@ -131,7 +132,7 @@ class PipelineSimulator(object):
                 and self.pipeline[1].instr.dest == regName ):
                     return self.pipeline[1].instr.result
         else :#this value used to be False, but python treats False and 0 the same
-            return "GAH" 
+            return "NOVAL" 
 
     ### DEBUGGING INFORMATION PRINTING ### 
     def debug_lite(self):
@@ -151,7 +152,8 @@ class PipelineSimulator(object):
         print "\n<Final Program Counter> : ", hex(self.programCounter)
         print "<Cycles> : " , float(self.cycles)
         print "<Instructions Executed> : " , float(self.instrCount)
-        print "<CPI> : " , float(self.cycles) / float(self.instrCount) , "\n"
+        print "<NOPs> : " , float(self.nopCount)
+        print "<CPI> : " , float(self.cycles) / (float(self.instrCount)-float(self.nopCount)) , "\n"
         #print "<Hazard List> : " , self.hazardList
         self.printInstructionMemory()
         self.printDataMemory()
@@ -220,8 +222,11 @@ class FetchStage(PipelineStage):
         """
         if self.simulator.programCounter < (len(self.simulator.instrCollection) * 4 + 0x0):
             self.instr = self.simulator.instructionMemory[self.simulator.programCounter]
-            if(self.instr and self.instr.op != "nop"):
+            if(self.instr and self.instr.op != "nop" and self.instr.op != None):
                 self.simulator.instrCount += 1
+            if(self.instr.op is None):
+                self.simulator.instrCount += 1
+                self.simulator.nopCount += 1
         else:
             self.instr = Nop
         self.simulator.programCounter += 4
@@ -243,25 +248,25 @@ class ReadStage(PipelineStage):
                 (self.instr.op not in ['lw', 'sw', 'bne', 'beq', 'beqz', 'bnez', 'blez', 
                     'bgtz', 'bltz', 'bgez'])):
                 #check to see if it is a hex value
-                if "0x" in self.instr.immed:
-                    self.instr.source2RegValue = int(self.instr.immed,16)
-                else :
-                    self.instr.source2RegValue = int(self.instr.immed)
+                #if "0x" in self.instr.immed:
+                #    self.instr.source2RegValue = int(self.instr.immed,16)
+                #else :
+                self.instr.source2RegValue = int(self.instr.immed)
             if(self.instr.op in ['srl', 'sll']):
-                if "0x" in self.instr.s2:
-                    self.instr.source2RegValue = int(self.instr.s2,16)
-                else :
-                    self.instr.source2RegValue = int(self.instr.s2)
+                #if "0x" in self.instr.s2:
+                #    self.instr.source2RegValue = int(self.instr.s2,16)
+                #else :
+                self.instr.source2RegValue = int(self.instr.s2)
 
             elif self.instr.s2:
                 self.instr.source2RegValue = self.simulator.registers[self.instr.s2]
                     
         if self.instr.op == 'j':
             # Set the program counter to the raw target address
-            if "0x" in str(self.instr.target):
-                targetval = int(self.instr.target, 16)
-            else :
-                targetval = int(self.instr.target)
+            #if "0x" in str(self.instr.target):
+            #    targetval = int(self.instr.target, 16)
+            #else :
+            targetval = int(self.instr.target)
             self.simulator.programCounter = targetval
             # Set the o  instructions currently in the pipeline to a Nop
             self.simulator.pipeline[0] = FetchStage(Nop, self)
@@ -280,14 +285,14 @@ class ExecStage(PipelineStage):
             # in the pipeline
             if self.instr.s1 in self.simulator.hazardList and self.instr.s1 is not '$r0':
                 forwardVal = self.simulator.getForwardVal(self.instr.s1)
-                if forwardVal != "GAH":
+                if forwardVal != "NOVAL":
                     self.instr.source1RegValue = forwardVal
                 else :
                     self.simulator.stall = True
                     return
             if self.instr.s2 in self.simulator.hazardList and self.instr.s2 is not '$r0' :
                 forwardVal = self.simulator.getForwardVal(self.instr.s2)
-                if forwardVal != "GAH" :
+                if forwardVal != "NOVAL" :
                     self.instr.source2RegValue = forwardVal
                 else :
                     self.simulator.stall = True
@@ -325,11 +330,11 @@ class ExecStage(PipelineStage):
             elif (self.instr.op == 'li'):
                 self.instr.result = self.instr.immed
             elif (self.instr.op == 'lui'):
-                if("0x" in str(self.instr.immed)):
-                    self.instr.result = int(self.instr.immed, 16) & 0xFFFF0000
-                else:
-                    self.instr.result = int(self.instr.immed, 10) & 0xFFFF0000
-                print "LUI RESULTS!", self.instr.result
+                #if("0x" in str(self.instr.immed)):
+                #    self.instr.result = int(self.instr.immed, 16) & 0xFFFF0000
+                #else:
+                self.instr.result = int(self.instr.immed, 10) & 0xFFFF0000
+                #print "LUI RESULTS!", self.instr.result
             elif (self.instr.op == "addi"):
                 self.instr.result = self.instr.source1RegValue + self.instr.immed
             elif (self.instr.op == "addu"):
@@ -370,10 +375,13 @@ class ExecStage(PipelineStage):
         # Set the program counter to the target address
         targetval = 0
         if(self.instr.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez']) :
-            if any(x in ["a","b","c","d","e","f"] for x in str(self.instr.immed)) :
-                targetval = int(self.instr.immed, 16)
-            else :
-                targetval = int(self.instr.immed)
+            #if any(x in ["a","b","c","d","e","f"] for x in str(self.instr.immed)) :
+            #    targetval = int(self.instr.immed, 16)
+            #else :
+            targetval = int(self.instr.immed)
+            print "BRANCHING TO TARGET ", targetval
+            # HEX ?
+            #targetval = int(str(self.instr.immed), 16)
         #self.simulator.programCounter = self.simulator.programCounter + (targetval * 4) - 8
         self.simulator.programCounter = targetval + 4
         # Set the other instructions currently in the pipeline to Nops

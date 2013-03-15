@@ -15,7 +15,7 @@ class InstructionParser(object):
                         'move'],
             'jtype': ['j']
         }
-        
+
         self.loglines = { 
             "MEM": "Memory dependency between instructions at memory locations ",
             "WAR": "WAR dependency between instructions at memory locations ",
@@ -87,8 +87,9 @@ class InstructionParser(object):
         if ( s[0] in ['bne', 'beq'] ) :
             return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1, branch=1)
         elif( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
+            return Instruction(op=s[0], s1=s[1], immed=s[2], regRead = 1, aluop = 1, branch=1)
                                                         # HEX
-            return Instruction(op=s[0], s1=s[1], immed= int(str(s[2]), 16), regRead = 1, aluop = 1, branch=1)
+            #return Instruction(op=s[0], s1=s[1], immed= int(str(s[2]), 16), regRead = 1, aluop = 1, branch=1)
         # Pseudoinstructions
         if( s[0] == "move" ) :
             return Instruction(op="addi", dest=s[1], s1=s[2], immed=0, regRead=1, regWrite=1, aluop=1)
@@ -151,9 +152,19 @@ class InstructionParser(object):
                 vstr = ''
                 if i.branch:
                     if(i.op in ['bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez']) :
+                        #if any(x in str(i.immed) for x in ['a','b','c','d','e','f','0x']):
+                        #    targetval = int(str(i.immed), 16)
+                        #else:
+                        #    targetval = int(i.immed)
+                        #targetval = int(str(i.immed), 16)
                         targetval = int(i.immed)
                         vstr = 'immed'
                     elif(i.op == 'j'):
+                        #if any(x in str(i.target) for x in ['a','b','c','d','e','f','0x']):
+                        #    targetval = int(str(i.target), 16)
+                        #else:
+                        #    targetval = int(i.target)
+                        #targetval = int(str(i.target), 16)
                         targetval = int(i.target)
                         vstr = 'target'
                     else:

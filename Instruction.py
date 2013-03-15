@@ -119,6 +119,12 @@ class Instruction(object):
         return repr(self.values)
         
 class Nop(Instruction):
+    @property
+    def op(self):
+        """ Get this Instruction's name """
+        return 'nop' 
+    def __str__(self):
+        return 'nop'  
     pass
 #nop singleton
 Nop = Nop()
