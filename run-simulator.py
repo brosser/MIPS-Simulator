@@ -11,9 +11,16 @@ import sys
 
 def main() :
 
-	# Convert elf32-bigmips to simulator friendly format
+	# Initialize parsers
 	iparser = InstructionParser.InstructionParser()
 	eparser = elf32parser.elf32parser()
+	
+	# Convert elf32-bigmips to simulator friendly format
+	SimAsmFileName = sys.argv[3] if len(sys.argv) > 4 else "simasm.txt"
+	SimAsmFile = open(SimAsmFileName, 'w')
+	sys.stdout = SimAsmFile
+
+
 	lines = eparser.convertToSimASM(sys.argv[1])
 
 	# Parse in lines and check for dependencies

@@ -11,8 +11,7 @@ Disassembly of section .text:
 
 int main ()
 {
-   //0:	27bdff98 	addiu	sp,sp,-104
-   0: 27bdff98  addiu sp,sp,104
+   0:	27bdff98 	addiu	sp,sp,-104
    4:	afbf0064 	sw	ra,100(sp)
    8:	afbe0060 	sw	s8,96(sp)
    c:	afb0005c 	sw	s0,92(sp)
@@ -72,7 +71,7 @@ int main ()
   b8:	24020028 	li	v0,40
   bc:	00602821 	move	a1,v1
   c0:	00403021 	move	a2,v0
-   //c4:	0c000000 	jal	0 <main>
+  c4:	0c000000 	jal	0 <main>
   c8:	00000000 	nop
   
     for ( i = 0; i < n; i++)			
@@ -177,5 +176,5 @@ int main ()
  1e0:	8fbe0060 	lw	s8,96(sp)
  1e4:	8fb0005c 	lw	s0,92(sp)
  1e8:	27bd0068 	addiu	sp,sp,104
- 1ec:	03e00008 	jr	ra
+ 1ec:	03e00008 	nop
  1f0:	00000000 	nop
