@@ -260,16 +260,22 @@ class ReadStage(PipelineStage):
 
             elif self.instr.s2:
                 self.instr.source2RegValue = self.simulator.registers[self.instr.s2]
-                    
+        
+        if self.instr.op == 'jal':
+            # Save return address in $ra = $r31
+            self.simulator.registers["$r31"] = self.simulator.programCounter
+
+            targetval = int(self.instr.target)
+            self.simulator.programCounter = targetval
+            # Set the o  instructions currently in the pipeline to a Nop
+            self.simulator.pipeline[0] = FetchStage(Nop, self)      
+
         if self.instr.op == 'j':
-            # Set the program counter to the raw target address
-            #if "0x" in str(self.instr.target):
-            #    targetval = int(self.instr.target, 16)
-            #else :
             targetval = int(self.instr.target)
             self.simulator.programCounter = targetval
             # Set the o  instructions currently in the pipeline to a Nop
             self.simulator.pipeline[0] = FetchStage(Nop, self)
+
     def __str__(self):
         return 'Read from Register'
     
@@ -333,10 +339,10 @@ class ExecStage(PipelineStage):
                 #if("0x" in str(self.instr.immed)):
                 #    self.instr.result = int(self.instr.immed, 16) & 0xFFFF0000
                 #else:
-                self.instr.result = int(self.instr.immed, 10) & 0xFFFF0000
+                self.instr.result = int(self.instr.immed, 10)  
                 #print "LUI RESULTS!", self.instr.result
             elif (self.instr.op == "addi"):
-                self.instr.result = self.instr.source1RegValue + self.instr.immed
+                self.instr.result = int(self.instr.source1RegValue) + int(self.instr.immed)
             elif (self.instr.op == "addu"):
                 self.instr.result = int(self.instr.source1RegValue) + int(self.instr.source2RegValue)
             elif (self.instr.op == "mflo"):
@@ -367,9 +373,14 @@ class ExecStage(PipelineStage):
                 elif (self.instr.op == 'nor'):
                     self.instr.result = ~(self.instr.source1RegValue | self.instr.source2RegValue)
                 else:
-                    self.instr.result = eval("%d %s %d" % (self.instr.source1RegValue, 
+                    #print "INSTRUCTION IS: " + self.instr.op
+                    #print 1+int(str(self.instr.source2RegValue))
+                    #self.instr.result = eval("%d %s %d" % (self.instr.source1RegValue, 
+                    #        self.simulator.alu_operations[self.instr.op], 
+                    #        self.instr.source2RegValue))
+                    self.instr.result = eval("%d %s %d" % (int(str(self.instr.source1RegValue)), 
                             self.simulator.alu_operations[self.instr.op], 
-                            self.instr.source2RegValue))
+                            int(str(self.instr.source2RegValue))))
 
     def doBranch(self):
         # Set the program counter to the target address
@@ -409,6 +420,13 @@ class DataStage(PipelineStage):
             self.simulator.accessedDataMem = checked
         
         if self.instr.writeMem:
+            writeValue = 0
+            if(self.instr.op == "sb"):
+                writeValue = (self.instr.source1RegValue & 0x000000FF)
+            elif(self.instr.op == "sh"):
+                writeValue = (self.instr.source1RegValue & 0x0000FFFF)
+            else:
+                writeValue = self.instr.source1RegValue
             self.simulator.dataMemory[self.instr.source2RegValue] = self.instr.source1RegValue
             self.simulator.accessedDataMem.append(self.instr.source2RegValue)
             checked = []

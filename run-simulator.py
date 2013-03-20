@@ -20,6 +20,7 @@ def main() :
 	SimAsmFile = open(SimAsmFileName, 'w')
 	sys.stdout = SimAsmFile
 
+
 	lines = eparser.convertToSimASM(sys.argv[1])
 
 	# Parse in lines and check for dependencies

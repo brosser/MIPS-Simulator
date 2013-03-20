@@ -9,11 +9,11 @@ class InstructionParser(object):
                       'addu', 'subu', 'sltu', 'xor',
                       'sll', 'srl', 'sra', 'sllv', 'srlv', 'srav',
                       'jr', 'nop', 'mult', 'multu', 'mflo', 'mfhi'],
-            'itype': ['addi', 'subi', 'ori', 'lw', 'sw',
+            'itype': ['addi', 'subi', 'ori', 'lw', 'sw', 'lh', 'lb', 'sh', 'sb',
                         'addiu', 'slti', 'sltiu', 'andi', 'xori', 'lui', 'li',
                         'bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz', 'bltz',
                         'move'],
-            'jtype': ['j']
+            'jtype': ['j', 'jal']
         }
 
         self.loglines = { 
@@ -34,8 +34,11 @@ class InstructionParser(object):
             return instructions
 
     def parseLines(self, lines):
+        print "###################### Preprocessing Logfile ######################\n"
         instructions = [self.parse(a.replace(',',' ')) for a in lines]
+        print "<Successfully parsed instructions>\n"
         instructions = self.checkDependencies(instructions)
+        print "\n<Preprocessing finished>"
         return instructions
 
     def parse(self, s):
@@ -72,15 +75,15 @@ class InstructionParser(object):
         return Instruction(op=s[0], dest=s[1], s1=s[2], s2=s[3], regRead=1, regWrite=1, aluop=1)
 
     def createITypeInstruction(self, s):
-        memread = s[0] == "lw"
-        memwrite = s[0] == "sw"
+        memread = s[0] in ['lw', 'lb', 'lh']
+        memwrite = s[0] in ['sw', 'sb', 'sh']
         if (memread or memwrite):
             import re 
             regex = re.compile("(\d+)\((\$r\d+)\)")
             match = regex.match(s[2])
             immedval = match.group(1) 
             sval = match.group(2)
-            if s[0] == "lw" :
+            if s[0] in ['lw', 'lb', 'lh'] :
                 return Instruction(op=s[0], dest = s[1], s1=sval, immed = immedval, regRead = 1,regWrite = 1, aluop=1,  readMem = 1)
             else:
                 return Instruction(op=s[0],  s1 = s[1], s2=sval,immed = immedval, regRead = 1, aluop=1, writeMem = 1)
@@ -99,6 +102,7 @@ class InstructionParser(object):
             return Instruction(op=s[0], dest=s[1], s1=s[2], immed=s[3], regRead=1, regWrite=1, aluop=1)
 
     def createJTypeInstruction(self, s):
+        # J or JAL
         return Instruction(op=s[0], target=s[1], branch=1)
 
 
@@ -111,9 +115,7 @@ class InstructionParser(object):
     # Checking for WAR, RAW and Memory depencences between consecutive instructions
     def checkDependencies(self, instructions):
 
-        print "###################### Preprocessing Logfile ######################\n"
-
-        print "\n<Unprocessed Instructions>"
+        print "<Unprocessed Instructions>"
         addr = 0x0
         for i in instructions:
             print hex(addr), ": ", i
@@ -143,7 +145,7 @@ class InstructionParser(object):
 
     # Insert NOPs
     def insertNOPs(self, instructions):
-        print self.nopInserts
+        #print self.nopInserts
         for k in range(0, len(self.nopInserts)):
             instructions.insert(self.nopInserts[k], Nop)
             # WORK WORK! 
@@ -172,7 +174,7 @@ class InstructionParser(object):
                 if(targetval >= (self.nopInserts[k])*4):
                     targetval += 4
                     i.values[vstr] = targetval
-                    print "Recalculating targetval for ", i, ": ", targetval
+                    #print "Recalculating targetval for ", i, ": ", targetval
                 
             for j in range(k+1, len(self.nopInserts)):
                 self.nopInserts[j] += 1
@@ -183,7 +185,7 @@ class InstructionParser(object):
             print hex(addr), ": ", i
             addr += 0x4
 
-        print self.nopInserts
+        #print self.nopInserts
         return instructions
 
     def addDep(self, i, logstr):
