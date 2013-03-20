@@ -50,7 +50,7 @@ class InstructionParser(object):
         elif instr in self.instructionSet['jtype']:
             return self.createJTypeInstruction(s)
         else:
-            print "PROBLEM: ", instr
+            print "Could not parse instruction: ", instr
             raise ParseError("Invalid parse instruction")
 
 ##########################################################
