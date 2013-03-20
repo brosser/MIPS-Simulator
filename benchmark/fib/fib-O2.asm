@@ -29,7 +29,7 @@ int main ()
   int n = 10; // 50
   int a = 0;
   int b = 1;
-  18:	24030001 	li	v1,1
+  18:	24040001 	li	a0,1
 int main ()
 {
   /* Notice that we need to declare our variables, and their type */
@@ -45,19 +45,19 @@ int main ()
     for ( i = 0; i < n; i++)			
   20:	0800000c 	j	30 <main+0x30>
   24:	24070028 	li	a3,40
-  28:	00603021 	move	a2,v1
+  28:	00803021 	move	a2,a0
     {							 
         sum[i] = a + b;
         a = b;
         b = sum[i];
-  2c:	00801821 	move	v1,a0
+  2c:	00602021 	move	a0,v1
   
   int main_result = 0;
     
     for ( i = 0; i < n; i++)			
     {							 
         sum[i] = a + b;
-  30:	00662021 	addu	a0,v1,a2
+  30:	00861821 	addu	v1,a0,a2
  * an integer, and we return 0 to indicate successful completion of the 
  * program.
  */
@@ -79,16 +79,10 @@ int main ()
     
     for ( i = 0; i < n; i++)			
   3c:	1447fffa 	bne	v0,a3,28 <main+0x28>
-  40:	acc40000 	sw	a0,0(a2)
-  44:	00001821 	move	v1,zero
-  48:	00001021 	move	v0,zero
- * an integer, and we return 0 to indicate successful completion of the 
- * program.
- */
-const int output[10] = { 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
-
-int main ()
-  4c:	3c080000 	lui	t0,0x0
+  40:	acc30000 	sw	v1,0(a2)
+  44:	3c080000 	lui	t0,0x0
+  48:	00001821 	move	v1,zero
+  4c:	00001021 	move	v0,zero
   50:	25080000 	addiu	t0,t0,0
         sum[i] = a + b;
         a = b;
@@ -113,25 +107,24 @@ int main ()
         main_result += (output[i] != sum[i]);
   60:	8cc60000 	lw	a2,0(a2)
   64:	8c840000 	lw	a0,0(a0)
-  68:	00000000 	nop
+  68:	24630004 	addiu	v1,v1,4
   6c:	00c42026 	xor	a0,a2,a0
   70:	0004202b 	sltu	a0,zero,a0
-  74:	24630004 	addiu	v1,v1,4
         sum[i] = a + b;
         a = b;
         b = sum[i];
     }
     
     for (i = 0; i < 10; i++){
-  78:	1467fff7 	bne	v1,a3,58 <main+0x58>
-  7c:	00441021 	addu	v0,v0,a0
+  74:	1467fff8 	bne	v1,a3,58 <main+0x58>
+  78:	00441021 	addu	v0,v0,a0
         main_result += (output[i] != sum[i]);
     }
         //printf ("%d\n", main_result);
     
   return main_result;
 }
-  80:	03c0e821 	move	sp,s8
-  84:	8fbe0014 	lw	s8,20(sp)
-  88:	03e00008 	jr	ra
-  8c:	27bd0018 	addiu	sp,sp,24
+  7c:	03c0e821 	move	sp,s8
+  80:	8fbe0014 	lw	s8,20(sp)
+  84:	03e00008 	jr	ra
+  88:	27bd0018 	addiu	sp,sp,24
