@@ -1,0 +1,12 @@
+Milestone:
+
+1. MIPS simulator up and running.
+	Exit criteria:
+		a. Runs on O0, O1, O2 and O3 for fib and fir.
+		b. Runs on O0, O1, O2 and O3 for chstone benchmarks (can we meet this?).
+
+2. Branch into IDEA simulator.
+		* Merge with idea instructions.
+		* Resolve the discrepancies.
+
+3. Decide if hardware changes are needed.	
