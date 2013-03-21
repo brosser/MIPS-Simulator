@@ -12,11 +12,11 @@ blez				Y
 bltz				Y
 bne					Y
 bnez				Y
-div					N				
-j					Y
+div					Y				
+j					  Y
 jal					Y
 jalr				N
-jr					N
+jr					Y
 lb					Y
 lbu					Y
 lh					Y
