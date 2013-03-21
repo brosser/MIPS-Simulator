@@ -18,7 +18,7 @@ int main () {
     
     int ndata = 50;
     int ncoeff = 5;
-    short coeff[5] = { 3, 5, 15, 12, 7};
+    int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
     int data[54] = {   45, 1, 22, 53, 10, 12, 13, 25, 33, 14, 
                         12, 36, 12, 2, 24, 15, 5, 3, 42, 13,
                         33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
@@ -40,5 +40,5 @@ int main () {
     }
     //printf ("%d\n", main_result);
     
-    return 0;
+    return main_result;
 }
