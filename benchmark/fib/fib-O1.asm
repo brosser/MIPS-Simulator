@@ -11,7 +11,8 @@ const int output[10] = { 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
 
 int main ()
 {
-   0:	27bdffe8 	addiu	sp,sp,-24
+  // 0:	27bdffe8 	addiu	sp,sp,-24
+   0:	27bdffe8 	addiu	sp,sp,24
    4:	afbe0014 	sw	s8,20(sp)
    8:	03a0f021 	move	s8,sp
   /* Notice that we need to declare our variables, and their type */
@@ -133,5 +134,5 @@ int main ()
 }
   80:	03c0e821 	move	sp,s8
   84:	8fbe0014 	lw	s8,20(sp)
-  88:	03e00008 	jr	ra
+ // 88:	03e00008 	jr	ra
   8c:	27bd0018 	addiu	sp,sp,24

@@ -11,7 +11,8 @@ const int outData[8] = { -17, -9, 0, 3, 5, 11, 22, 38 };
 #define DADDR(x)	(((x)&0x000000ff)>>2)
 
 int main () {
-   0:	27bdfe80 	addiu	sp,sp,-384
+   //0:	27bdfe80 	addiu	sp,sp,-384
+   0:	27bdfe80 	addiu	sp,sp,384
 
     int i;
     int n_inst;
@@ -725,5 +726,5 @@ int main () {
     return main_result;
   }
 }
- 698:	03e00008 	jr	ra
+// 698:	03e00008 	jr	ra
  69c:	27bd0180 	addiu	sp,sp,384
