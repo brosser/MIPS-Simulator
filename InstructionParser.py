@@ -9,7 +9,7 @@ class InstructionParser(object):
                       'addu', 'subu', 'sltu', 'xor',
                       'sll', 'srl', 'sra', 'sllv', 'srlv', 'srav',
                       'jr', 'nop', 'mult', 'multu', 'mflo', 'mfhi'],
-            'itype': ['addi', 'subi', 'ori', 'lw', 'sw', 'lh', 'lb', 'sh', 'sb',
+            'itype': ['addi', 'subi', 'ori', 'lw', 'sw', 'lh', 'lb', 'sh', 'sb', 'lhu', 'lbu', 'shu', 'sbu',
                         'addiu', 'slti', 'sltiu', 'andi', 'xori', 'lui', 'li',
                         'bne', 'beq', 'blez', 'bgtz', 'bltz' 'bgez', 'bnez', 'beqz', 'bltz',
                         'move'],
@@ -25,6 +25,7 @@ class InstructionParser(object):
             }
 
         self.nopInserts = []
+        self.nNOPs = 1
 
     def parseFile(self, filename):
         with open(filename) as f:
@@ -191,8 +192,9 @@ class InstructionParser(object):
     def addDep(self, i, logstr):
         print (self.loglines[logstr] + hex(4*(i+1)) + " and " + hex(4*(i+2)))
         if(i not in self.nopInserts) :
-            print "Inserting NOP"
-            self.nopInserts.append(i)
+            print "Inserting ", self.nNOPs, " NOP(s)"
+            for k in range(0, self.nNOPs):
+                self.nopInserts.append(i)
         return
 
 ##########################################################

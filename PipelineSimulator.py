@@ -18,6 +18,7 @@ class PipelineSimulator(object):
         self.branched = False
         self.stall = False
         self.changedRegs = []
+        self.changedRegsVal = []
         self.accessedMem = []
         self.accessedDataMem = []
         
@@ -105,10 +106,12 @@ class PipelineSimulator(object):
     
     def checkDone(self):
         """ Check if we are done and set __done variable """
-        self.__done = True
-        for pi in self.pipeline:
-            if pi.instr is not Nop:
-                self.__done = False
+        self.__done = False
+        if self.pipeline[1].instr.op == 'jr' and self.pipeline[1].instr.s1 == "$r31":
+            self.__done = True
+        #for pi in self.pipeline:
+        #    if pi.instr is not Nop:
+        #        self.__done = False
     
     def run(self):
         """ Run the simulator, call step until we are done """
@@ -139,10 +142,10 @@ class PipelineSimulator(object):
         print "###################### PC = " + str(hex(self.programCounter)) + " ######################"
         #self.printStageCollection() 
         self.printPipeline()
-        #self.printRegFile()
+        self.printRegFile()
         self.printDataMemory()
         print "\n<Hazard List> : " , self.hazardList
-        print "<Updated Registers> : ", self.changedRegs, "\n"
+        print "<Updated Registers> : ", self.changedRegs, " = ", self.changedRegsVal, "\n"
 
     def debug(self):
         print "\n######################## Debug ###########################"
@@ -319,19 +322,19 @@ class ExecStage(PipelineStage):
                 self.simulator.pipeline[0] = FetchStage(Nop, self)
                 self.simulator.pipeline[2] = ReadStage(Nop, self)
             elif self.instr.op == 'bne':
-                if self.instr.source1RegValue != self.instr.source2RegValue:
+                if int(self.instr.source1RegValue) != int(self.instr.source2RegValue):
                     self.doBranch()
             elif self.instr.op == 'beq':
-                if self.instr.source1RegValue == self.instr.source2RegValue:
+                if int(self.instr.source1RegValue) == int(self.instr.source2RegValue):
                     self.doBranch()
             elif self.instr.op == 'bnez':
-                if self.instr.source1RegValue != 0:
+                if int(self.instr.source1RegValue) != 0:
                     self.doBranch()
             elif self.instr.op == 'beqz':
-                if self.instr.source1RegValue == 0:
+                if int(self.instr.source1RegValue) == 0:
                     self.doBranch()
             elif self.instr.op == 'bltz':
-                if self.instr.source1RegValue < 0:
+                if int(self.instr.source1RegValue) < 0:
                     self.doBranch()
             elif (self.instr.op == 'li'):
                 self.instr.result = self.instr.immed
@@ -378,9 +381,12 @@ class ExecStage(PipelineStage):
                     #self.instr.result = eval("%d %s %d" % (self.instr.source1RegValue, 
                     #        self.simulator.alu_operations[self.instr.op], 
                     #        self.instr.source2RegValue))
-                    self.instr.result = eval("%d %s %d" % (int(str(self.instr.source1RegValue)), 
+                    #self.instr.result = eval("%d %s %d" % (int(str(self.instr.source1RegValue)), 
+                    #        self.simulator.alu_operations[self.instr.op], 
+                    #        int(str(self.instr.source2RegValue))))
+                    self.instr.result = eval("%d %s %d" % (int((self.instr.source1RegValue)), 
                             self.simulator.alu_operations[self.instr.op], 
-                            int(str(self.instr.source2RegValue))))
+                            int((self.instr.source2RegValue))))
 
     def doBranch(self):
         # Set the program counter to the target address
@@ -447,6 +453,7 @@ class WriteStage(PipelineStage):
         Write to the register file
         """
         self.simulator.changedRegs = []
+        self.simulator.changedRegsVal = []
         if self.instr.regWrite:
             if self.instr.dest == '$r0':
                 #Edit: don't raise exception just ignore it
@@ -457,6 +464,7 @@ class WriteStage(PipelineStage):
             elif self.instr.dest:
                 self.simulator.registers[self.instr.dest] = self.instr.result
                 self.simulator.changedRegs.append(self.instr.dest)
+                self.simulator.changedRegsVal.append(self.instr.result)
                 
     def __str__(self):
         return 'Write to Register'

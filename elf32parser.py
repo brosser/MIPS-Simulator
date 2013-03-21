@@ -8,6 +8,7 @@ from elf32instr import elf32instr
 class elf32parser:
 
 	def __init__(self):	
+		self.doSimConv = True
 		self.inputFile = None
 		self.instructions = []
 
@@ -18,10 +19,29 @@ class elf32parser:
 		lines = [line.strip() for line in self.inputFile]
 
 		for line in lines:
+			
 			# Hexadecimal operand/imm?
 			ishex = False
 			if("0x" in line):
 				ishex = True
+
+			#if(self.doSimConv == True):
+				# Find initial stack pointer decrement
+				#if line is lines.
+				#match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + 'addiu' + '\s+' + 'sp,'+ '\s+' + 'sp,' + '\s+' + '(\([a-fA-F0-9_]+\))', line)
+				#if match:
+				#		operands = [x.strip() for x in match.group(4).split(',')]
+				#		print "OPERANDS", operands
+				#		# Negate sp decrement
+				#		operands[-1] = -1*operands[-1]
+				#		self.instructions.append(elf32instr('', match.group(1), match.group(2), match.group(3), len(operands), operands, match.group(7)))
+				#		continue
+				# Find jr ra
+				#match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + 'jr' + '\s+' + 'ra', line)
+				#if match:
+				#	 Discard jr ra
+				#	continue
+
 			# Find assembly instructions (ignoring whitespace lines, C-code and assembler directives)
 			# Normal instruction
 			match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + '(\w+)' + '\s+' + '((\w+)(,\s*-?\w+)*)(\([a-zA-Z0-9_]+\))*', line)
