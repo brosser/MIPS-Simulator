@@ -318,6 +318,13 @@ class ExecStage(PipelineStage):
                 # Set the other instructions currently in the pipeline to a Nop
                 self.simulator.pipeline[0] = FetchStage(Nop, self)
                 self.simulator.pipeline[2] = ReadStage(Nop, self)
+            elif self.instr.op == 'jalr':
+                # Save return address in $ra = $r31
+                self.simulator.registers["$r31"] = self.simulator.programCounter
+                self.simulator.programCounter = self.instr.source1RegValue
+                # Set the o  instructions currently in the pipeline to a Nop
+                self.simulator.pipeline[0] = FetchStage(Nop, self)
+                self.simulator.pipeline[2] = ReadStage(Nop, self)  
             elif self.instr.op == 'bne':
                 if int(self.instr.source1RegValue) != int(self.instr.source2RegValue):
                     self.doBranch()

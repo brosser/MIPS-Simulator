@@ -5,7 +5,7 @@ class InstructionParser(object):
 
     def __init__(self):
         self.instructionSet = {
-            'rtype': ['add', 'sub', 'and', 'or', 'jr', 'nor', 'slt',
+            'rtype': ['add', 'sub', 'and', 'or', 'jr', 'jalr', 'nor', 'slt',
                       'addu', 'subu', 'sltu', 'xor',
                       'sll', 'srl', 'sra', 'sllv', 'srlv', 'srav',
                       'jr', 'nop', 'mult', 'multu', 'mflo', 'mfhi'],
