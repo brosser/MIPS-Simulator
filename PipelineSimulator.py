@@ -109,9 +109,6 @@ class PipelineSimulator(object):
         self.__done = False
         if self.pipeline[1].instr.op == 'jr' and self.pipeline[1].instr.s1 == "$r31":
             self.__done = True
-        #for pi in self.pipeline:
-        #    if pi.instr is not Nop:
-        #        self.__done = False
     
     def run(self):
         """ Run the simulator, call step until we are done """

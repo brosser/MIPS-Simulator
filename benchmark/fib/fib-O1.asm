@@ -134,5 +134,5 @@ int main ()
 }
   80:	03c0e821 	move	sp,s8
   84:	8fbe0014 	lw	s8,20(sp)
- // 88:	03e00008 	jr	ra
+  88:	03e00008 	jr	ra
   8c:	27bd0018 	addiu	sp,sp,24
