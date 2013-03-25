@@ -25,8 +25,9 @@ int main ()
   int n = 10; // 50
   int a = 0;
   int b = 1;
-  int sum[n];
   int i;
+  
+  /*volatile*/ int sum[n];
   
   int main_result = 0;
     

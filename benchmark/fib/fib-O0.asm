@@ -26,7 +26,9 @@ int main ()
   int b = 1;
   20:	240a0001 	li	t2,1
   24:	afca0004 	sw	t2,4(s8)
-  int sum[n];
+  int i;
+  
+  /*volatile*/ int sum[n];
   28:	8fca0010 	lw	t2,16(s8)
   2c:	00000000 	nop
   30:	254cffff 	addiu	t4,t2,-1
@@ -57,7 +59,6 @@ int main ()
   94:	000210c2 	srl	v0,v0,0x3
   98:	000210c0 	sll	v0,v0,0x3
   9c:	afc20018 	sw	v0,24(s8)
-  int i;
   
   int main_result = 0;
   a0:	afc0000c 	sw	zero,12(s8)
@@ -91,8 +92,8 @@ int main ()
   f8:	8c420000 	lw	v0,0(v0)
   fc:	00000000 	nop
  100:	afc20004 	sw	v0,4(s8)
-  int sum[n];
-  int i;
+  
+  /*volatile*/ int sum[n];
   
   int main_result = 0;
     
@@ -165,3 +166,17 @@ int main ()
  1bc:	27bd0028 	addiu	sp,sp,40
  1c0:	03e00008 	jr	ra
  1c4:	00000000 	nop
+
+Disassembly of section .rodata:
+
+00000000 <output>:
+   0:	00000001 	0x1
+   4:	00000002 	srl	zero,zero,0x0
+   8:	00000003 	sra	zero,zero,0x0
+   c:	00000005 	0x5
+  10:	00000008 	jr	zero
+  14:	0000000d 	break
+  18:	00000015 	0x15
+  1c:	00000022 	neg	zero,zero
+  20:	00000037 	0x37
+  24:	00000059 	0x59
