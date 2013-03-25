@@ -11,7 +11,7 @@ const int output[10] = { 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
 
 int main ()
 {
-  // 0:	27bdffe8 	addiu	sp,sp,-24
+   //0:	27bdffe8 	addiu	sp,sp,-24
    0:	27bdffe8 	addiu	sp,sp,24
    4:	afbe0014 	sw	s8,20(sp)
    8:	03a0f021 	move	s8,sp
@@ -21,7 +21,8 @@ int main ()
   int a = 0;
   int b = 1;
   int sum[n];
-   c:	27bdffd0 	addiu	sp,sp,-48
+  //c:	27bdffd0 	addiu	sp,sp,-48
+  c:  27bdffd0  addiu sp,sp,48
   10:	03a02821 	move	a1,sp
   14:	00001021 	move	v0,zero
 {
@@ -105,7 +106,11 @@ const int output[10] = { 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
 
 int main ()
   58:	01033021 	addu	a2,t0,v1
+  68: 00000000  nop
+  68: 00000000  nop
   5c:	00a32021 	addu	a0,a1,v1
+  68: 00000000  nop
+  68: 00000000  nop
         a = b;
         b = sum[i];
     }
@@ -113,11 +118,18 @@ int main ()
     for (i = 0; i < 10; i++){
         main_result += (output[i] != sum[i]);
   60:	8cc60000 	lw	a2,0(a2)
+  68: 00000000  nop
+  68: 00000000  nop
   64:	8c840000 	lw	a0,0(a0)
+  68: 00000000  nop
   68:	00000000 	nop
   6c:	00c42026 	xor	a0,a2,a0
+  68: 00000000  nop
+  68: 00000000  nop
   70:	0004202b 	sltu	a0,zero,a0
   74:	24630004 	addiu	v1,v1,4
+  68: 00000000  nop
+  68: 00000000  nop
         sum[i] = a + b;
         a = b;
         b = sum[i];
@@ -125,6 +137,8 @@ int main ()
     
     for (i = 0; i < 10; i++){
   7c: 00441021  addu  v0,v0,a0
+  68: 00000000  nop
+  68: 00000000  nop
   78:	1467fff7 	bne	v1,a3,58 <main+0x58>
         main_result += (output[i] != sum[i]);
     }

@@ -46,7 +46,7 @@ class PipelineSimulator(object):
         self.hi = 0
 
         # Stack Initalization
-        self.registers["$r29"] = 0x0
+        self.registers["$r29"] = 0x0000
         
         # set up the main memory construct, a list index starting at 0
         # and continuing to 0xffc
@@ -309,10 +309,19 @@ class ExecStage(PipelineStage):
                 self.simulator.hazardList.append(self.instr.dest)    
 
             #calculate the offset of the lw and sw instructions
-            if  self.instr.op == 'lw':
+            if  self.instr.op in ['lw', 'lh', 'lb', 'lhu', 'lbu']:
                 self.instr.source1RegValue = self.instr.source1RegValue + int(self.instr.immed)
-            elif  self.instr.op == 'sw':
+            elif  self.instr.op in ['sw', 'sh', 'sh', 'shu', 'sbu']:
                 self.instr.source2RegValue = self.instr.source2RegValue + int(self.instr.immed)
+            elif (self.instr.op == 'li'):
+                self.instr.result = int(self.instr.immed, 10)
+            elif (self.instr.op == 'lui'):
+                #if("0x" in str(self.instr.immed)):
+                #    self.instr.result = int(self.instr.immed, 16) & 0xFFFF0000
+                #else:
+                self.instr.result = int(self.instr.immed, 10)  
+                #print "LUI RESULTS!", self.instr.result
+
             elif self.instr.op == 'jr':
                 self.simulator.programCounter = self.instr.source1RegValue
                 # Set the other instructions currently in the pipeline to a Nop
@@ -340,14 +349,7 @@ class ExecStage(PipelineStage):
             elif self.instr.op == 'bltz':
                 if int(self.instr.source1RegValue) < 0:
                     self.doBranch()
-            elif (self.instr.op == 'li'):
-                self.instr.result = self.instr.immed
-            elif (self.instr.op == 'lui'):
-                #if("0x" in str(self.instr.immed)):
-                #    self.instr.result = int(self.instr.immed, 16) & 0xFFFF0000
-                #else:
-                self.instr.result = int(self.instr.immed, 10)  
-                #print "LUI RESULTS!", self.instr.result
+
             elif (self.instr.op == "addi"):
                 self.instr.result = int(self.instr.source1RegValue) + int(self.instr.immed)
             elif (self.instr.op == "addu"):
@@ -431,9 +433,9 @@ class DataStage(PipelineStage):
         
         if self.instr.writeMem:
             writeValue = 0
-            if(self.instr.op == "sb"):
+            if(self.instr.op in ["sb", "sbu"]):
                 writeValue = (self.instr.source1RegValue & 0x000000FF)
-            elif(self.instr.op == "sh"):
+            elif(self.instr.op in ["sh", "shu"]):
                 writeValue = (self.instr.source1RegValue & 0x0000FFFF)
             else:
                 writeValue = self.instr.source1RegValue

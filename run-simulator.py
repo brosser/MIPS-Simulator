@@ -5,11 +5,14 @@ import PipelineSimulator
 import Instruction
 import InstructionParser
 import Sourceline
+import Checker
 
 import os
 import sys
 
 def main() :
+
+	oldstdout = sys.stdout
 
 	# Initialize parsers
 	iparser = InstructionParser.InstructionParser()
@@ -46,6 +49,10 @@ def main() :
 
 	simulationFile.close()
 	PPLogFile.close()
+
+	sys.stdout = oldstdout
+	checker = Checker.Checker()
+	checker.runCheck()
 
 if __name__ == "__main__":
     main()
