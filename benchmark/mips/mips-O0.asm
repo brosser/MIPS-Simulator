@@ -11,8 +11,7 @@ const int outData[8] = { -17, -9, 0, 3, 5, 11, 22, 38 };
 #define DADDR(x)	(((x)&0x000000ff)>>2)
 
 int main () {
-  // 0:	27bdfe30 	addiu	sp,sp,-464
-   0:	27bdfe30 	addiu	sp,sp,464
+   0:	27bdfe30 	addiu	sp,sp,-464
    4:	afbe01cc 	sw	s8,460(sp)
    8:	03a0f021 	move	s8,sp
 
@@ -985,5 +984,161 @@ while (1){
  bd0:	03c0e821 	move	sp,s8
  bd4:	8fbe01cc 	lw	s8,460(sp)
  bd8:	27bd01d0 	addiu	sp,sp,464
-// bdc:	03e00008 	jr	ra
+ bdc:	03e00008 	jr	ra
  be0:	00000000 	nop
+
+Disassembly of section .rodata:
+
+00000000 <imem>:
+   0:	8fa40000 	lw	a0,0(sp)
+   4:	27a50004 	addiu	a1,sp,4
+   8:	24a60004 	addiu	a2,a1,4
+   c:	00041080 	sll	v0,a0,0x2
+  10:	00c23021 	addu	a2,a2,v0
+  14:	0c100016 	jal	400058 <outData+0x3fff88>
+  18:	00000000 	nop
+  1c:	3402000a 	li	v0,0xa
+  20:	0000000c 	syscall
+  24:	3c011001 	lui	at,0x1001
+  28:	34280000 	ori	t0,at,0x0
+  2c:	00044880 	sll	t1,a0,0x2
+  30:	01094821 	addu	t1,t0,t1
+  34:	8d2a0000 	lw	t2,0(t1)
+  38:	00055880 	sll	t3,a1,0x2
+  3c:	010b5821 	addu	t3,t0,t3
+  40:	8d6c0000 	lw	t4,0(t3)
+  44:	018a682a 	slt	t5,t4,t2
+  48:	11a00003 	beqz	t5,58 <imem+0x58>
+  4c:	ad2c0000 	sw	t4,0(t1)
+  50:	ad6a0000 	sw	t2,0(t3)
+  54:	03e00008 	jr	ra
+  58:	27bdfff4 	addiu	sp,sp,-12
+  5c:	afbf0008 	sw	ra,8(sp)
+  60:	afb10004 	sw	s1,4(sp)
+  64:	afb00000 	sw	s0,0(sp)
+  68:	24100000 	li	s0,0
+  6c:	2a080008 	slti	t0,s0,8
+  70:	1100000b 	beqz	t0,a0 <imem+0xa0>
+  74:	26110001 	addiu	s1,s0,1
+  78:	2a280008 	slti	t0,s1,8
+  7c:	11000006 	beqz	t0,98 <imem+0x98>
+  80:	26040000 	addiu	a0,s0,0
+  84:	26250000 	addiu	a1,s1,0
+  88:	0c100009 	jal	400024 <outData+0x3fff54>
+  8c:	26310001 	addiu	s1,s1,1
+  90:	0810001e 	j	400078 <outData+0x3fffa8>
+  94:	26100001 	addiu	s0,s0,1
+  98:	0810001b 	j	40006c <outData+0x3fff9c>
+  9c:	8fbf0008 	lw	ra,8(sp)
+  a0:	8fb10004 	lw	s1,4(sp)
+  a4:	8fb00000 	lw	s0,0(sp)
+  a8:	27bd000c 	addiu	sp,sp,12
+  ac:	03e00008 	jr	ra
+
+000000b0 <A>:
+  b0:	00000016 	0x16
+  b4:	00000005 	0x5
+  b8:	fffffff7 	0xfffffff7
+  bc:	00000003 	sra	zero,zero,0x0
+  c0:	ffffffef 	0xffffffef
+  c4:	00000026 	xor	zero,zero,zero
+  c8:	00000000 	nop
+  cc:	0000000b 	0xb
+
+000000d0 <outData>:
+  d0:	ffffffef 	0xffffffef
+  d4:	fffffff7 	0xfffffff7
+  d8:	00000000 	nop
+  dc:	00000003 	sra	zero,zero,0x0
+  e0:	00000005 	0x5
+  e4:	0000000b 	0xb
+  e8:	00000016 	0x16
+  ec:	00000026 	xor	zero,zero,zero
+  f0:	00000510 	0x510
+  f4:	000006e4 	0x6e4
+  f8:	0000054c 	syscall	0x15
+  fc:	000006e4 	0x6e4
+ 100:	00000588 	0x588
+ 104:	000006e4 	0x6e4
+ 108:	000005d4 	0x5d4
+ 10c:	000006e4 	0x6e4
+ 110:	000006c0 	sll	zero,zero,0x1b
+ 114:	000006e4 	0x6e4
+ 118:	000006e4 	0x6e4
+ 11c:	000006e4 	0x6e4
+ 120:	000006e4 	0x6e4
+ 124:	000006e4 	0x6e4
+ 128:	000006e4 	0x6e4
+ 12c:	000006e4 	0x6e4
+ 130:	000003e4 	0x3e4
+ 134:	000006e4 	0x6e4
+ 138:	00000408 	0x408
+ 13c:	000006e4 	0x6e4
+ 140:	000006e4 	0x6e4
+ 144:	000006e4 	0x6e4
+ 148:	000006e4 	0x6e4
+ 14c:	000006e4 	0x6e4
+ 150:	00000274 	0x274
+ 154:	00000330 	0x330
+ 158:	000006e4 	0x6e4
+ 15c:	000006e4 	0x6e4
+ 160:	000006e4 	0x6e4
+ 164:	000006e4 	0x6e4
+ 168:	000006e4 	0x6e4
+ 16c:	000006e4 	0x6e4
+ 170:	000006e4 	0x6e4
+ 174:	000001dc 	0x1dc
+ 178:	000006e4 	0x6e4
+ 17c:	00000228 	0x228
+ 180:	0000042c 	0x42c
+ 184:	00000478 	0x478
+ 188:	000004c4 	0x4c4
+ 18c:	000006e4 	0x6e4
+ 190:	000006e4 	0x6e4
+ 194:	000006e4 	0x6e4
+ 198:	00000620 	0x620
+ 19c:	0000066c 	0x66c
+ 1a0:	00000b00 	sll	at,zero,0xc
+ 1a4:	00000a38 	0xa38
+ 1a8:	00000b00 	sll	at,zero,0xc
+ 1ac:	00000b00 	sll	at,zero,0xc
+ 1b0:	00000980 	sll	at,zero,0x6
+ 1b4:	000009dc 	0x9dc
+ 1b8:	00000b00 	sll	at,zero,0xc
+ 1bc:	00000b00 	sll	at,zero,0xc
+ 1c0:	00000b00 	sll	at,zero,0xc
+ 1c4:	000007c8 	0x7c8
+ 1c8:	00000a80 	sll	at,zero,0xa
+ 1cc:	00000abc 	0xabc
+ 1d0:	00000804 	sllv	at,zero,zero
+ 1d4:	00000840 	sll	at,zero,0x1
+ 1d8:	0000087c 	0x87c
+ 1dc:	00000958 	0x958
+ 1e0:	00000b00 	sll	at,zero,0xc
+ 1e4:	00000b00 	sll	at,zero,0xc
+ 1e8:	00000b00 	sll	at,zero,0xc
+ 1ec:	00000b00 	sll	at,zero,0xc
+ 1f0:	00000b00 	sll	at,zero,0xc
+ 1f4:	00000b00 	sll	at,zero,0xc
+ 1f8:	00000b00 	sll	at,zero,0xc
+ 1fc:	00000b00 	sll	at,zero,0xc
+ 200:	00000b00 	sll	at,zero,0xc
+ 204:	00000b00 	sll	at,zero,0xc
+ 208:	00000b00 	sll	at,zero,0xc
+ 20c:	00000b00 	sll	at,zero,0xc
+ 210:	00000b00 	sll	at,zero,0xc
+ 214:	00000b00 	sll	at,zero,0xc
+ 218:	00000b00 	sll	at,zero,0xc
+ 21c:	00000b00 	sll	at,zero,0xc
+ 220:	00000b00 	sll	at,zero,0xc
+ 224:	00000b00 	sll	at,zero,0xc
+ 228:	00000b00 	sll	at,zero,0xc
+ 22c:	000008b8 	0x8b8
+ 230:	00000b00 	sll	at,zero,0xc
+ 234:	00000b00 	sll	at,zero,0xc
+ 238:	00000b00 	sll	at,zero,0xc
+ 23c:	00000b00 	sll	at,zero,0xc
+ 240:	00000b00 	sll	at,zero,0xc
+ 244:	00000b00 	sll	at,zero,0xc
+ 248:	00000b00 	sll	at,zero,0xc
+ 24c:	00000908 	0x908
