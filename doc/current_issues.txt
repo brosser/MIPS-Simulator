@@ -4,3 +4,5 @@ Resolution: Can we insert nops by hand first?
 2. Are we moving towards a cycle-accurate simulator?
 
 3. Optimization of O3.
+
+4. Re-structuring of Assembler and Simulator to make it more distinctive.
