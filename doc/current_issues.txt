@@ -1,0 +1,6 @@
+1. Dependency between two non-consecutive instructions. May need a dependency graph.
+Resolution: Can we insert nops by hand first?
+
+2. Are we moving towards a cycle-accurate simulator?
+
+3. Optimization of O3.
