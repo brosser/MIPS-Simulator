@@ -1,8 +1,14 @@
 1. Dependency between two non-consecutive instructions. May need a dependency graph.
-Resolution: Can we insert nops by hand first?
+Resolution: Can we insert nops by hand first? [Critical]
 
 2. Are we moving towards a cycle-accurate simulator?
 
-3. Optimization of O3.
+3. Optimization of O3. Haven't had the change to try out volatile.
 
 4. Re-structuring of Assembler and Simulator to make it more distinctive.
+
+5. Stalling and data forwarding.
+
+6. Variable pipelines.
+
+7. Branch delay issue. [Trivial]
