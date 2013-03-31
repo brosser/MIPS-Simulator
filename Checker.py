@@ -5,12 +5,12 @@ import sys
 
 class Checker:
 
-    def __init__(self):
+    def __init__(self, simRunFileName):
         # Open the file
         try:
-            f = open("simrun.txt", "r");
+            f = open(simRunFileName, "r");
         except IOError:
-            print "Opening of simrun.txt failed"
+            print "Opening of simulation log file failed"
             sys.exit()
 
         self.lines = f.readlines()

@@ -1,5 +1,6 @@
 from Instruction import *
 import collections 
+import ast
 
 class PipelineSimulator(object): 
     alu_operations = {  'add':'+',  'addi':'+',  'sub':'-',  'subi':'-',
@@ -9,7 +10,7 @@ class PipelineSimulator(object):
                     'sra':'>>', 'srav':'>>',
                     'div':'/',   'mul':'*',  'xor':'^',  'xori':'^'  }
                   
-    def __init__(self,instrCollection):
+    def __init__(self,instrCollection,dataMem):
         self.instrCount = 0
         self.nopCount = 0
         self.cycles = 0
@@ -62,6 +63,9 @@ class PipelineSimulator(object):
         # the list of instruction objects passed into the simulator,
         # most likely created by parsing text 
         self.instrCollection = instrCollection
+
+        # Input data memory
+        self.dataMemIn = dataMem
        
         # populate main memory with our text of the instructions
         # starting at 0x1000
@@ -70,6 +74,14 @@ class PipelineSimulator(object):
            self.instructionMemory[0x0 + y] = instr
            self.accessedMem.append(0x0 + y)
            y += 4
+
+        # populate data memory
+        self.readDataMem()
+
+    def readDataMem(self):
+        if(len(self.dataMemIn.items()) != 0):
+            for key, value in self.dataMemIn.items():
+                self.dataMemory[key] = value
     
     def step(self):
         self.cycles +=1
