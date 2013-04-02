@@ -14,7 +14,7 @@ class InstructionParser(object):
                       'jr', 'nop', 'mult', 'multu', 'mflo', 'mfhi'],
             'itype': ['addi', 'subi', 'ori', 'lw', 'sw', 'lh', 'lb', 'sh', 'sb', 'lhu', 'lbu', 'shu', 'sbu',
                         'addiu', 'slti', 'sltiu', 'andi', 'xori', 'lui', 'li',
-                        'bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz', 'bltz',
+                        'bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz',
                         'move'],
             'jtype': ['j', 'jal']
         }
@@ -116,7 +116,7 @@ class InstructionParser(object):
         if ( s[0] in ['bne', 'beq'] ) :
             return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1, branch=1)
         elif( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
-            return Instruction(op=s[0], s1=s[1], immed=s[2], regRead = 1, aluop = 1, branch=1)
+            return Instruction(op=s[0], s1=s[1], s2 = None, immed=s[2], regRead = 1, aluop = 1, branch=1)
                                                         # HEX
             #return Instruction(op=s[0], s1=s[1], immed= int(str(s[2]), 16), regRead = 1, aluop = 1, branch=1)
         # Pseudoinstructions

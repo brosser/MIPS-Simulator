@@ -77,7 +77,7 @@ int main()
     int c;
 
     c = calc_factorial (number);
-  a0:	8f820000 	lw	v0,0(gp)
+  a0:	8f820000 	lw	v0,0(s8)
   a4:	00000000 	sll	zero,zero,0x0
   a8:	00402021 	addu	a0,v0,zero
   ac:	0c000000 	jal	0 <calc_factorial>
@@ -85,7 +85,7 @@ int main()
   b4:	afc20014 	sw	v0,20(s8)
 
     main_result += (output != c);
-  b8:	8f830000 	lw	v1,0(gp)
+  b8:	8f830000 	lw	v1,0(s8)
   bc:	8fc20014 	lw	v0,20(s8)
   c0:	00000000 	sll	zero,zero,0x0
   c4:	00621026 	xor	v0,v1,v0
