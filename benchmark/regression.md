@@ -11,5 +11,6 @@
 | jpeg		|||||
 | mips		|||||
 | motion	|||||
+| sha   ||||
 | fib		| P | P | P | F |
 | fir		| P |   |   |   |
