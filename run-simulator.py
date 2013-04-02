@@ -12,6 +12,11 @@ import sys
 
 def main() :
 
+	defaultSimASMFile = "simasm.sim"
+	defaultDataMemFile = "datamem.sim"
+	defaultPreProcLogFile = "preprocLog.sim"
+	defaultSimRunFile = "simrun.sim"
+
 	oldstdout = sys.stdout
 
 	# Initialize parsers
@@ -19,25 +24,26 @@ def main() :
 	eparser = elf32parser.elf32parser()
 	
 	# Convert elf32-bigmips to simulator friendly format
-	SimAsmFileName = sys.argv[3] if len(sys.argv) > 4 else "simasm.txt"
+	SimAsmFileName = sys.argv[3] if len(sys.argv) > 4 else defaultSimASMFile
 	SimAsmFile = open(SimAsmFileName, 'w')
 	sys.stdout = SimAsmFile
 
-
-	lines = eparser.convertToSimASM(sys.argv[1])
+	eparser.convertToSimASM(sys.argv[1], defaultSimASMFile, defaultDataMemFile)
+	lines = eparser.getLines()
+	datamem = eparser.getDataMem() 
 
 	# Parse in lines and check for dependencies
-	PPLogFileName = sys.argv[3] if len(sys.argv) > 3 else "preprocLog.txt"
+	PPLogFileName = sys.argv[3] if len(sys.argv) > 3 else defaultPreProcLogFile
 	PPLogFile = open(PPLogFileName, 'w')
 	sys.stdout = PPLogFile
 
 	# Get line by line
-	#lines = iparser.parseLines(lines)
+	lines = iparser.parseLines(lines)
 
-	pipelinesim = PipelineSimulator.PipelineSimulator(iparser.parseLines(lines))
+	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem)
 	
 	# Set logfile
-	simulationFileName = sys.argv[2] if len(sys.argv) > 2 else "simrun.txt"
+	simulationFileName = sys.argv[2] if len(sys.argv) > 2 else defaultSimRunFile
 	simulationFile = open(simulationFileName, 'w')
 	sys.stdout = simulationFile
 
@@ -51,7 +57,7 @@ def main() :
 	PPLogFile.close()
 
 	sys.stdout = oldstdout
-	checker = Checker.Checker()
+	checker = Checker.Checker(defaultSimRunFile)
 	checker.runCheck()
 
 if __name__ == "__main__":

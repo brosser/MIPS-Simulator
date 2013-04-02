@@ -25,7 +25,7 @@ class InstructionParser(object):
             }
 
         self.nopInserts = []
-        self.nNOPs = 2
+        self.nNOPs = 0
 
     def parseFile(self, filename):
         with open(filename) as f:
