@@ -19,7 +19,7 @@ int main () {
     n_inst = 0;
     main_result = 0;
    4:	af800000 	sw	zero,0(gp)
-   8:	03a01821 	move	v1,sp
+   8:	03a01821 	addu	v1,sp,zero
 const int outData[8] = { -17, -9, 0, 3, 5, 11, 22, 38 };
 
 #define IADDR(x)	(((x)&0x000000ff)>>2)
@@ -55,22 +55,22 @@ int main () {
     // Initiallize 8 memory locations
     for (i = 0; i < 8; i++) {
 	    dmem[i] = A[i];
-  2c:	24030016 	li	v1,22
+  2c:	24030016 	addiu	v1,zero,22
   30:	afa30080 	sw	v1,128(sp)
-  34:	24030005 	li	v1,5
+  34:	24030005 	addiu	v1,zero,5
   38:	afa30084 	sw	v1,132(sp)
-  3c:	2403fff7 	li	v1,-9
+  3c:	2403fff7 	addiu	v1,zero,-9
   40:	afa30088 	sw	v1,136(sp)
-  44:	24030003 	li	v1,3
+  44:	24030003 	addiu	v1,zero,3
   48:	afa3008c 	sw	v1,140(sp)
-  4c:	2403ffef 	li	v1,-17
+  4c:	2403ffef 	addiu	v1,zero,-17
   50:	afa30090 	sw	v1,144(sp)
-  54:	24030026 	li	v1,38
+  54:	24030026 	addiu	v1,zero,38
   58:	afa30094 	sw	v1,148(sp)
   5c:	afa00098 	sw	zero,152(sp)
-  60:	2403000b 	li	v1,11
+  60:	2403000b 	addiu	v1,zero,11
   64:	afa3009c 	sw	v1,156(sp)
-  68:	00002021 	move	a0,zero
+  68:	00002021 	addu	a0,zero,zero
 	}
 
     pc = 0x00400000;
@@ -84,7 +84,7 @@ int main () {
 	    op = ins >> 26;
 
 	    switch (op) {
-  74:	24060002 	li	a2,2
+  74:	24060002 	addiu	a2,zero,2
 		        break;
 		}
 	    break;
@@ -99,7 +99,7 @@ int main () {
 	    op = ins >> 26;
 
 	    switch (op) {
-  80:	24080003 	li	t0,3
+  80:	24080003 	addiu	t0,zero,3
 	    default:
 	      address = ins & 0xffff;
 	      rt = (ins >> 16) & 0x1f;
@@ -125,7 +125,7 @@ int main () {
   94:	318300fc 	andi	v1,t4,0xfc
   98:	00671821 	addu	v1,v1,a3
   9c:	8c630000 	lw	v1,0(v1)
-  a0:	00000000 	nop
+  a0:	00000000 	sll	zero,zero,0x0
 	    pc = pc + 4;
 
 	    op = ins >> 26;
@@ -135,7 +135,7 @@ int main () {
   a8:	11a600c6 	beq	t5,a2,3c4 <main+0x3c4>
   ac:	25850004 	addiu	a1,t4,4
   b0:	11a800c7 	beq	t5,t0,3d0 <main+0x3d0>
-  b4:	00000000 	nop
+  b4:	00000000 	sll	zero,zero,0x0
   b8:	15a000c9 	bnez	t5,3e0 <main+0x3e0>
   bc:	0003cc00 	sll	t9,v1,0x10
 
@@ -171,9 +171,9 @@ int main () {
   ec:	00031880 	sll	v1,v1,0x2
   f0:	01431821 	addu	v1,t2,v1
   f4:	8c630000 	lw	v1,0(v1)
-  f8:	00000000 	nop
+  f8:	00000000 	sll	zero,zero,0x0
   fc:	00600008 	jr	v1
- 100:	00000000 	nop
+ 100:	00000000 	sll	zero,zero,0x0
 
             case ADDU:
 		        reg[rd] = reg[rs] + reg[rt];
@@ -185,12 +185,12 @@ int main () {
  118:	03b8c021 	addu	t8,sp,t8
  11c:	8dac0000 	lw	t4,0(t5)
  120:	8f030000 	lw	v1,0(t8)
- 124:	00000000 	nop
+ 124:	00000000 	sll	zero,zero,0x0
  128:	01831821 	addu	v1,t4,v1
  12c:	adc30000 	sw	v1,0(t6)
 		        break;
  130:	0800018e 	j	638 <main+0x638>
- 134:	00a06021 	move	t4,a1
+ 134:	00a06021 	addu	t4,a1,zero
 		    case SUBU:
 		        reg[rd] = reg[rs] - reg[rt];
  138:	000e7080 	sll	t6,t6,0x2
@@ -201,12 +201,12 @@ int main () {
  14c:	03ad6821 	addu	t5,sp,t5
  150:	8f0c0000 	lw	t4,0(t8)
  154:	8da30000 	lw	v1,0(t5)
- 158:	00000000 	nop
+ 158:	00000000 	sll	zero,zero,0x0
  15c:	01831823 	subu	v1,t4,v1
  160:	adc30000 	sw	v1,0(t6)
 		        break;
  164:	0800018e 	j	638 <main+0x638>
- 168:	00a06021 	move	t4,a1
+ 168:	00a06021 	addu	t4,a1,zero
 /* hycheah -- to resolve */
 		    case MULT:
 		        hilo = (long long) reg[rs] * (long long) reg[rt];
@@ -216,7 +216,7 @@ int main () {
  178:	03b8c021 	addu	t8,sp,t8
  17c:	8da30000 	lw	v1,0(t5)
  180:	8f020000 	lw	v0,0(t8)
- 184:	00000000 	nop
+ 184:	00000000 	sll	zero,zero,0x0
  188:	00620018 	mult	v1,v0
  18c:	00001010 	mfhi	v0
 		        Lo = hilo & 0x00000000ffffffffULL;
@@ -224,7 +224,7 @@ int main () {
 		        Hi = ((int) (hilo >> 32)) & 0xffffffffUL;
 		        break;
  194:	0800018e 	j	638 <main+0x638>
- 198:	00a06021 	move	t4,a1
+ 198:	00a06021 	addu	t4,a1,zero
 		    case MULTU:
 		        hilo = (unsigned long long) reg[rs] * (unsigned long long) reg[rt];
  19c:	000d6880 	sll	t5,t5,0x2
@@ -233,7 +233,7 @@ int main () {
  1a8:	03b8c021 	addu	t8,sp,t8
  1ac:	8da30000 	lw	v1,0(t5)
  1b0:	8f020000 	lw	v0,0(t8)
- 1b4:	00000000 	nop
+ 1b4:	00000000 	sll	zero,zero,0x0
  1b8:	00620018 	mult	v1,v0
  1bc:	00001010 	mfhi	v0
 		        Lo = hilo & 0x00000000ffffffffULL;
@@ -241,7 +241,7 @@ int main () {
 		        Hi = ((int) (hilo >> 32)) & 0xffffffffUL;
 		        break;
  1c4:	0800018e 	j	638 <main+0x638>
- 1c8:	00a06021 	move	t4,a1
+ 1c8:	00a06021 	addu	t4,a1,zero
 /**/
 		    case MFHI:
 		        reg[rd] = Hi;
@@ -250,7 +250,7 @@ int main () {
  1d4:	adc20000 	sw	v0,0(t6)
 		        break;
  1d8:	0800018e 	j	638 <main+0x638>
- 1dc:	00a06021 	move	t4,a1
+ 1dc:	00a06021 	addu	t4,a1,zero
 		    case MFLO:
 		        reg[rd] = Lo;
  1e0:	000e7080 	sll	t6,t6,0x2
@@ -258,7 +258,7 @@ int main () {
  1e8:	adcf0000 	sw	t7,0(t6)
 		        break;
  1ec:	0800018e 	j	638 <main+0x638>
- 1f0:	00a06021 	move	t4,a1
+ 1f0:	00a06021 	addu	t4,a1,zero
 
 		    case AND:
 		        reg[rd] = reg[rs] & reg[rt];
@@ -270,12 +270,12 @@ int main () {
  208:	03b8c021 	addu	t8,sp,t8
  20c:	8dac0000 	lw	t4,0(t5)
  210:	8f030000 	lw	v1,0(t8)
- 214:	00000000 	nop
+ 214:	00000000 	sll	zero,zero,0x0
  218:	01831824 	and	v1,t4,v1
  21c:	adc30000 	sw	v1,0(t6)
 		        break;
  220:	0800018e 	j	638 <main+0x638>
- 224:	00a06021 	move	t4,a1
+ 224:	00a06021 	addu	t4,a1,zero
 		    case OR:
 		        reg[rd] = reg[rs] | reg[rt];
  228:	000e7080 	sll	t6,t6,0x2
@@ -286,12 +286,12 @@ int main () {
  23c:	03b8c021 	addu	t8,sp,t8
  240:	8dac0000 	lw	t4,0(t5)
  244:	8f030000 	lw	v1,0(t8)
- 248:	00000000 	nop
+ 248:	00000000 	sll	zero,zero,0x0
  24c:	01831825 	or	v1,t4,v1
  250:	adc30000 	sw	v1,0(t6)
 		        break;
  254:	0800018e 	j	638 <main+0x638>
- 258:	00a06021 	move	t4,a1
+ 258:	00a06021 	addu	t4,a1,zero
 		    case XOR:
 		        reg[rd] = reg[rs] ^ reg[rt];
  25c:	000e7080 	sll	t6,t6,0x2
@@ -302,12 +302,12 @@ int main () {
  270:	03b8c021 	addu	t8,sp,t8
  274:	8dac0000 	lw	t4,0(t5)
  278:	8f030000 	lw	v1,0(t8)
- 27c:	00000000 	nop
+ 27c:	00000000 	sll	zero,zero,0x0
  280:	01831826 	xor	v1,t4,v1
  284:	adc30000 	sw	v1,0(t6)
 		        break;
  288:	0800018e 	j	638 <main+0x638>
- 28c:	00a06021 	move	t4,a1
+ 28c:	00a06021 	addu	t4,a1,zero
 		    case SLL:
 		        reg[rd] = reg[rt] << shamt;
  290:	000e7080 	sll	t6,t6,0x2
@@ -315,12 +315,12 @@ int main () {
  298:	000d6880 	sll	t5,t5,0x2
  29c:	03ad6821 	addu	t5,sp,t5
  2a0:	8da30000 	lw	v1,0(t5)
- 2a4:	00000000 	nop
+ 2a4:	00000000 	sll	zero,zero,0x0
  2a8:	0323c804 	sllv	t9,v1,t9
  2ac:	add90000 	sw	t9,0(t6)
 		        break;
  2b0:	0800018e 	j	638 <main+0x638>
- 2b4:	00a06021 	move	t4,a1
+ 2b4:	00a06021 	addu	t4,a1,zero
 		    case SRL:
 		        reg[rd] = reg[rt] >> shamt;
  2b8:	000e7080 	sll	t6,t6,0x2
@@ -328,12 +328,12 @@ int main () {
  2c0:	000d6880 	sll	t5,t5,0x2
  2c4:	03ad6821 	addu	t5,sp,t5
  2c8:	8da30000 	lw	v1,0(t5)
- 2cc:	00000000 	nop
+ 2cc:	00000000 	sll	zero,zero,0x0
  2d0:	0323c807 	srav	t9,v1,t9
  2d4:	add90000 	sw	t9,0(t6)
 		        break;
  2d8:	0800018e 	j	638 <main+0x638>
- 2dc:	00a06021 	move	t4,a1
+ 2dc:	00a06021 	addu	t4,a1,zero
 		    case SLLV:
 		        reg[rd] = reg[rt] << reg[rs];
  2e0:	000e7080 	sll	t6,t6,0x2
@@ -344,12 +344,12 @@ int main () {
  2f4:	03b8c021 	addu	t8,sp,t8
  2f8:	8dac0000 	lw	t4,0(t5)
  2fc:	8f030000 	lw	v1,0(t8)
- 300:	00000000 	nop
+ 300:	00000000 	sll	zero,zero,0x0
  304:	006c1804 	sllv	v1,t4,v1
  308:	adc30000 	sw	v1,0(t6)
 		        break;
  30c:	0800018e 	j	638 <main+0x638>
- 310:	00a06021 	move	t4,a1
+ 310:	00a06021 	addu	t4,a1,zero
 		    case SRLV:
 		        reg[rd] = reg[rt] >> reg[rs];
  314:	000e7080 	sll	t6,t6,0x2
@@ -360,12 +360,12 @@ int main () {
  328:	03b8c021 	addu	t8,sp,t8
  32c:	8dac0000 	lw	t4,0(t5)
  330:	8f030000 	lw	v1,0(t8)
- 334:	00000000 	nop
+ 334:	00000000 	sll	zero,zero,0x0
  338:	006c1807 	srav	v1,t4,v1
  33c:	adc30000 	sw	v1,0(t6)
 		        break;
  340:	0800018e 	j	638 <main+0x638>
- 344:	00a06021 	move	t4,a1
+ 344:	00a06021 	addu	t4,a1,zero
 
 		    case SLT:
 		        reg[rd] = reg[rs] < reg[rt];
@@ -377,12 +377,12 @@ int main () {
  35c:	03ad6821 	addu	t5,sp,t5
  360:	8f0c0000 	lw	t4,0(t8)
  364:	8da30000 	lw	v1,0(t5)
- 368:	00000000 	nop
+ 368:	00000000 	sll	zero,zero,0x0
  36c:	0183182a 	slt	v1,t4,v1
  370:	adc30000 	sw	v1,0(t6)
 		        break;
  374:	0800018e 	j	638 <main+0x638>
- 378:	00a06021 	move	t4,a1
+ 378:	00a06021 	addu	t4,a1,zero
 		    case SLTU:
 		        reg[rd] = (unsigned int) reg[rs] < (unsigned int) reg[rt];
  37c:	000e7080 	sll	t6,t6,0x2
@@ -393,12 +393,12 @@ int main () {
  390:	03ad6821 	addu	t5,sp,t5
  394:	8f0c0000 	lw	t4,0(t8)
  398:	8da30000 	lw	v1,0(t5)
- 39c:	00000000 	nop
+ 39c:	00000000 	sll	zero,zero,0x0
  3a0:	0183182b 	sltu	v1,t4,v1
  3a4:	adc30000 	sw	v1,0(t6)
 		        break;
  3a8:	0800018e 	j	638 <main+0x638>
- 3ac:	00a06021 	move	t4,a1
+ 3ac:	00a06021 	addu	t4,a1,zero
 
 		    case JR:
 		        pc = reg[rs];
@@ -452,9 +452,9 @@ int main () {
  3fc:	000d6880 	sll	t5,t5,0x2
  400:	016d6821 	addu	t5,t3,t5
  404:	8dad0000 	lw	t5,0(t5)
- 408:	00000000 	nop
+ 408:	00000000 	sll	zero,zero,0x0
  40c:	01a00008 	jr	t5
- 410:	00000000 	nop
+ 410:	00000000 	sll	zero,zero,0x0
 		    case ADDIU:
 		        reg[rt] = reg[rs] + address;
  414:	0018c080 	sll	t8,t8,0x2
@@ -462,12 +462,12 @@ int main () {
  41c:	00031880 	sll	v1,v1,0x2
  420:	03a31821 	addu	v1,sp,v1
  424:	8c630000 	lw	v1,0(v1)
- 428:	00000000 	nop
+ 428:	00000000 	sll	zero,zero,0x0
  42c:	0079c821 	addu	t9,v1,t9
  430:	af190000 	sw	t9,0(t8)
 		        break;
  434:	0800018e 	j	638 <main+0x638>
- 438:	00a06021 	move	t4,a1
+ 438:	00a06021 	addu	t4,a1,zero
 
 		    case ANDI:
 		        reg[rt] = reg[rs] & (unsigned short) address;
@@ -477,12 +477,12 @@ int main () {
  448:	03a31821 	addu	v1,sp,v1
  44c:	3339ffff 	andi	t9,t9,0xffff
  450:	8c630000 	lw	v1,0(v1)
- 454:	00000000 	nop
+ 454:	00000000 	sll	zero,zero,0x0
  458:	0079c824 	and	t9,v1,t9
  45c:	af190000 	sw	t9,0(t8)
 		        break;
  460:	0800018e 	j	638 <main+0x638>
- 464:	00a06021 	move	t4,a1
+ 464:	00a06021 	addu	t4,a1,zero
 		    case ORI:
 		        reg[rt] = reg[rs] | (unsigned short) address;
  468:	0018c080 	sll	t8,t8,0x2
@@ -491,12 +491,12 @@ int main () {
  474:	03a31821 	addu	v1,sp,v1
  478:	3339ffff 	andi	t9,t9,0xffff
  47c:	8c630000 	lw	v1,0(v1)
- 480:	00000000 	nop
+ 480:	00000000 	sll	zero,zero,0x0
  484:	0079c825 	or	t9,v1,t9
  488:	af190000 	sw	t9,0(t8)
 		        break;
  48c:	0800018e 	j	638 <main+0x638>
- 490:	00a06021 	move	t4,a1
+ 490:	00a06021 	addu	t4,a1,zero
 		    case XORI:
 		        reg[rt] = reg[rs] ^ (unsigned short) address;
  494:	0018c080 	sll	t8,t8,0x2
@@ -505,12 +505,12 @@ int main () {
  4a0:	03a31821 	addu	v1,sp,v1
  4a4:	3339ffff 	andi	t9,t9,0xffff
  4a8:	8c630000 	lw	v1,0(v1)
- 4ac:	00000000 	nop
+ 4ac:	00000000 	sll	zero,zero,0x0
  4b0:	0079c826 	xor	t9,v1,t9
  4b4:	af190000 	sw	t9,0(t8)
 		        break;
  4b8:	0800018e 	j	638 <main+0x638>
- 4bc:	00a06021 	move	t4,a1
+ 4bc:	00a06021 	addu	t4,a1,zero
 
 		    case LW:
 		        reg[rt] = dmem[DADDR (reg[rs] + address)];
@@ -519,33 +519,33 @@ int main () {
  4c8:	00031880 	sll	v1,v1,0x2
  4cc:	03a31821 	addu	v1,sp,v1
  4d0:	8c630000 	lw	v1,0(v1)
- 4d4:	00000000 	nop
+ 4d4:	00000000 	sll	zero,zero,0x0
  4d8:	03231821 	addu	v1,t9,v1
  4dc:	306300fc 	andi	v1,v1,0xfc
  4e0:	03a31821 	addu	v1,sp,v1
  4e4:	8c630080 	lw	v1,128(v1)
- 4e8:	00000000 	nop
+ 4e8:	00000000 	sll	zero,zero,0x0
  4ec:	af030000 	sw	v1,0(t8)
 		        break;
  4f0:	0800018e 	j	638 <main+0x638>
- 4f4:	00a06021 	move	t4,a1
+ 4f4:	00a06021 	addu	t4,a1,zero
 		    case SW:
 		        dmem[DADDR (reg[rs] + address)] = reg[rt];
  4f8:	00031880 	sll	v1,v1,0x2
  4fc:	03a31821 	addu	v1,sp,v1
  500:	8c630000 	lw	v1,0(v1)
- 504:	00000000 	nop
+ 504:	00000000 	sll	zero,zero,0x0
  508:	03231821 	addu	v1,t9,v1
  50c:	306300fc 	andi	v1,v1,0xfc
  510:	03a31821 	addu	v1,sp,v1
  514:	0018c080 	sll	t8,t8,0x2
  518:	03b8c021 	addu	t8,sp,t8
  51c:	8f0c0000 	lw	t4,0(t8)
- 520:	00000000 	nop
+ 520:	00000000 	sll	zero,zero,0x0
  524:	ac6c0080 	sw	t4,128(v1)
 		        break;
  528:	0800018e 	j	638 <main+0x638>
- 52c:	00a06021 	move	t4,a1
+ 52c:	00a06021 	addu	t4,a1,zero
 
 		    case LUI:
 		        reg[rt] = address << 16;
@@ -555,7 +555,7 @@ int main () {
  53c:	af190000 	sw	t9,0(t8)
 		        break;
  540:	0800018e 	j	638 <main+0x638>
- 544:	00a06021 	move	t4,a1
+ 544:	00a06021 	addu	t4,a1,zero
 
 		    case BEQ:
 		        if (reg[rs] == reg[rt])
@@ -565,7 +565,7 @@ int main () {
  554:	03b8c021 	addu	t8,sp,t8
  558:	8c6d0000 	lw	t5,0(v1)
  55c:	8f030000 	lw	v1,0(t8)
- 560:	00000000 	nop
+ 560:	00000000 	sll	zero,zero,0x0
  564:	15a3002f 	bne	t5,v1,624 <main+0x624>
  568:	0019c880 	sll	t9,t9,0x2
 		        pc = pc - 4 + (address << 2);
@@ -580,7 +580,7 @@ int main () {
  580:	03b8c021 	addu	t8,sp,t8
  584:	8c6d0000 	lw	t5,0(v1)
  588:	8f030000 	lw	v1,0(t8)
- 58c:	00000000 	nop
+ 58c:	00000000 	sll	zero,zero,0x0
  590:	11a30026 	beq	t5,v1,62c <main+0x62c>
  594:	0019c880 	sll	t9,t9,0x2
 		        pc = pc - 4 + (address << 2);
@@ -592,7 +592,7 @@ int main () {
  5a0:	00031880 	sll	v1,v1,0x2
  5a4:	03a31821 	addu	v1,sp,v1
  5a8:	8c630000 	lw	v1,0(v1)
- 5ac:	00000000 	nop
+ 5ac:	00000000 	sll	zero,zero,0x0
  5b0:	04600020 	bltz	v1,634 <main+0x634>
  5b4:	0019c880 	sll	t9,t9,0x2
 		        pc = pc - 4 + (address << 2);
@@ -607,12 +607,12 @@ int main () {
  5c8:	00031880 	sll	v1,v1,0x2
  5cc:	03a31821 	addu	v1,sp,v1
  5d0:	8c630000 	lw	v1,0(v1)
- 5d4:	00000000 	nop
+ 5d4:	00000000 	sll	zero,zero,0x0
  5d8:	0079c82a 	slt	t9,v1,t9
  5dc:	af190000 	sw	t9,0(t8)
 		        break;
  5e0:	0800018e 	j	638 <main+0x638>
- 5e4:	00a06021 	move	t4,a1
+ 5e4:	00a06021 	addu	t4,a1,zero
 
 		    case SLTIU:
  		        reg[rt] = (unsigned int) reg[rs] < (unsigned short) address;
@@ -622,12 +622,12 @@ int main () {
  5f4:	03a31821 	addu	v1,sp,v1
  5f8:	3339ffff 	andi	t9,t9,0xffff
  5fc:	8c630000 	lw	v1,0(v1)
- 600:	00000000 	nop
+ 600:	00000000 	sll	zero,zero,0x0
  604:	0079c82b 	sltu	t9,v1,t9
  608:	af190000 	sw	t9,0(t8)
 		        break;
  60c:	0800018e 	j	638 <main+0x638>
- 610:	00a06021 	move	t4,a1
+ 610:	00a06021 	addu	t4,a1,zero
 
 		    case JR:
 		        pc = reg[rs];
@@ -635,7 +635,7 @@ int main () {
 		    default:
 		        pc = 0;	// error
  614:	0800018e 	j	638 <main+0x638>
- 618:	00006021 	move	t4,zero
+ 618:	00006021 	addu	t4,zero,zero
 		    case SLTIU:
  		        reg[rt] = (unsigned int) reg[rs] < (unsigned short) address;
 		        break;
@@ -643,7 +643,7 @@ int main () {
 		    default:
 		        pc = 0;	/* error */
  61c:	0800018e 	j	638 <main+0x638>
- 620:	00006021 	move	t4,zero
+ 620:	00006021 	addu	t4,zero,zero
 
     pc = 0x00400000;
 
@@ -651,10 +651,10 @@ int main () {
 	    ins = imem[IADDR (pc)];
 	    pc = pc + 4;
  624:	0800018e 	j	638 <main+0x638>
- 628:	00a06021 	move	t4,a1
+ 628:	00a06021 	addu	t4,a1,zero
  62c:	0800018e 	j	638 <main+0x638>
- 630:	00a06021 	move	t4,a1
- 634:	00a06021 	move	t4,a1
+ 630:	00a06021 	addu	t4,a1,zero
+ 634:	00a06021 	addu	t4,a1,zero
 		        pc = 0;	/* error */
 		        break;
 		    }
@@ -671,9 +671,9 @@ int main () {
  644:	38820263 	xori	v0,a0,0x263
  648:	0002102b 	sltu	v0,zero,v0
  64c:	8f830000 	lw	v1,0(gp)
- 650:	00000000 	nop
+ 650:	00000000 	sll	zero,zero,0x0
  654:	00431021 	addu	v0,v0,v1
- 658:	00001821 	move	v1,zero
+ 658:	00001821 	addu	v1,zero,zero
 const int outData[8] = { -17, -9, 0, 3, 5, 11, 22, 38 };
 
 #define IADDR(x)	(((x)&0x000000ff)>>2)
@@ -689,7 +689,7 @@ int main () {
     // If the data stored in imem at the end of execution is not equal,
     // 1 instead of 0 is returned.
     for (j = 0; j < 8; j++)
- 668:	24060020 	li	a2,32
+ 668:	24060020 	addiu	a2,zero,32
 const int outData[8] = { -17, -9, 0, 3, 5, 11, 22, 38 };
 
 #define IADDR(x)	(((x)&0x000000ff)>>2)
@@ -706,7 +706,7 @@ int main () {
 	    main_result += (dmem[j] != outData[j]);
  674:	8ca50000 	lw	a1,0(a1)
  678:	8c840000 	lw	a0,0(a0)
- 67c:	00000000 	nop
+ 67c:	00000000 	sll	zero,zero,0x0
  680:	00a42026 	xor	a0,a1,a0
  684:	0004202b 	sltu	a0,zero,a0
  688:	24630004 	addiu	v1,v1,4
@@ -827,8 +827,8 @@ Disassembly of section .rodata:
  16c:	00041080 	sll	v0,a0,0x2
  170:	00c23021 	addu	a2,a2,v0
  174:	0c100016 	jal	400058 <outData+0x3ffe28>
- 178:	00000000 	nop
- 17c:	3402000a 	li	v0,0xa
+ 178:	00000000 	sll	zero,zero,0x0
+ 17c:	3402000a 	ori	v0,zero,0xa
  180:	0000000c 	syscall
  184:	3c011001 	lui	at,0x1001
  188:	34280000 	ori	t0,at,0x0
@@ -847,7 +847,7 @@ Disassembly of section .rodata:
  1bc:	afbf0008 	sw	ra,8(sp)
  1c0:	afb10004 	sw	s1,4(sp)
  1c4:	afb00000 	sw	s0,0(sp)
- 1c8:	24100000 	li	s0,0
+ 1c8:	24100000 	addiu	s0,zero,0
  1cc:	2a080008 	slti	t0,s0,8
  1d0:	1100000b 	beqz	t0,200 <imem+0xa0>
  1d4:	26110001 	addiu	s1,s0,1
@@ -873,13 +873,13 @@ Disassembly of section .rodata:
  21c:	00000003 	sra	zero,zero,0x0
  220:	ffffffef 	0xffffffef
  224:	00000026 	xor	zero,zero,zero
- 228:	00000000 	nop
+ 228:	00000000 	sll	zero,zero,0x0
  22c:	0000000b 	0xb
 
 00000230 <outData>:
  230:	ffffffef 	0xffffffef
  234:	fffffff7 	0xfffffff7
- 238:	00000000 	nop
+ 238:	00000000 	sll	zero,zero,0x0
  23c:	00000003 	sra	zero,zero,0x0
  240:	00000005 	0x5
  244:	0000000b 	0xb

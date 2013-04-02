@@ -415,21 +415,21 @@ int main () {
      56c:	8fb10214 	lw	s1,532(sp)
      570:	02694823 	subu	t1,s3,t1
      574:	8fb301bc 	lw	s3,444(sp)
-     578:	00000000 	nop
+     578:	00000000 	sll	zero,zero,0x0
      57c:	02338821 	addu	s1,s1,s3
      580:	afb10214 	sw	s1,532(sp)
      584:	8fb101c0 	lw	s1,448(sp)
      588:	8fb30244 	lw	s3,580(sp)
      58c:	02284023 	subu	t0,s1,t0
      590:	8fb101c4 	lw	s1,452(sp)
-     594:	00000000 	nop
+     594:	00000000 	sll	zero,zero,0x0
      598:	02719821 	addu	s3,s3,s1
      59c:	afb30244 	sw	s3,580(sp)
      5a0:	8fb301c8 	lw	s3,456(sp)
      5a4:	8fb10218 	lw	s1,536(sp)
      5a8:	02673823 	subu	a3,s3,a3
      5ac:	8fb301cc 	lw	s3,460(sp)
-     5b0:	00000000 	nop
+     5b0:	00000000 	sll	zero,zero,0x0
      5b4:	02338821 	addu	s1,s1,s3
      5b8:	afb10218 	sw	s1,536(sp)
      5bc:	8fb101e0 	lw	s1,480(sp)
@@ -737,7 +737,7 @@ int main () {
      9b0:	0337c821 	addu	t9,t9,s7
      9b4:	afb901ac 	sw	t9,428(sp)
      9b8:	8fb901b4 	lw	t9,436(sp)
-     9bc:	00000000 	nop
+     9bc:	00000000 	sll	zero,zero,0x0
      9c0:	0322c821 	addu	t9,t9,v0
      9c4:	afb901b4 	sw	t9,436(sp)
      9c8:	8fb901f0 	lw	t9,496(sp)
@@ -745,43 +745,43 @@ int main () {
      9d0:	0336c821 	addu	t9,t9,s6
      9d4:	afb90220 	sw	t9,544(sp)
      9d8:	8fb901d0 	lw	t9,464(sp)
-     9dc:	00000000 	nop
+     9dc:	00000000 	sll	zero,zero,0x0
      9e0:	0337c821 	addu	t9,t9,s7
      9e4:	afb901d0 	sw	t9,464(sp)
      9e8:	8fb901f8 	lw	t9,504(sp)
-     9ec:	00000000 	nop
+     9ec:	00000000 	sll	zero,zero,0x0
      9f0:	0335c821 	addu	t9,t9,s5
      9f4:	afb901d4 	sw	t9,468(sp)
      9f8:	8fb901d8 	lw	t9,472(sp)
-     9fc:	00000000 	nop
+     9fc:	00000000 	sll	zero,zero,0x0
      a00:	0336c821 	addu	t9,t9,s6
      a04:	afb901d8 	sw	t9,472(sp)
      a08:	8fb90200 	lw	t9,512(sp)
-     a0c:	00000000 	nop
+     a0c:	00000000 	sll	zero,zero,0x0
      a10:	0334c821 	addu	t9,t9,s4
      a14:	afb901b8 	sw	t9,440(sp)
      a18:	8fb901dc 	lw	t9,476(sp)
-     a1c:	00000000 	nop
+     a1c:	00000000 	sll	zero,zero,0x0
      a20:	0335c821 	addu	t9,t9,s5
      a24:	afb901dc 	sw	t9,476(sp)
      a28:	8fb90228 	lw	t9,552(sp)
-     a2c:	00000000 	nop
+     a2c:	00000000 	sll	zero,zero,0x0
      a30:	0333c821 	addu	t9,t9,s3
      a34:	afb901bc 	sw	t9,444(sp)
      a38:	8fb901c0 	lw	t9,448(sp)
-     a3c:	00000000 	nop
+     a3c:	00000000 	sll	zero,zero,0x0
      a40:	0334c821 	addu	t9,t9,s4
      a44:	afb901c0 	sw	t9,448(sp)
      a48:	8fb90230 	lw	t9,560(sp)
-     a4c:	00000000 	nop
+     a4c:	00000000 	sll	zero,zero,0x0
      a50:	0332c821 	addu	t9,t9,s2
      a54:	afb901c4 	sw	t9,452(sp)
      a58:	8fb901c8 	lw	t9,456(sp)
-     a5c:	00000000 	nop
+     a5c:	00000000 	sll	zero,zero,0x0
      a60:	0333c821 	addu	t9,t9,s3
      a64:	afb901c8 	sw	t9,456(sp)
      a68:	8fb90238 	lw	t9,568(sp)
-     a6c:	00000000 	nop
+     a6c:	00000000 	sll	zero,zero,0x0
      a70:	0331c821 	addu	t9,t9,s1
      a74:	afb901cc 	sw	t9,460(sp)
      a78:	8fb901e0 	lw	t9,480(sp)
@@ -805,43 +805,43 @@ int main () {
      ac0:	0330c821 	addu	t9,t9,s0
      ac4:	afb90284 	sw	t9,644(sp)
      ac8:	8fb90210 	lw	t9,528(sp)
-     acc:	00000000 	nop
+     acc:	00000000 	sll	zero,zero,0x0
      ad0:	032dc821 	addu	t9,t9,t5
      ad4:	afb90288 	sw	t9,648(sp)
      ad8:	8fb90260 	lw	t9,608(sp)
-     adc:	00000000 	nop
+     adc:	00000000 	sll	zero,zero,0x0
      ae0:	032ec821 	addu	t9,t9,t6
      ae4:	afb9028c 	sw	t9,652(sp)
      ae8:	8fb90214 	lw	t9,532(sp)
-     aec:	00000000 	nop
+     aec:	00000000 	sll	zero,zero,0x0
      af0:	032cc821 	addu	t9,t9,t4
      af4:	afb90290 	sw	t9,656(sp)
      af8:	8fb90264 	lw	t9,612(sp)
-     afc:	00000000 	nop
+     afc:	00000000 	sll	zero,zero,0x0
      b00:	032dc821 	addu	t9,t9,t5
      b04:	afb90294 	sw	t9,660(sp)
      b08:	8fb90218 	lw	t9,536(sp)
-     b0c:	00000000 	nop
+     b0c:	00000000 	sll	zero,zero,0x0
      b10:	032bc821 	addu	t9,t9,t3
      b14:	afb90298 	sw	t9,664(sp)
      b18:	8fb90268 	lw	t9,616(sp)
-     b1c:	00000000 	nop
+     b1c:	00000000 	sll	zero,zero,0x0
      b20:	032cc821 	addu	t9,t9,t4
      b24:	afb9029c 	sw	t9,668(sp)
      b28:	8fb9021c 	lw	t9,540(sp)
-     b2c:	00000000 	nop
+     b2c:	00000000 	sll	zero,zero,0x0
      b30:	032ac821 	addu	t9,t9,t2
      b34:	afb902a0 	sw	t9,672(sp)
      b38:	8fb9026c 	lw	t9,620(sp)
-     b3c:	00000000 	nop
+     b3c:	00000000 	sll	zero,zero,0x0
      b40:	032bc821 	addu	t9,t9,t3
      b44:	afb902a4 	sw	t9,676(sp)
      b48:	8fb90250 	lw	t9,592(sp)
-     b4c:	00000000 	nop
+     b4c:	00000000 	sll	zero,zero,0x0
      b50:	0329c821 	addu	t9,t9,t1
      b54:	afb902a8 	sw	t9,680(sp)
      b58:	8fb90270 	lw	t9,624(sp)
-     b5c:	00000000 	nop
+     b5c:	00000000 	sll	zero,zero,0x0
      b60:	032ac821 	addu	t9,t9,t2
      b64:	afb902ac 	sw	t9,684(sp)
      b68:	01e3c823 	subu	t9,t7,v1
@@ -1054,7 +1054,7 @@ int main () {
      ea4:	8fa501bc 	lw	a1,444(sp)
      ea8:	030b5823 	subu	t3,t8,t3
      eac:	8fb80288 	lw	t8,648(sp)
-     eb0:	00000000 	nop
+     eb0:	00000000 	sll	zero,zero,0x0
      eb4:	00b82821 	addu	a1,a1,t8
      eb8:	afa501b8 	sw	a1,440(sp)
      ebc:	8fa5028c 	lw	a1,652(sp)
@@ -1174,12 +1174,12 @@ int main () {
     1084:	afa501e8 	sw	a1,488(sp)
     1088:	8fb80250 	lw	t8,592(sp)
     108c:	8fa50254 	lw	a1,596(sp)
-    1090:	00000000 	nop
+    1090:	00000000 	sll	zero,zero,0x0
     1094:	00b82823 	subu	a1,a1,t8
     1098:	afa50238 	sw	a1,568(sp)
     109c:	8fb801c8 	lw	t8,456(sp)
     10a0:	8fa501c0 	lw	a1,448(sp)
-    10a4:	00000000 	nop
+    10a4:	00000000 	sll	zero,zero,0x0
     10a8:	00b82821 	addu	a1,a1,t8
     10ac:	afa501ec 	sw	a1,492(sp)
     10b0:	8fa50258 	lw	a1,600(sp)
@@ -1411,7 +1411,7 @@ int main () {
     1390:	00962021 	addu	a0,a0,s6
     1394:	afa401ac 	sw	a0,428(sp)
     1398:	8fa401b4 	lw	a0,436(sp)
-    139c:	00000000 	nop
+    139c:	00000000 	sll	zero,zero,0x0
     13a0:	00862021 	addu	a0,a0,a2
     13a4:	afa40220 	sw	a0,544(sp)
     13a8:	8fa401f0 	lw	a0,496(sp)
@@ -1423,39 +1423,39 @@ int main () {
     13c0:	00962021 	addu	a0,a0,s6
     13c4:	afa401d4 	sw	a0,468(sp)
     13c8:	8fa401f8 	lw	a0,504(sp)
-    13cc:	00000000 	nop
+    13cc:	00000000 	sll	zero,zero,0x0
     13d0:	00942021 	addu	a0,a0,s4
     13d4:	afa401d8 	sw	a0,472(sp)
     13d8:	8fa401b8 	lw	a0,440(sp)
-    13dc:	00000000 	nop
+    13dc:	00000000 	sll	zero,zero,0x0
     13e0:	00952021 	addu	a0,a0,s5
     13e4:	afa401b8 	sw	a0,440(sp)
     13e8:	8fa40200 	lw	a0,512(sp)
-    13ec:	00000000 	nop
+    13ec:	00000000 	sll	zero,zero,0x0
     13f0:	00932021 	addu	a0,a0,s3
     13f4:	afa401dc 	sw	a0,476(sp)
     13f8:	8fa401bc 	lw	a0,444(sp)
-    13fc:	00000000 	nop
+    13fc:	00000000 	sll	zero,zero,0x0
     1400:	00942021 	addu	a0,a0,s4
     1404:	afa401bc 	sw	a0,444(sp)
     1408:	8fa40228 	lw	a0,552(sp)
-    140c:	00000000 	nop
+    140c:	00000000 	sll	zero,zero,0x0
     1410:	00922021 	addu	a0,a0,s2
     1414:	afa401c0 	sw	a0,448(sp)
     1418:	8fa401c4 	lw	a0,452(sp)
-    141c:	00000000 	nop
+    141c:	00000000 	sll	zero,zero,0x0
     1420:	00932021 	addu	a0,a0,s3
     1424:	afa401c4 	sw	a0,452(sp)
     1428:	8fa40230 	lw	a0,560(sp)
-    142c:	00000000 	nop
+    142c:	00000000 	sll	zero,zero,0x0
     1430:	00912021 	addu	a0,a0,s1
     1434:	afa401c8 	sw	a0,456(sp)
     1438:	8fa401cc 	lw	a0,460(sp)
-    143c:	00000000 	nop
+    143c:	00000000 	sll	zero,zero,0x0
     1440:	00922021 	addu	a0,a0,s2
     1444:	afa401cc 	sw	a0,460(sp)
     1448:	8fa40238 	lw	a0,568(sp)
-    144c:	00000000 	nop
+    144c:	00000000 	sll	zero,zero,0x0
     1450:	00902021 	addu	a0,a0,s0
     1454:	afa40274 	sw	a0,628(sp)
     1458:	8fa401e0 	lw	a0,480(sp)
@@ -1483,45 +1483,45 @@ int main () {
     14b0:	008f2021 	addu	a0,a0,t7
     14b4:	afa40288 	sw	a0,648(sp)
     14b8:	8fa40260 	lw	a0,608(sp)
-    14bc:	00000000 	nop
+    14bc:	00000000 	sll	zero,zero,0x0
     14c0:	00982021 	addu	a0,a0,t8
     14c4:	afa4028c 	sw	a0,652(sp)
     14c8:	8fa40214 	lw	a0,532(sp)
-    14cc:	00000000 	nop
+    14cc:	00000000 	sll	zero,zero,0x0
     14d0:	008e2021 	addu	a0,a0,t6
     14d4:	afa40290 	sw	a0,656(sp)
     14d8:	8fa40264 	lw	a0,612(sp)
-    14dc:	00000000 	nop
+    14dc:	00000000 	sll	zero,zero,0x0
     14e0:	008f2021 	addu	a0,a0,t7
     14e4:	afa40294 	sw	a0,660(sp)
     14e8:	8fa40218 	lw	a0,536(sp)
-    14ec:	00000000 	nop
+    14ec:	00000000 	sll	zero,zero,0x0
     14f0:	008d2021 	addu	a0,a0,t5
     14f4:	afa40298 	sw	a0,664(sp)
     14f8:	8fa40268 	lw	a0,616(sp)
-    14fc:	00000000 	nop
+    14fc:	00000000 	sll	zero,zero,0x0
     1500:	008e2021 	addu	a0,a0,t6
     1504:	afa4029c 	sw	a0,668(sp)
     1508:	8fa4021c 	lw	a0,540(sp)
-    150c:	00000000 	nop
+    150c:	00000000 	sll	zero,zero,0x0
     1510:	008c2021 	addu	a0,a0,t4
     1514:	afa402a0 	sw	a0,672(sp)
     1518:	8fa4026c 	lw	a0,620(sp)
-    151c:	00000000 	nop
+    151c:	00000000 	sll	zero,zero,0x0
     1520:	008d2021 	addu	a0,a0,t5
     1524:	afa402a4 	sw	a0,676(sp)
     1528:	8fa40250 	lw	a0,592(sp)
-    152c:	00000000 	nop
+    152c:	00000000 	sll	zero,zero,0x0
     1530:	008b2021 	addu	a0,a0,t3
     1534:	afa402a8 	sw	a0,680(sp)
     1538:	8fa40270 	lw	a0,624(sp)
-    153c:	00000000 	nop
+    153c:	00000000 	sll	zero,zero,0x0
     1540:	008c2021 	addu	a0,a0,t4
     1544:	afa402ac 	sw	a0,684(sp)
     1548:	001620c0 	sll	a0,s6,0x3
     154c:	afa401e0 	sw	a0,480(sp)
     1550:	8fa401a8 	lw	a0,424(sp)
-    1554:	00000000 	nop
+    1554:	00000000 	sll	zero,zero,0x0
     1558:	00641821 	addu	v1,v1,a0
     155c:	afa301b4 	sw	v1,436(sp)
     1560:	8fa201ec 	lw	v0,492(sp)
@@ -1726,14 +1726,14 @@ int main () {
     187c:	8fa701c8 	lw	a3,456(sp)
     1880:	00cd6823 	subu	t5,a2,t5
     1884:	8fa60288 	lw	a2,648(sp)
-    1888:	00000000 	nop
+    1888:	00000000 	sll	zero,zero,0x0
     188c:	00e63821 	addu	a3,a3,a2
     1890:	afa701c0 	sw	a3,448(sp)
     1894:	8fa7028c 	lw	a3,652(sp)
     1898:	8fa601cc 	lw	a2,460(sp)
     189c:	00ec6023 	subu	t4,a3,t4
     18a0:	8fa70290 	lw	a3,656(sp)
-    18a4:	00000000 	nop
+    18a4:	00000000 	sll	zero,zero,0x0
     18a8:	00c73021 	addu	a2,a2,a3
     18ac:	afa601c4 	sw	a2,452(sp)
     18b0:	8fa60294 	lw	a2,660(sp)
@@ -1741,16 +1741,16 @@ int main () {
     18b8:	00cb3023 	subu	a2,a2,t3
     18bc:	afa601c8 	sw	a2,456(sp)
     18c0:	8fa60298 	lw	a2,664(sp)
-    18c4:	00000000 	nop
+    18c4:	00000000 	sll	zero,zero,0x0
     18c8:	00e63821 	addu	a3,a3,a2
     18cc:	afa701a0 	sw	a3,416(sp)
     18d0:	8fa7029c 	lw	a3,668(sp)
-    18d4:	00000000 	nop
+    18d4:	00000000 	sll	zero,zero,0x0
     18d8:	00ea3823 	subu	a3,a3,t2
     18dc:	afa701cc 	sw	a3,460(sp)
     18e0:	8fa601a8 	lw	a2,424(sp)
     18e4:	8fa702a0 	lw	a3,672(sp)
-    18e8:	00000000 	nop
+    18e8:	00000000 	sll	zero,zero,0x0
     18ec:	00c73021 	addu	a2,a2,a3
     18f0:	afa601a8 	sw	a2,424(sp)
     18f4:	8fa602a4 	lw	a2,676(sp)
@@ -1758,7 +1758,7 @@ int main () {
     18fc:	00c53023 	subu	a2,a2,a1
     1900:	afa601e0 	sw	a2,480(sp)
     1904:	8fa602a8 	lw	a2,680(sp)
-    1908:	00000000 	nop
+    1908:	00000000 	sll	zero,zero,0x0
     190c:	00e63821 	addu	a3,a3,a2
     1910:	afa701ac 	sw	a3,428(sp)
     1914:	8fa702ac 	lw	a3,684(sp)
@@ -1805,67 +1805,67 @@ int main () {
     19b8:	8fa6023c 	lw	a2,572(sp)
     19bc:	00f9c821 	addu	t9,a3,t9
     19c0:	8fa70238 	lw	a3,568(sp)
-    19c4:	00000000 	nop
+    19c4:	00000000 	sll	zero,zero,0x0
     19c8:	00c73023 	subu	a2,a2,a3
     19cc:	afa601fc 	sw	a2,508(sp)
     19d0:	8fa601d8 	lw	a2,472(sp)
     19d4:	8fa70204 	lw	a3,516(sp)
     19d8:	00d8c021 	addu	t8,a2,t8
     19dc:	8fa601b0 	lw	a2,432(sp)
-    19e0:	00000000 	nop
+    19e0:	00000000 	sll	zero,zero,0x0
     19e4:	00e63823 	subu	a3,a3,a2
     19e8:	afa70200 	sw	a3,512(sp)
     19ec:	8fa701b8 	lw	a3,440(sp)
     19f0:	8fa6020c 	lw	a2,524(sp)
     19f4:	00ef7821 	addu	t7,a3,t7
     19f8:	8fa70208 	lw	a3,520(sp)
-    19fc:	00000000 	nop
+    19fc:	00000000 	sll	zero,zero,0x0
     1a00:	00c73023 	subu	a2,a2,a3
     1a04:	afa60224 	sw	a2,548(sp)
     1a08:	8fa601dc 	lw	a2,476(sp)
     1a0c:	8fa70240 	lw	a3,576(sp)
     1a10:	00ce7021 	addu	t6,a2,t6
     1a14:	8fa60210 	lw	a2,528(sp)
-    1a18:	00000000 	nop
+    1a18:	00000000 	sll	zero,zero,0x0
     1a1c:	00e63823 	subu	a3,a3,a2
     1a20:	afa70228 	sw	a3,552(sp)
     1a24:	8fa701bc 	lw	a3,444(sp)
     1a28:	8fa60244 	lw	a2,580(sp)
     1a2c:	00ed6821 	addu	t5,a3,t5
     1a30:	8fa70214 	lw	a3,532(sp)
-    1a34:	00000000 	nop
+    1a34:	00000000 	sll	zero,zero,0x0
     1a38:	00c73023 	subu	a2,a2,a3
     1a3c:	afa6022c 	sw	a2,556(sp)
     1a40:	8fa601c0 	lw	a2,448(sp)
     1a44:	8fa70248 	lw	a3,584(sp)
     1a48:	00cc6021 	addu	t4,a2,t4
     1a4c:	8fa60218 	lw	a2,536(sp)
-    1a50:	00000000 	nop
+    1a50:	00000000 	sll	zero,zero,0x0
     1a54:	00e63823 	subu	a3,a3,a2
     1a58:	afa70230 	sw	a3,560(sp)
     1a5c:	8fa601c8 	lw	a2,456(sp)
     1a60:	8fa701c4 	lw	a3,452(sp)
-    1a64:	00000000 	nop
+    1a64:	00000000 	sll	zero,zero,0x0
     1a68:	00e63821 	addu	a3,a3,a2
     1a6c:	afa701f0 	sw	a3,496(sp)
     1a70:	8fa6021c 	lw	a2,540(sp)
     1a74:	8fa7024c 	lw	a3,588(sp)
-    1a78:	00000000 	nop
+    1a78:	00000000 	sll	zero,zero,0x0
     1a7c:	00e63823 	subu	a3,a3,a2
     1a80:	afa70234 	sw	a3,564(sp)
     1a84:	8fa601cc 	lw	a2,460(sp)
     1a88:	8fa701a0 	lw	a3,416(sp)
-    1a8c:	00000000 	nop
+    1a8c:	00000000 	sll	zero,zero,0x0
     1a90:	00e63821 	addu	a3,a3,a2
     1a94:	afa701a4 	sw	a3,420(sp)
     1a98:	8fa60250 	lw	a2,592(sp)
     1a9c:	8fa70254 	lw	a3,596(sp)
-    1aa0:	00000000 	nop
+    1aa0:	00000000 	sll	zero,zero,0x0
     1aa4:	00e63823 	subu	a3,a3,a2
     1aa8:	afa70238 	sw	a3,568(sp)
     1aac:	8fa601e0 	lw	a2,480(sp)
     1ab0:	8fa701a8 	lw	a3,424(sp)
-    1ab4:	00000000 	nop
+    1ab4:	00000000 	sll	zero,zero,0x0
     1ab8:	00e63821 	addu	a3,a3,a2
     1abc:	afa701e8 	sw	a3,488(sp)
     1ac0:	8fa70258 	lw	a3,600(sp)
@@ -2001,14 +2001,14 @@ int main () {
     1c54:	afa900bc 	sw	t1,188(sp)
     1c58:	afa400c0 	sw	a0,192(sp)
     1c5c:	afa800c4 	sw	t0,196(sp)
-    1c60:	00001821 	move	v1,zero
-    1c64:	00001021 	move	v0,zero
+    1c60:	00001821 	addu	v1,zero,zero
+    1c64:	00001021 	addu	v0,zero,zero
     1c68:	24e70000 	addiu	a3,a3,0
         }
     }
     
     for (i = 0; i < 50; i++){
-    1c6c:	240600c8 	li	a2,200
+    1c6c:	240600c8 	addiu	a2,zero,200
                             588, 591, 621, 432, 552, 710, 1047, 985, 1231, 1174,
                             1147, 1010, 1099, 1221, 1121, 887, 809, 830, 861, 1003,
                             1031, 1000, 949, 913, 1012, 813, 797, 747, 763, 662,
@@ -2117,7 +2117,7 @@ Disassembly of section .rodata:
   dc:	0000000c 	syscall
   e0:	0000000d 	break
   e4:	00000019 	multu	zero,zero
-  e8:	00000021 	move	zero,zero
+  e8:	00000021 	addu	zero,zero,zero
   ec:	0000000e 	0xe
   f0:	0000000c 	syscall
   f4:	00000024 	and	zero,zero,zero
@@ -2129,7 +2129,7 @@ Disassembly of section .rodata:
  10c:	00000003 	sra	zero,zero,0x0
  110:	0000002a 	slt	zero,zero,zero
  114:	0000000d 	break
- 118:	00000021 	move	zero,zero
+ 118:	00000021 	addu	zero,zero,zero
  11c:	00000019 	multu	zero,zero
  120:	00000023 	negu	zero,zero
  124:	00000019 	multu	zero,zero
@@ -2145,7 +2145,7 @@ Disassembly of section .rodata:
  14c:	0000001d 	0x1d
  150:	00000019 	multu	zero,zero
  154:	0000000b 	0xb
- 158:	00000021 	move	zero,zero
+ 158:	00000021 	addu	zero,zero,zero
  15c:	00000014 	0x14
  160:	00000015 	0x15
  164:	00000009 	jalr	zero,zero

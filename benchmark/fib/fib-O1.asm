@@ -13,7 +13,7 @@ int main ()
 {
    0:	27bdffe8 	addiu	sp,sp,-24
    4:	afbe0014 	sw	s8,20(sp)
-   8:	03a0f021 	move	s8,sp
+   8:	03a0f021 	addu	s8,sp,zero
   int n = 10; // 50
   int a = 0;
   int b = 1;
@@ -21,22 +21,22 @@ int main ()
   
   /*volatile*/ int sum[n];
    c:	27bdffd0 	addiu	sp,sp,-48
-  10:	03a02821 	move	a1,sp
-  14:	00001021 	move	v0,zero
+  10:	03a02821 	addu	a1,sp,zero
+  14:	00001021 	addu	v0,zero,zero
 {
   /* Notice that we need to declare our variables, and their type */
 
   int n = 10; // 50
   int a = 0;
   int b = 1;
-  18:	24030001 	li	v1,1
+  18:	24030001 	addiu	v1,zero,1
 int main ()
 {
   /* Notice that we need to declare our variables, and their type */
 
   int n = 10; // 50
   int a = 0;
-  1c:	00003021 	move	a2,zero
+  1c:	00003021 	addu	a2,zero,zero
   
   /*volatile*/ int sum[n];
   
@@ -44,13 +44,13 @@ int main ()
     
     for ( i = 0; i < n; i++)			
   20:	0800000c 	j	30 <main+0x30>
-  24:	24070028 	li	a3,40
-  28:	00603021 	move	a2,v1
+  24:	24070028 	addiu	a3,zero,40
+  28:	00603021 	addu	a2,v1,zero
     {							 
         sum[i] = a + b;
         a = b;
         b = sum[i];
-  2c:	00801821 	move	v1,a0
+  2c:	00801821 	addu	v1,a0,zero
   
   int main_result = 0;
     
@@ -80,8 +80,8 @@ int main ()
     for ( i = 0; i < n; i++)			
   3c:	1447fffa 	bne	v0,a3,28 <main+0x28>
   40:	acc40000 	sw	a0,0(a2)
-  44:	00001821 	move	v1,zero
-  48:	00001021 	move	v0,zero
+  44:	00001821 	addu	v1,zero,zero
+  48:	00001021 	addu	v0,zero,zero
  * an integer, and we return 0 to indicate successful completion of the 
  * program.
  */
@@ -96,7 +96,7 @@ int main ()
     }
     
     for (i = 0; i < 10; i++){
-  54:	24070028 	li	a3,40
+  54:	24070028 	addiu	a3,zero,40
  * an integer, and we return 0 to indicate successful completion of the 
  * program.
  */
@@ -113,7 +113,7 @@ int main ()
         main_result += (output[i] != sum[i]);
   60:	8cc60000 	lw	a2,0(a2)
   64:	8c840000 	lw	a0,0(a0)
-  68:	00000000 	nop
+  68:	00000000 	sll	zero,zero,0x0
   6c:	00c42026 	xor	a0,a2,a0
   70:	0004202b 	sltu	a0,zero,a0
   74:	24630004 	addiu	v1,v1,4
@@ -131,7 +131,7 @@ int main ()
     
   return main_result;
 }
-  80:	03c0e821 	move	sp,s8
+  80:	03c0e821 	addu	sp,s8,zero
   84:	8fbe0014 	lw	s8,20(sp)
   88:	03e00008 	jr	ra
   8c:	27bd0018 	addiu	sp,sp,24

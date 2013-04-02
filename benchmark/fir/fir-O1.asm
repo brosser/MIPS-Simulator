@@ -18,15 +18,15 @@ int main () {
     int ndata = 50;
     int ncoeff = 5;
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
-   4:	24020003 	li	v0,3
+   4:	24020003 	addiu	v0,zero,3
    8:	afa20000 	sw	v0,0(sp)
-   c:	24020005 	li	v0,5
+   c:	24020005 	addiu	v0,zero,5
   10:	afa20004 	sw	v0,4(sp)
-  14:	2402000f 	li	v0,15
+  14:	2402000f 	addiu	v0,zero,15
   18:	afa20008 	sw	v0,8(sp)
-  1c:	2402000c 	li	v0,12
+  1c:	2402000c 	addiu	v0,zero,12
   20:	afa2000c 	sw	v0,12(sp)
-  24:	24020007 	li	v0,7
+  24:	24020007 	addiu	v0,zero,7
   28:	afa20010 	sw	v0,16(sp)
     int data[54] = {   45, 1, 22, 53, 10, 12, 13, 25, 33, 14, 
   2c:	3c020000 	lui	v0,0x0
@@ -55,7 +55,7 @@ int main () {
     int y[50];
 
     for (n = 0; n < ndata; n++) {
-  7c:	00003021 	move	a2,zero
+  7c:	00003021 	addu	a2,zero,zero
                             588, 591, 621, 432, 552, 710, 1047, 985, 1231, 1174,
                             1147, 1010, 1099, 1221, 1121, 887, 809, 830, 861, 1003,
                             1031, 1000, 949, 913, 1012, 813, 797, 747, 763, 662,
@@ -63,7 +63,7 @@ int main () {
 
 int main () {
   80:	27a90014 	addiu	t1,sp,20
-  84:	01202821 	move	a1,t1
+  84:	01202821 	addu	a1,t1,zero
                         16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
                         25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
                         0, 0, 0, 0}; // Padded line for y[49]
@@ -71,13 +71,13 @@ int main () {
 
     for (n = 0; n < ndata; n++) {
   88:	08000031 	j	c4 <main+0xc4>
-  8c:	240a0032 	li	t2,50
+  8c:	240a0032 	addiu	t2,zero,50
         sum = 0;
         for (k = 0; k < ncoeff; k++) {
             sum = sum + coeff[k] * data[k+n];
   90:	8c6c0000 	lw	t4,0(v1)
   94:	8c4b0000 	lw	t3,0(v0)
-  98:	00000000 	nop
+  98:	00000000 	sll	zero,zero,0x0
   9c:	018b0018 	mult	t4,t3
   a0:	00005812 	mflo	t3
   a4:	008b2021 	addu	a0,a0,t3
@@ -106,20 +106,20 @@ int main () {
                             590, 664, 719, 937, 1043, 815, 453, 170, 44, 3}; 
 
 int main () {
-  c4:	00e04021 	move	t0,a3
-  c8:	03a01021 	move	v0,sp
+  c4:	00e04021 	addu	t0,a3,zero
+  c8:	03a01021 	addu	v0,sp,zero
   cc:	00061880 	sll	v1,a2,0x2
   d0:	01231821 	addu	v1,t1,v1
   d4:	08000024 	j	90 <main+0x90>
-  d8:	00002021 	move	a0,zero
+  d8:	00002021 	addu	a0,zero,zero
                         16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
                         25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
                         0, 0, 0, 0}; // Padded line for y[49]
     int y[50];
 
     for (n = 0; n < ndata; n++) {
-  dc:	00001821 	move	v1,zero
-  e0:	00001021 	move	v0,zero
+  dc:	00001821 	addu	v1,zero,zero
+  e0:	00001021 	addu	v0,zero,zero
                             588, 591, 621, 432, 552, 710, 1047, 985, 1231, 1174,
                             1147, 1010, 1099, 1221, 1121, 887, 809, 830, 861, 1003,
                             1031, 1000, 949, 913, 1012, 813, 797, 747, 763, 662,
@@ -135,7 +135,7 @@ int main () {
     }
     
     for (i = 0; i < 50; i++){
-  f0:	240600c8 	li	a2,200
+  f0:	240600c8 	addiu	a2,zero,200
                             588, 591, 621, 432, 552, 710, 1047, 985, 1231, 1174,
                             1147, 1010, 1099, 1221, 1121, 887, 809, 830, 861, 1003,
                             1031, 1000, 949, 913, 1012, 813, 797, 747, 763, 662,
@@ -152,7 +152,7 @@ int main () {
         main_result += (output[i] != y[i]);
   fc:	8ca50000 	lw	a1,0(a1)
  100:	8c840000 	lw	a0,0(a0)
- 104:	00000000 	nop
+ 104:	00000000 	sll	zero,zero,0x0
  108:	00a42026 	xor	a0,a1,a0
  10c:	0004202b 	sltu	a0,zero,a0
  110:	24630004 	addiu	v1,v1,4
@@ -236,7 +236,7 @@ Disassembly of section .rodata:
   dc:	0000000c 	syscall
   e0:	0000000d 	break
   e4:	00000019 	multu	zero,zero
-  e8:	00000021 	move	zero,zero
+  e8:	00000021 	addu	zero,zero,zero
   ec:	0000000e 	0xe
   f0:	0000000c 	syscall
   f4:	00000024 	and	zero,zero,zero
@@ -248,7 +248,7 @@ Disassembly of section .rodata:
  10c:	00000003 	sra	zero,zero,0x0
  110:	0000002a 	slt	zero,zero,zero
  114:	0000000d 	break
- 118:	00000021 	move	zero,zero
+ 118:	00000021 	addu	zero,zero,zero
  11c:	00000019 	multu	zero,zero
  120:	00000023 	negu	zero,zero
  124:	00000019 	multu	zero,zero
@@ -264,7 +264,7 @@ Disassembly of section .rodata:
  14c:	0000001d 	0x1d
  150:	00000019 	multu	zero,zero
  154:	0000000b 	0xb
- 158:	00000021 	move	zero,zero
+ 158:	00000021 	addu	zero,zero,zero
  15c:	00000014 	0x14
  160:	00000015 	0x15
  164:	00000009 	jalr	zero,zero

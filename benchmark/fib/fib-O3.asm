@@ -13,7 +13,7 @@ int main ()
 {
    0:	27bdffe8 	addiu	sp,sp,-24
    4:	afbe0014 	sw	s8,20(sp)
-   8:	03a0f021 	move	s8,sp
+   8:	03a0f021 	addu	s8,sp,zero
   int n = 10; // 50
   int a = 0;
   int b = 1;
@@ -27,8 +27,8 @@ int main ()
     
   return main_result;
 }
-  10:	03c0e821 	move	sp,s8
-  14:	00001021 	move	v0,zero
+  10:	03c0e821 	addu	sp,s8,zero
+  14:	00001021 	addu	v0,zero,zero
   18:	8fbe0014 	lw	s8,20(sp)
   1c:	03e00008 	jr	ra
   20:	27bd0018 	addiu	sp,sp,24

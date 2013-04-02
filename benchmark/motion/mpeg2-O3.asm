@@ -12,7 +12,7 @@ p1 = s1;
   
 while (n_tmp-- > 0)
    0:	18c00027 	blez	a2,a0 <read+0xa0>
-   4:	00c01021 	move	v0,a2
+   4:	00c01021 	addu	v0,a2,zero
  */
 
 
@@ -36,9 +36,9 @@ read (unsigned char *s1, const unsigned char *s2, int n)
   40:	00c83025 	or	a2,a2,t0
   44:	00e63024 	and	a2,a3,a2
   48:	10c0000e 	beqz	a2,84 <read+0x84>
-  4c:	00803821 	move	a3,a0
-  50:	00a04021 	move	t0,a1
-  54:	00003021 	move	a2,zero
+  4c:	00803821 	addu	a3,a0,zero
+  50:	00a04021 	addu	t0,a1,zero
+  54:	00003021 	addu	a2,zero,zero
   p2 = s2;
   n_tmp = n;
   
@@ -98,7 +98,7 @@ p2++;
 return n;
 }
   a0:	03e00008 	jr	ra
-  a4:	00000000 	nop
+  a4:	00000000 	sll	zero,zero,0x0
 
 000000a8 <Fill_Buffer>:
 void
@@ -107,7 +107,7 @@ Fill_Buffer ()
   int Buffer_Level;
   a8:	3c050000 	lui	a1,0x0
   ac:	3c070000 	lui	a3,0x0
-  b0:	00001021 	move	v0,zero
+  b0:	00001021 	addu	v0,zero,zero
   b4:	24a50000 	addiu	a1,a1,0
   b8:	24e70000 	addiu	a3,a3,0
   p2 = s2;
@@ -116,7 +116,7 @@ Fill_Buffer ()
 while (n_tmp-- > 0)
     {
       *p1 = *p2;
-  bc:	24060800 	li	a2,2048
+  bc:	24060800 	addiu	a2,zero,2048
   
 return n;
 }
@@ -154,16 +154,16 @@ while (n_tmp-- > 0)
   if (System_Stream_Flag)
     ld_Rdmax -= 2048;
   d8:	8f820000 	lw	v0,0(gp)
-  dc:	00000000 	nop
+  dc:	00000000 	sll	zero,zero,0x0
   e0:	10400005 	beqz	v0,f8 <Fill_Buffer+0x50>
   e4:	af850000 	sw	a1,0(gp)
 
   e8:	8f820000 	lw	v0,0(gp)
-  ec:	00000000 	nop
+  ec:	00000000 	sll	zero,zero,0x0
   f0:	2442f800 	addiu	v0,v0,-2048
   f4:	af820000 	sw	v0,0(gp)
   f8:	03e00008 	jr	ra
-  fc:	00000000 	nop
+  fc:	00000000 	sll	zero,zero,0x0
 
 00000100 <Show_Bits>:
 Show_Bits (N)
@@ -234,14 +234,14 @@ Show_Bits (N)
  138:	246307fc 	addiu	v1,v1,2044
  13c:	0043182b 	sltu	v1,v0,v1
  140:	14600039 	bnez	v1,228 <Flush_Buffer+0x118>
- 144:	24030018 	li	v1,24
+ 144:	24030018 	addiu	v1,zero,24
 
 /* advance by n bits */
 
 void
 Flush_Buffer (N)
      int N;
- 148:	24080018 	li	t0,24
+ 148:	24080018 	addiu	t0,zero,24
  14c:	01094023 	subu	t0,t0,t1
  150:	000878c2 	srl	t7,t0,0x3
  154:	00095823 	negu	t3,t1
@@ -273,14 +273,14 @@ Flush_Buffer (N)
 while (n_tmp-- > 0)
     {
       *p1 = *p2;
- 180:	24060800 	li	a2,2048
+ 180:	24060800 	addiu	a2,zero,2048
 
 /* advance by n bits */
 
 void
 Flush_Buffer (N)
      int N;
- 184:	00a06021 	move	t4,a1
+ 184:	00a06021 	addu	t4,a1,zero
   Buffer_Level = read (ld_Rdbfr, inRdbfr, 2048);
   ld_Rdptr = ld_Rdbfr;
 
@@ -316,8 +316,8 @@ Flush_Buffer (N)
 		Fill_Buffer ();
  1b0:	004a182b 	sltu	v1,v0,t2
  1b4:	1460fff6 	bnez	v1,190 <Flush_Buffer+0x80>
- 1b8:	00401821 	move	v1,v0
- 1bc:	00001021 	move	v0,zero
+ 1b8:	00401821 	addu	v1,v0,zero
+ 1bc:	00001021 	addu	v0,zero,zero
 
 /* advance by n bits */
 
@@ -358,7 +358,7 @@ while (n_tmp-- > 0)
  1dc:	af8c0000 	sw	t4,0(gp)
 
  1e0:	8f820000 	lw	v0,0(gp)
- 1e4:	01801821 	move	v1,t4
+ 1e4:	01801821 	addu	v1,t4,zero
  1e8:	2442f800 	addiu	v0,v0,-2048
  1ec:	af820000 	sw	v0,0(gp)
 	  do
@@ -419,7 +419,7 @@ Flush_Buffer (N)
     }
  21c:	af890000 	sw	t1,0(gp)
  220:	03e00008 	jr	ra
- 224:	00000000 	nop
+ 224:	00000000 	sll	zero,zero,0x0
 
 /* advance by n bits */
 
@@ -474,7 +474,7 @@ Flush_Buffer (N)
  270:	8f840000 	lw	a0,0(gp)
  274:	25c20001 	addiu	v0,t6,1
  278:	08000065 	j	194 <Flush_Buffer+0x84>
- 27c:	01801821 	move	v1,t4
+ 27c:	01801821 	addu	v1,t4,zero
 
 00000280 <Get_Bits1>:
 unsigned int
@@ -504,7 +504,7 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 28c:	24040001 	li	a0,1
+ 28c:	24040001 	addiu	a0,zero,1
 /* return next bit (could be made faster than Get_Bits(1)) */
 
 unsigned int
@@ -596,7 +596,7 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 2e4:	24040001 	li	a0,1
+ 2e4:	24040001 	addiu	a0,zero,1
 unsigned int
 Show_Bits (N)
      int N;
@@ -617,7 +617,7 @@ Show_Bits (N)
 
   if (Get_Bits1 ())
  2f8:	1600001f 	bnez	s0,378 <Get_motion_code+0xa0>
- 2fc:	00000000 	nop
+ 2fc:	00000000 	sll	zero,zero,0x0
 unsigned int
 Show_Bits (N)
      int N;
@@ -625,7 +625,7 @@ Show_Bits (N)
   return ld_Bfr >> (unsigned)(32-N)%32;
 }
  300:	8f900000 	lw	s0,0(gp)
- 304:	00000000 	nop
+ 304:	00000000 	sll	zero,zero,0x0
  308:	001085c2 	srl	s0,s0,0x17
     {
       return 0;
@@ -660,7 +660,7 @@ Show_Bits (N)
  334:	02028021 	addu	s0,s0,v0
  338:	82040001 	lb	a0,1(s0)
  33c:	0c000000 	jal	0 <read>
- 340:	00000000 	nop
+ 340:	00000000 	sll	zero,zero,0x0
  344:	8f910000 	lw	s1,0(gp)
 {
   unsigned int Val;
@@ -668,12 +668,12 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 348:	24040001 	li	a0,1
+ 348:	24040001 	addiu	a0,zero,1
  34c:	0c000000 	jal	0 <read>
  350:	00118fc2 	srl	s1,s1,0x1f
   return Get_Bits1 ()? -MVtab2[code][0] : MVtab2[code][0];
  354:	1220001c 	beqz	s1,3c8 <Get_motion_code+0xf0>
- 358:	00000000 	nop
+ 358:	00000000 	sll	zero,zero,0x0
  35c:	82020000 	lb	v0,0(s0)
 }
  360:	8fbf001c 	lw	ra,28(sp)
@@ -696,7 +696,7 @@ Show_Bits (N)
 
   if ((code -= 12) < 0)
     return 0;
- 37c:	00001021 	move	v0,zero
+ 37c:	00001021 	addu	v0,zero,zero
 
   Flush_Buffer (MVtab2[code][1]);
   return Get_Bits1 ()? -MVtab2[code][0] : MVtab2[code][0];
@@ -725,7 +725,7 @@ Show_Bits (N)
  3a0:	02028021 	addu	s0,s0,v0
  3a4:	82040001 	lb	a0,1(s0)
  3a8:	0c000000 	jal	0 <read>
- 3ac:	00000000 	nop
+ 3ac:	00000000 	sll	zero,zero,0x0
 unsigned int
 Show_Bits (N)
      int N;
@@ -739,12 +739,12 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 3b4:	24040001 	li	a0,1
+ 3b4:	24040001 	addiu	a0,zero,1
  3b8:	0c000000 	jal	0 <read>
  3bc:	00118fc2 	srl	s1,s1,0x1f
   return Get_Bits1 ()? -MVtab2[code][0] : MVtab2[code][0];
  3c0:	1620ffe6 	bnez	s1,35c <Get_motion_code+0x84>
- 3c4:	00000000 	nop
+ 3c4:	00000000 	sll	zero,zero,0x0
 }
  3c8:	8fbf001c 	lw	ra,28(sp)
 
@@ -789,12 +789,12 @@ motion_vector (PMV, dmvector, h_r_size, v_r_size, dmv, mvscale,
   /* ISO/IEC 13818-2 Table B-10 */
   motion_code = Get_motion_code ();
  400:	0c000000 	jal	0 <read>
- 404:	00808021 	move	s0,a0
+ 404:	00808021 	addu	s0,a0,zero
 
   motion_residual = (h_r_size != 0
 		     && motion_code != 0) ? Get_Bits (h_r_size) : 0;
  408:	14400011 	bnez	v0,450 <motion_vector.clone.1+0x60>
- 40c:	00000000 	nop
+ 40c:	00000000 	sll	zero,zero,0x0
 {
   int lim, vec;
 
@@ -813,7 +813,7 @@ motion_vector (PMV, dmvector, h_r_size, v_r_size, dmv, mvscale,
   motion_residual = (v_r_size != 0
 		     && motion_code != 0) ? Get_Bits (v_r_size) : 0;
  41c:	14400021 	bnez	v0,4a4 <motion_vector.clone.1+0xb4>
- 420:	00000000 	nop
+ 420:	00000000 	sll	zero,zero,0x0
 
   if (mvscale)
     PMV[1] >>= 1;		/* DIV 2 */
@@ -871,7 +871,7 @@ Show_Bits (N)
   Flush_Buffer (N);
 
  458:	0c000000 	jal	0 <read>
- 45c:	240400c8 	li	a0,200
+ 45c:	240400c8 	addiu	a0,zero,200
 
   r_size = r_size % 32;
   lim = 16 << r_size;
@@ -889,7 +889,7 @@ Show_Bits (N)
 
   if (motion_code > 0)
  468:	18400028 	blez	v0,50c <motion_vector.clone.1+0x11c>
- 46c:	00000000 	nop
+ 46c:	00000000 	sll	zero,zero,0x0
     {
       vec += ((motion_code - 1) << r_size) + motion_residual + 1;
  470:	26310001 	addiu	s1,s1,1
@@ -900,7 +900,7 @@ Show_Bits (N)
       if (vec >= lim)
  484:	28431000 	slti	v1,v0,4096
  488:	1460ffe2 	bnez	v1,414 <motion_vector.clone.1+0x24>
- 48c:	00000000 	nop
+ 48c:	00000000 	sll	zero,zero,0x0
 	vec -= lim + lim;
  490:	2442e000 	addiu	v0,v0,-8192
   if (dmv)
@@ -914,7 +914,7 @@ Show_Bits (N)
   motion_residual = (v_r_size != 0
 		     && motion_code != 0) ? Get_Bits (v_r_size) : 0;
  49c:	1040ffe1 	beqz	v0,424 <motion_vector.clone.1+0x34>
- 4a0:	00000000 	nop
+ 4a0:	00000000 	sll	zero,zero,0x0
  4a4:	afa20010 	sw	v0,16(sp)
 unsigned int
 Show_Bits (N)
@@ -930,7 +930,7 @@ Show_Bits (N)
   Flush_Buffer (N);
 
  4ac:	0c000000 	jal	0 <read>
- 4b0:	240400c8 	li	a0,200
+ 4b0:	240400c8 	addiu	a0,zero,200
 
   if (mvscale)
     PMV[1] >>= 1;		/* DIV 2 */
@@ -968,7 +968,7 @@ Show_Bits (N)
       if (vec >= lim)
  4e0:	28441000 	slti	a0,v0,4096
  4e4:	1480ffd3 	bnez	a0,434 <motion_vector.clone.1+0x44>
- 4e8:	00000000 	nop
+ 4e8:	00000000 	sll	zero,zero,0x0
 	vec -= lim + lim;
  4ec:	2442e000 	addiu	v0,v0,-8192
     PMV[1] <<= 1;
@@ -1020,7 +1020,7 @@ Show_Bits (N)
       if (vec < -lim)
  520:	2843f000 	slti	v1,v0,-4096
  524:	1060ffbb 	beqz	v1,414 <motion_vector.clone.1+0x24>
- 528:	00000000 	nop
+ 528:	00000000 	sll	zero,zero,0x0
 	vec += lim + lim;
  52c:	08000105 	j	414 <motion_vector.clone.1+0x24>
  530:	24422000 	addiu	v0,v0,8192
@@ -1038,7 +1038,7 @@ Show_Bits (N)
       if (vec < -lim)
  548:	2844f000 	slti	a0,v0,-4096
  54c:	1080ffb9 	beqz	a0,434 <motion_vector.clone.1+0x44>
- 550:	00000000 	nop
+ 550:	00000000 	sll	zero,zero,0x0
 	vec += lim + lim;
  554:	0800010d 	j	434 <motion_vector.clone.1+0x44>
  558:	24422000 	addiu	v0,v0,8192
@@ -1065,14 +1065,14 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 568:	24040001 	li	a0,1
+ 568:	24040001 	addiu	a0,zero,1
  56c:	afbf0014 	sw	ra,20(sp)
  570:	0c000000 	jal	0 <read>
  574:	001087c2 	srl	s0,s0,0x1f
 
   if (Get_Bits (1))
  578:	16000005 	bnez	s0,590 <Get_dmvector+0x34>
- 57c:	00001021 	move	v0,zero
+ 57c:	00001021 	addu	v0,zero,zero
     }
   else
     {
@@ -1096,7 +1096,7 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 594:	24040001 	li	a0,1
+ 594:	24040001 	addiu	a0,zero,1
  598:	0c000000 	jal	0 <read>
  59c:	001087c2 	srl	s0,s0,0x1f
 Get_dmvector ()
@@ -1106,7 +1106,7 @@ Get_dmvector ()
     {
       return Get_Bits (1) ? -1 : 1;
  5a0:	12000006 	beqz	s0,5bc <Get_dmvector+0x60>
- 5a4:	24020001 	li	v0,1
+ 5a4:	24020001 	addiu	v0,zero,1
     }
   else
     {
@@ -1120,7 +1120,7 @@ Get_dmvector ()
   if (Get_Bits (1))
     {
       return Get_Bits (1) ? -1 : 1;
- 5ac:	2402ffff 	li	v0,-1
+ 5ac:	2402ffff 	addiu	v0,zero,-1
     }
   else
     {
@@ -1164,8 +1164,8 @@ Get_dmvector ()
 {
  5ec:	afbf0034 	sw	ra,52(sp)
  5f0:	afb60030 	sw	s6,48(sp)
- 5f4:	00808021 	move	s0,a0
- 5f8:	00a08821 	move	s1,a1
+ 5f4:	00808021 	addu	s0,a0,zero
+ 5f8:	00a08821 	addu	s1,a1,zero
  5fc:	8fb40048 	lw	s4,72(sp)
  600:	8fb5004c 	lw	s5,76(sp)
  604:	8fb20050 	lw	s2,80(sp)
@@ -1176,13 +1176,13 @@ Get_dmvector ()
   /* ISO/IEC 13818-2 Table B-10 */
   motion_code = Get_motion_code ();
  608:	0c000000 	jal	0 <read>
- 60c:	00e09821 	move	s3,a3
+ 60c:	00e09821 	addu	s3,a3,zero
 
   motion_residual = (h_r_size != 0
  610:	8fa60014 	lw	a2,20(sp)
- 614:	00000000 	nop
+ 614:	00000000 	sll	zero,zero,0x0
  618:	10c00003 	beqz	a2,628 <motion_vector+0x5c>
- 61c:	00000000 	nop
+ 61c:	00000000 	sll	zero,zero,0x0
 		     && motion_code != 0) ? Get_Bits (h_r_size) : 0;
  620:	1440008e 	bnez	v0,85c <motion_vector+0x290>
  624:	00061823 	negu	v1,a2
@@ -1192,7 +1192,7 @@ Get_dmvector ()
   motion_code = Get_motion_code ();
 
   motion_residual = (h_r_size != 0
- 628:	0000b021 	move	s6,zero
+ 628:	0000b021 	addu	s6,zero,zero
      int r_size, motion_code, motion_residual;
      int full_pel_vector;	/* MPEG-1 (ISO/IEC 11172-1) support */
 {
@@ -1203,9 +1203,9 @@ Get_dmvector ()
  630:	2463001f 	addiu	v1,v1,31
  634:	00c33024 	and	a2,a2,v1
  638:	04c00084 	bltz	a2,84c <motion_vector+0x280>
- 63c:	2403ffe0 	li	v1,-32
+ 63c:	2403ffe0 	addiu	v1,zero,-32
   lim = 16 << r_size;
- 640:	24040010 	li	a0,16
+ 640:	24040010 	addiu	a0,zero,16
   vec = full_pel_vector ? (*pred >> 1) : (*pred);
  644:	1240005c 	beqz	s2,7b8 <motion_vector+0x1ec>
  648:	00c42004 	sllv	a0,a0,a2
@@ -1224,7 +1224,7 @@ Get_dmvector ()
       if (vec >= lim)
  66c:	0064102a 	slt	v0,v1,a0
  670:	10400064 	beqz	v0,804 <motion_vector+0x238>
- 674:	00000000 	nop
+ 674:	00000000 	sll	zero,zero,0x0
     {
       vec -= ((-motion_code - 1) << r_size) + motion_residual + 1;
       if (vec < -lim)
@@ -1232,7 +1232,7 @@ Get_dmvector ()
     }
   *pred = full_pel_vector ? (vec << 1) : vec;
  678:	12400002 	beqz	s2,684 <motion_vector+0xb8>
- 67c:	00000000 	nop
+ 67c:	00000000 	sll	zero,zero,0x0
  680:	00031840 	sll	v1,v1,0x1
 		     && motion_code != 0) ? Get_Bits (h_r_size) : 0;
 
@@ -1248,10 +1248,10 @@ Get_dmvector ()
   /* vertical component */
   motion_code = Get_motion_code ();
  68c:	0c000000 	jal	0 <read>
- 690:	00000000 	nop
+ 690:	00000000 	sll	zero,zero,0x0
   motion_residual = (v_r_size != 0
  694:	12600003 	beqz	s3,6a4 <motion_vector+0xd8>
- 698:	0000b021 	move	s6,zero
+ 698:	0000b021 	addu	s6,zero,zero
 		     && motion_code != 0) ? Get_Bits (v_r_size) : 0;
  69c:	14400078 	bnez	v0,880 <motion_vector+0x2b4>
  6a0:	00131823 	negu	v1,s3
@@ -1270,7 +1270,7 @@ Get_dmvector ()
  6b4:	0660003b 	bltz	s3,7a4 <motion_vector+0x1d8>
  6b8:	26040004 	addiu	a0,s0,4
   lim = 16 << r_size;
- 6bc:	24050010 	li	a1,16
+ 6bc:	24050010 	addiu	a1,zero,16
   vec = full_pel_vector ? (*pred >> 1) : (*pred);
  6c0:	1240001f 	beqz	s2,740 <motion_vector+0x174>
  6c4:	02652804 	sllv	a1,a1,s3
@@ -1289,7 +1289,7 @@ Get_dmvector ()
       if (vec >= lim)
  6e8:	0065102a 	slt	v0,v1,a1
  6ec:	10400042 	beqz	v0,7f8 <motion_vector+0x22c>
- 6f0:	00000000 	nop
+ 6f0:	00000000 	sll	zero,zero,0x0
     {
       vec -= ((-motion_code - 1) << r_size) + motion_residual + 1;
       if (vec < -lim)
@@ -1297,7 +1297,7 @@ Get_dmvector ()
     }
   *pred = full_pel_vector ? (vec << 1) : vec;
  6f4:	12400002 	beqz	s2,700 <motion_vector+0x134>
- 6f8:	00000000 	nop
+ 6f8:	00000000 	sll	zero,zero,0x0
  6fc:	00031840 	sll	v1,v1,0x1
     PMV[1] >>= 1;		/* DIV 2 */
 
@@ -1313,7 +1313,7 @@ Get_dmvector ()
 
   if (dmv)
  710:	1680003f 	bnez	s4,810 <motion_vector+0x244>
- 714:	24040001 	li	a0,1
+ 714:	24040001 	addiu	a0,zero,1
     dmvector[1] = Get_dmvector ();
 
 }
@@ -1337,7 +1337,7 @@ Get_dmvector ()
 
   if (motion_code > 0)
  744:	1c40ffe3 	bgtz	v0,6d4 <motion_vector+0x108>
- 748:	00000000 	nop
+ 748:	00000000 	sll	zero,zero,0x0
     {
       vec += ((motion_code - 1) << r_size) + motion_residual + 1;
       if (vec >= lim)
@@ -1356,7 +1356,7 @@ Get_dmvector ()
  764:	00051023 	negu	v0,a1
  768:	0062102a 	slt	v0,v1,v0
  76c:	1040ffe1 	beqz	v0,6f4 <motion_vector+0x128>
- 770:	00000000 	nop
+ 770:	00000000 	sll	zero,zero,0x0
 	vec += lim + lim;
  774:	00052840 	sll	a1,a1,0x1
  778:	080001bd 	j	6f4 <motion_vector+0x128>
@@ -1368,7 +1368,7 @@ Get_dmvector ()
   if (mvscale)
     PMV[1] >>= 1;		/* DIV 2 */
  780:	8e030004 	lw	v1,4(s0)
- 784:	00000000 	nop
+ 784:	00000000 	sll	zero,zero,0x0
  788:	00031843 	sra	v1,v1,0x1
  78c:	ae030004 	sw	v1,4(s0)
      int r_size, motion_code, motion_residual;
@@ -1383,7 +1383,7 @@ Get_dmvector ()
  79c:	0661ffc7 	bgez	s3,6bc <motion_vector+0xf0>
  7a0:	26040004 	addiu	a0,s0,4
  7a4:	2673ffff 	addiu	s3,s3,-1
- 7a8:	2403ffe0 	li	v1,-32
+ 7a8:	2403ffe0 	addiu	v1,zero,-32
  7ac:	02639825 	or	s3,s3,v1
  7b0:	080001af 	j	6bc <motion_vector+0xf0>
  7b4:	26730001 	addiu	s3,s3,1
@@ -1393,7 +1393,7 @@ Get_dmvector ()
 
   if (motion_code > 0)
  7bc:	1c40ffa6 	bgtz	v0,658 <motion_vector+0x8c>
- 7c0:	00000000 	nop
+ 7c0:	00000000 	sll	zero,zero,0x0
     {
       vec += ((motion_code - 1) << r_size) + motion_residual + 1;
       if (vec >= lim)
@@ -1412,7 +1412,7 @@ Get_dmvector ()
  7dc:	00041023 	negu	v0,a0
  7e0:	0062102a 	slt	v0,v1,v0
  7e4:	1040ffa4 	beqz	v0,678 <motion_vector+0xac>
- 7e8:	00000000 	nop
+ 7e8:	00000000 	sll	zero,zero,0x0
 	vec += lim + lim;
  7ec:	00042040 	sll	a0,a0,0x1
  7f0:	0800019e 	j	678 <motion_vector+0xac>
@@ -1451,7 +1451,7 @@ Get_dmvector ()
 
   if (Get_Bits (1))
  81c:	16000029 	bnez	s0,8c4 <motion_vector+0x2f8>
- 820:	00001021 	move	v0,zero
+ 820:	00001021 	addu	v0,zero,zero
 
   if (mvscale)
     PMV[1] <<= 1;
@@ -1473,11 +1473,11 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 830:	24040001 	li	a0,1
+ 830:	24040001 	addiu	a0,zero,1
  834:	0c000000 	jal	0 <read>
  838:	0016b7c2 	srl	s6,s6,0x1f
  83c:	16c00018 	bnez	s6,8a0 <motion_vector+0x2d4>
- 840:	00001021 	move	v0,zero
+ 840:	00001021 	addu	v0,zero,zero
 
   decode_motion_vector (&PMV[0], h_r_size, motion_code, motion_residual,
 			full_pel_vector);
@@ -1509,7 +1509,7 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 860:	00c02021 	move	a0,a2
+ 860:	00c02021 	addu	a0,a2,zero
  864:	afa20010 	sw	v0,16(sp)
  868:	0c000000 	jal	0 <read>
  86c:	0076b006 	srlv	s6,s6,v1
@@ -1536,7 +1536,7 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 884:	02602021 	move	a0,s3
+ 884:	02602021 	addu	a0,s3,zero
  888:	afa20010 	sw	v0,16(sp)
  88c:	0c000000 	jal	0 <read>
  890:	0076b006 	srlv	s6,s6,v1
@@ -1548,7 +1548,7 @@ Show_Bits (N)
   motion_residual = (v_r_size != 0
  894:	8fa20010 	lw	v0,16(sp)
  898:	080001a9 	j	6a4 <motion_vector+0xd8>
- 89c:	00000000 	nop
+ 89c:	00000000 	sll	zero,zero,0x0
 unsigned int
 Show_Bits (N)
      int N;
@@ -1562,14 +1562,14 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 8a4:	24040001 	li	a0,1
+ 8a4:	24040001 	addiu	a0,zero,1
  8a8:	0c000000 	jal	0 <read>
  8ac:	0016b7c2 	srl	s6,s6,0x1f
     {
       return Get_Bits (1) ? -1 : 1;
  8b0:	12c0000f 	beqz	s6,8f0 <motion_vector+0x324>
- 8b4:	24020001 	li	v0,1
- 8b8:	2402ffff 	li	v0,-1
+ 8b4:	24020001 	addiu	v0,zero,1
+ 8b8:	2402ffff 	addiu	v0,zero,-1
 
   decode_motion_vector (&PMV[0], h_r_size, motion_code, motion_residual,
 			full_pel_vector);
@@ -1591,12 +1591,12 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 8c8:	24040001 	li	a0,1
+ 8c8:	24040001 	addiu	a0,zero,1
  8cc:	0c000000 	jal	0 <read>
  8d0:	001087c2 	srl	s0,s0,0x1f
  8d4:	12000004 	beqz	s0,8e8 <motion_vector+0x31c>
- 8d8:	24020001 	li	v0,1
- 8dc:	2402ffff 	li	v0,-1
+ 8d8:	24020001 	addiu	v0,zero,1
+ 8dc:	2402ffff 	addiu	v0,zero,-1
 
   if (mvscale)
     PMV[1] <<= 1;
@@ -1626,7 +1626,7 @@ Show_Bits (N)
  8f8:	27bdffb0 	addiu	sp,sp,-80
   if (motion_vector_count == 1)
  8fc:	8fa30060 	lw	v1,96(sp)
- 900:	24020001 	li	v0,1
+ 900:	24020001 	addiu	v0,zero,1
 		mvscale)
      int PMV[2][2][2];
      int dmvector[2];
@@ -1640,11 +1640,11 @@ Show_Bits (N)
  914:	afb20030 	sw	s2,48(sp)
  918:	afb1002c 	sw	s1,44(sp)
  91c:	afb00028 	sw	s0,40(sp)
- 920:	00808821 	move	s1,a0
+ 920:	00808821 	addu	s1,a0,zero
  924:	afbf004c 	sw	ra,76(sp)
  928:	afbe0048 	sw	s8,72(sp)
  92c:	afb70044 	sw	s7,68(sp)
- 930:	00a0b021 	move	s6,a1
+ 930:	00a0b021 	addu	s6,a1,zero
  934:	8fa40064 	lw	a0,100(sp)
  938:	8fb50068 	lw	s5,104(sp)
  93c:	8fb4006c 	lw	s4,108(sp)
@@ -1652,7 +1652,7 @@ Show_Bits (N)
  944:	8fb30074 	lw	s3,116(sp)
   if (motion_vector_count == 1)
  948:	1062002d 	beq	v1,v0,a00 <motion_vectors+0x108>
- 94c:	00e08021 	move	s0,a3
+ 94c:	00e08021 	addu	s0,a3,zero
  950:	afa60020 	sw	a2,32(sp)
 unsigned int
 Show_Bits (N)
@@ -1668,7 +1668,7 @@ Show_Bits (N)
   Flush_Buffer (N);
 
  958:	0c000000 	jal	0 <read>
- 95c:	24040001 	li	a0,1
+ 95c:	24040001 	addiu	a0,zero,1
       PMV[1][s][0] = PMV[0][s][0];
       PMV[1][s][1] = PMV[0][s][1];
     }
@@ -1697,9 +1697,9 @@ Show_Bits (N)
  974:	aefe0000 	sw	s8,0(s7)
 
       motion_vector (PMV[0][s], dmvector, h_r_size, v_r_size, dmv, mvscale,
- 978:	02c02821 	move	a1,s6
- 97c:	02a03021 	move	a2,s5
- 980:	02803821 	move	a3,s4
+ 978:	02c02821 	addu	a1,s6,zero
+ 97c:	02a03021 	addu	a2,s5,zero
+ 980:	02803821 	addu	a3,s4,zero
  984:	02242021 	addu	a0,s1,a0
  988:	afb20010 	sw	s2,16(sp)
  98c:	afb30014 	sw	s3,20(sp)
@@ -1712,7 +1712,7 @@ Show_Bits (N)
   Val = Show_Bits (N);
   Flush_Buffer (N);
 
- 99c:	24040001 	li	a0,1
+ 99c:	24040001 	addiu	a0,zero,1
  9a0:	0c000000 	jal	0 <read>
  9a4:	26100002 	addiu	s0,s0,2
 unsigned int
@@ -1740,9 +1740,9 @@ Show_Bits (N)
  9b4:	02242021 	addu	a0,s1,a0
  9b8:	afb20060 	sw	s2,96(sp)
  9bc:	afb30064 	sw	s3,100(sp)
- 9c0:	02c02821 	move	a1,s6
- 9c4:	02a03021 	move	a2,s5
- 9c8:	02803821 	move	a3,s4
+ 9c0:	02c02821 	addu	a1,s6,zero
+ 9c4:	02a03021 	addu	a2,s5,zero
+ 9c8:	02803821 	addu	a3,s4,zero
  9cc:	afa00068 	sw	zero,104(sp)
 		     0);
     }
@@ -1772,9 +1772,9 @@ Show_Bits (N)
     {
       if (mv_format == MV_FIELD && !dmv)
  a00:	14800003 	bnez	a0,a10 <motion_vectors+0x118>
- a04:	00000000 	nop
+ a04:	00000000 	sll	zero,zero,0x0
  a08:	1240001d 	beqz	s2,a80 <motion_vectors+0x188>
- a0c:	24040001 	li	a0,1
+ a0c:	24040001 	addiu	a0,zero,1
 	{
 	  motion_vertical_field_select[1][s] =
 	    motion_vertical_field_select[0][s] = Get_Bits (1);
@@ -1783,10 +1783,10 @@ Show_Bits (N)
       motion_vector (PMV[0][s], dmvector, h_r_size, v_r_size, dmv, mvscale,
  a10:	001080c0 	sll	s0,s0,0x3
  a14:	0230b821 	addu	s7,s1,s0
- a18:	02e02021 	move	a0,s7
- a1c:	02c02821 	move	a1,s6
- a20:	02a03021 	move	a2,s5
- a24:	02803821 	move	a3,s4
+ a18:	02e02021 	addu	a0,s7,zero
+ a1c:	02c02821 	addu	a1,s6,zero
+ a20:	02a03021 	addu	a2,s5,zero
+ a24:	02803821 	addu	a3,s4,zero
  a28:	afb20010 	sw	s2,16(sp)
  a2c:	afb30014 	sw	s3,20(sp)
  a30:	afa00018 	sw	zero,24(sp)
@@ -1881,7 +1881,7 @@ Initialize_Buffer ()
  ab4:	af820000 	sw	v0,0(gp)
   ld_Bfr = 68157440;
   Flush_Buffer (0);		/* fills valid data into bfr */
- ab8:	00002021 	move	a0,zero
+ ab8:	00002021 	addu	a0,zero,zero
 Initialize_Buffer ()
 {
   ld_Incnt = 0;
@@ -1916,15 +1916,15 @@ main ()
 	      motion_vertical_field_select[i][j] = inmvfs[i][j];
 	      for (k = 0; k < 2; k++)
 		PMV[i][j][k] = inPMV[i][j][k];
- ad0:	2403002d 	li	v1,45
+ ad0:	2403002d 	addiu	v1,zero,45
  ad4:	afa30018 	sw	v1,24(sp)
- ad8:	240300cf 	li	v1,207
+ ad8:	240300cf 	addiu	v1,zero,207
  adc:	afa3001c 	sw	v1,28(sp)
- ae0:	24030046 	li	v1,70
+ ae0:	24030046 	addiu	v1,zero,70
  ae4:	afa30020 	sw	v1,32(sp)
- ae8:	24030029 	li	v1,41
+ ae8:	24030029 	addiu	v1,zero,41
  aec:	afa30024 	sw	v1,36(sp)
- af0:	24030004 	li	v1,4
+ af0:	24030004 	addiu	v1,zero,4
  af4:	afa30028 	sw	v1,40(sp)
 
 void
@@ -1939,7 +1939,7 @@ Initialize_Buffer ()
 	      motion_vertical_field_select[i][j] = inmvfs[i][j];
 	      for (k = 0; k < 2; k++)
 		PMV[i][j][k] = inPMV[i][j][k];
- afc:	240300b4 	li	v1,180
+ afc:	240300b4 	addiu	v1,zero,180
 
 void
 Initialize_Buffer ()
@@ -1954,7 +1954,7 @@ Initialize_Buffer ()
 	      for (k = 0; k < 2; k++)
 		PMV[i][j][k] = inPMV[i][j][k];
  b04:	afa3002c 	sw	v1,44(sp)
- b08:	24030078 	li	v1,120
+ b08:	24030078 	addiu	v1,zero,120
  b0c:	afa30030 	sw	v1,48(sp)
 {
   ld_Incnt = 0;
@@ -1962,14 +1962,14 @@ Initialize_Buffer ()
   ld_Rdmax = ld_Rdptr;
   ld_Bfr = 68157440;
   Flush_Buffer (0);		/* fills valid data into bfr */
- b10:	00002021 	move	a0,zero
+ b10:	00002021 	addu	a0,zero,zero
 	  dmvector[i] = 0;
 	  for (j = 0; j < 2; j++)
 	    {
 	      motion_vertical_field_select[i][j] = inmvfs[i][j];
 	      for (k = 0; k < 2; k++)
 		PMV[i][j][k] = inPMV[i][j][k];
- b14:	240300d8 	li	v1,216
+ b14:	240300d8 	addiu	v1,zero,216
 
 void
 Initialize_Buffer ()
@@ -2042,7 +2042,7 @@ main ()
   Flush_Buffer (N);
 
  b50:	0c000000 	jal	0 <read>
- b54:	24040001 	li	a0,1
+ b54:	24040001 	addiu	a0,zero,1
 	    motion_vertical_field_select[0][s] = Get_Bits (1);
 	}
 
@@ -2146,7 +2146,7 @@ Disassembly of section .rodata:
       4c:	78c840a0 	0x78c840a0
       50:	c8e040a8 	lwc2	$0,16552(a3)
       54:	28785068 	slti	t8,v1,20584
-      58:	10000878 	b	223c <MVtab2+0x11bc>
+      58:	10000878 	beqz	zero,223c <MVtab2+0x11bc>
       5c:	90885090 	lbu	t0,20624(a0)
       60:	481880d8 	0x481880d8
       64:	d8185010 	0xd8185010
@@ -2201,7 +2201,7 @@ Disassembly of section .rodata:
      128:	18a8a8f8 	0x18a8a8f8
      12c:	f0886020 	0xf0886020
      130:	38b80888 	xori	t8,a1,0x888
-     134:	1000b028 	b	fffec1d8 <MVtab2+0xfffeb158>
+     134:	1000b028 	beqz	zero,fffec1d8 <MVtab2+0xfffeb158>
      138:	002068a0 	0x2068a0
      13c:	3858e838 	xori	t8,v0,0xe838
      140:	00f0b8e8 	0xf0b8e8
@@ -2812,7 +2812,7 @@ Disassembly of section .rodata:
      aac:	b098c0f8 	0xb098c0f8
      ab0:	e0f04808 	swc0	$16,18440(a3)
      ab4:	70e8c878 	0x70e8c878
-     ab8:	10002830 	b	ab7c <MVtab2+0x9afc>
+     ab8:	10002830 	beqz	zero,ab7c <MVtab2+0x9afc>
      abc:	40482088 	0x40482088
      ac0:	689810f0 	0x689810f0
      ac4:	b8500098 	swr	s0,152(v0)
@@ -3143,7 +3143,7 @@ Disassembly of section .rodata:
      fd8:	98c000e0 	lwr	zero,224(a2)
      fdc:	3088a860 	andi	t0,a0,0xa860
      fe0:	10980000 	beq	a0,t8,fe4 <out_ld_Rdptr+0x7e4>
-     fe4:	00000000 	nop
+     fe4:	00000000 	sll	zero,zero,0x0
 	...
      ff0:	0000e0e3 	0xe0e3
      ff4:	e3e30000 	swc0	$3,0(ra)
@@ -3176,9 +3176,9 @@ Disassembly of section .rodata:
     104c:	000000d8 	0xd8
 
 00001050 <outmvfs>:
-    1050:	00000000 	nop
+    1050:	00000000 	sll	zero,zero,0x0
     1054:	000000c8 	0xc8
-    1058:	00000000 	nop
+    1058:	00000000 	sll	zero,zero,0x0
     105c:	000000f0 	0xf0
 
 00001060 <MVtab0>:
