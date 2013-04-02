@@ -28,7 +28,7 @@ int main ()
   24:	afca0004 	sw	t2,4(s8)
   int i;
   
-  /*volatile*/ int sum[n];
+  volatile int sum[n];
   28:	8fca0010 	lw	t2,16(s8)
   2c:	00000000 	sll	zero,zero,0x0
   30:	254cffff 	addiu	t4,t2,-1
@@ -93,7 +93,7 @@ int main ()
   fc:	00000000 	sll	zero,zero,0x0
  100:	afc20004 	sw	v0,4(s8)
   
-  /*volatile*/ int sum[n];
+  volatile int sum[n];
   
   int main_result = 0;
     

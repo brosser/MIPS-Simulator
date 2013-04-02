@@ -27,7 +27,7 @@ int main ()
   int b = 1;
   int i;
   
-  /*volatile*/ int sum[n];
+  volatile int sum[n];
   
   int main_result = 0;
     
