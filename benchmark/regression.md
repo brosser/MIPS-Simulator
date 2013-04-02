@@ -12,5 +12,7 @@
 | mips		|||||
 | motion	|||||
 | sha   ||||
-| fib		| P | P | P | F |
-| fir		| P |   |   |   |
+| fib		| P | P | P | P |
+| fir		| F | F | F | P |
+| bubble  	| P | P | P | P |
+| factorial  	| F | P | P | P |
