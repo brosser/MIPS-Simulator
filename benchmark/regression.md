@@ -12,7 +12,6 @@
 | mips		|||||
 | motion	|||||
 | sha   ||||
-
 | fib		| P | P | P | P |
 | fir		| F | F | F | P |
 | bubble  	| P | P | P | P |
