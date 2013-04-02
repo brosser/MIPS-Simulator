@@ -10,7 +10,7 @@ class PipelineSimulator(object):
                     'sra':'>>', 'srav':'>>',
                     'div':'/',   'mul':'*',  'xor':'^',  'xori':'^'  }
                   
-    def __init__(self,instrCollection,dataMem):
+    def __init__(self,instrCollection,dataMem,mainAddr):
         self.instrCount = 0
         self.nopCount = 0
         self.cycles = 0
@@ -22,6 +22,17 @@ class PipelineSimulator(object):
         self.changedRegsVal = []
         self.accessedMem = []
         self.accessedDataMem = []
+
+        self.UseBranchDelaySlot = True
+        self.dataMemoryWords = 0xfffc
+        self.instructionMemoryWords = 0xfffc
+
+        self.memStageFwd = 0
+        self.wbStageFwd = 0
+        self.memStageDest = None
+        self.wbStageDest = None
+        self.memStageWBE = 0
+        self.wbStageWBE = 0
         
         #self.pipeline is a list<PipelineStage>
         #with the mapping of:
@@ -47,18 +58,19 @@ class PipelineSimulator(object):
         self.hi = 0
 
         # Stack Initalization
-        self.registers["$r29"] = 0x0000
+        self.registers["$r29"] = 0x1000
         
         # set up the main memory construct, a list index starting at 0
         # and continuing to 0xffc
-        self.mainmemory = dict([(x*4, 0) for x in range(0xffc/4)])
+        # self.mainmemory = dict([(x*4, 0) for x in range(0xffc/4)])
 
-        self.dataMemory = dict([(x*4, 0) for x in range(0xffc/4)])
-        self.instructionMemory = dict([(x*4, 0) for x in range(0xffc/4)])
+        self.dataMemory = dict([(x*4, 0) for x in range(self.dataMemoryWords/4)])
+        self.instructionMemory = dict([(x*4, 0) for x in range(self.instructionMemoryWords/4)])
 
         # programCounter to state where in the instruction collection
-        # we are. to find correct spot in mainmemory add 0x100  
-        self.programCounter = 0x0
+        # we are. to find correct spot in instruction memory  
+        #self.programCounter = 0x0
+        self.programCounter = mainAddr
 
         # the list of instruction objects passed into the simulator,
         # most likely created by parsing text 
@@ -119,8 +131,10 @@ class PipelineSimulator(object):
     def checkDone(self):
         """ Check if we are done and set __done variable """
         self.__done = False
-        if self.pipeline[1].instr.op == 'jr' and self.pipeline[1].instr.s1 == "$r31":
+        if self.pipeline[1].instr.op == 'END':
             self.__done = True
+        #if self.pipeline[1].instr.op == 'jr' and self.pipeline[1].instr.s1 == "$r31":
+        #    self.__done = True
     
     def run(self):
         """ Run the simulator, call step until we are done """
@@ -151,8 +165,8 @@ class PipelineSimulator(object):
         print "###################### PC = " + str(hex(self.programCounter)) + " ######################"
         #self.printStageCollection() 
         self.printPipeline()
-        self.printRegFile()
-        self.printDataMemory()
+        #self.printRegFile()
+        #self.printDataMemory()
         print "\n<Hazard List> : " , self.hazardList
         print "<Updated Registers> : ", self.changedRegs, " = ", self.changedRegsVal, "\n"
 
@@ -161,14 +175,14 @@ class PipelineSimulator(object):
         #self.printStageCollection()     
         self.printRegFile()
         self.printPipeline()   
+        self.printInstructionMemory()
+        self.printDataMemory()
+
         print "\n<Final Program Counter> : ", hex(self.programCounter)
         print "<Cycles> : " , float(self.cycles)
         print "<Instructions Executed> : " , float(self.instrCount)
         print "<NOPs> : " , float(self.nopCount)
         print "<CPI> : " , float(self.cycles) / (float(self.instrCount)-float(self.nopCount)) , "\n"
-        #print "<Hazard List> : " , self.hazardList
-        self.printInstructionMemory()
-        self.printDataMemory()
 
     def printInstructionMemory(self):
         print "<Accessed Instructions>"
@@ -236,7 +250,7 @@ class FetchStage(PipelineStage):
             self.instr = self.simulator.instructionMemory[self.simulator.programCounter]
             if(self.instr and self.instr.op != "nop" and self.instr.op != None):
                 self.simulator.instrCount += 1
-            if(self.instr.op is None):
+            if(self.instr.op is 'nop'):
                 self.simulator.instrCount += 1
                 self.simulator.nopCount += 1
         else:
@@ -264,7 +278,7 @@ class ReadStage(PipelineStage):
                 #    self.instr.source2RegValue = int(self.instr.immed,16)
                 #else :
                 self.instr.source2RegValue = int(self.instr.immed)
-            if(self.instr.op in ['srl', 'sll']):
+            if(self.instr.op in ['srl', 'sll', 'sra', 'sla']):
                 #if "0x" in self.instr.s2:
                 #    self.instr.source2RegValue = int(self.instr.s2,16)
                 #else :
@@ -272,7 +286,8 @@ class ReadStage(PipelineStage):
 
             elif self.instr.s2:
                 self.instr.source2RegValue = self.simulator.registers[self.instr.s2]
-        
+
+        # Update PC
         if self.instr.op == 'jal':
             # Save return address in $ra = $r31
             self.simulator.registers["$r31"] = self.simulator.programCounter
@@ -280,13 +295,35 @@ class ReadStage(PipelineStage):
             targetval = int(self.instr.target)
             self.simulator.programCounter = targetval
             # Set the o  instructions currently in the pipeline to a Nop
-            self.simulator.pipeline[0] = FetchStage(Nop, self)      
+            # Branch Delay Slot or Stall
+            if(self.simulator.UseBranchDelaySlot == False):
+                self.simulator.pipeline[0] = FetchStage(Nop, self)      
 
         if self.instr.op == 'j':
             targetval = int(self.instr.target)
             self.simulator.programCounter = targetval
             # Set the o  instructions currently in the pipeline to a Nop
-            self.simulator.pipeline[0] = FetchStage(Nop, self)
+            # Branch Delay Slot or Stall
+            if(self.simulator.UseBranchDelaySlot == False):
+                self.simulator.pipeline[0] = FetchStage(Nop, self)
+       
+        if self.instr.op == 'jr':
+            self.simulator.programCounter = self.instr.source1RegValue
+            # Branch Delay Slot or Stall
+            if(self.simulator.UseBranchDelaySlot == False):
+                self.simulator.pipeline[0] = FetchStage(Nop, self)
+            #if(self.simulator.UseBranchDelaySlot == True):
+                #self.simulator.pipeline[2] = ReadStage(Nop, self)
+
+        elif self.instr.op == 'jalr':
+            # Save return address in $ra = $r31
+            self.simulator.registers["$r31"] = self.simulator.programCounter
+            self.simulator.programCounter = self.instr.source1RegValue
+            # Branch Delay slot or  or Stall
+            if(self.simulator.UseBranchDelaySlot == False):
+                self.simulator.pipeline[0] = FetchStage(Nop, self)
+            #if(self.simulator.UseBranchDelaySlot == True):
+                #self.simulator.pipeline[2] = ReadStage(Nop, self)  
 
     def __str__(self):
         return 'Read from Register'
@@ -297,6 +334,19 @@ class ExecStage(PipelineStage):
         Execute the instruction according to its mapping of 
         assembly operation to Python operation
         """
+
+        # Handle dataforwarding from Memory Stage
+        if(self.simulator.memStageWBE and (self.simulator.memStageDest == self.instr.s1)):
+            self.instr.source1RegValue = self.simulator.memStageFwd
+        elif(self.simulator.memStageWBE and (self.simulator.memStageDest == self.instr.s2)):
+            self.instr.source2RegValue = self.simulator.memStageFwd
+
+        # Data forwarding from Writeback Stage
+        elif(self.simulator.wbStageWBE and (self.simulator.wbStageDest == self.instr.s1)):
+            self.instr.source1RegValue = self.simulator.wbStageFwd
+        elif(self.simulator.wbStageWBE and (self.simulator.wbStageDest == self.instr.s2)):
+            self.instr.source2RegValue = self.simulator.wbStageFwd
+
         if self.instr is not Nop and self.instr.aluop:
             #if we have a hazard in either s1 or s2, 
             # grab the value from the other instructions
@@ -320,10 +370,12 @@ class ExecStage(PipelineStage):
             if self.instr.regWrite :
                 self.simulator.hazardList.append(self.instr.dest)    
 
+            if self.instr.op == 'END':
+                return
             #calculate the offset of the lw and sw instructions
             if  self.instr.op in ['lw', 'lh', 'lb', 'lhu', 'lbu']:
                 self.instr.source1RegValue = self.instr.source1RegValue + int(self.instr.immed)
-            elif  self.instr.op in ['sw', 'sh', 'sh', 'shu', 'sbu']:
+            elif  self.instr.op in ['sw', 'sh', 'sb', 'shu', 'sbu']:
                 self.instr.source2RegValue = self.instr.source2RegValue + int(self.instr.immed)
             elif (self.instr.op == 'li'):
                 self.instr.result = int(self.instr.immed, 10)
@@ -334,18 +386,10 @@ class ExecStage(PipelineStage):
                 self.instr.result = int(self.instr.immed, 10)  
                 #print "LUI RESULTS!", self.instr.result
 
-            elif self.instr.op == 'jr':
-                self.simulator.programCounter = self.instr.source1RegValue
+            elif self.instr.op == 'abs':
+                self.simulator.result = abs(self.instr.source1RegValue)
                 # Set the other instructions currently in the pipeline to a Nop
-                self.simulator.pipeline[0] = FetchStage(Nop, self)
-                self.simulator.pipeline[2] = ReadStage(Nop, self)
-            elif self.instr.op == 'jalr':
-                # Save return address in $ra = $r31
-                self.simulator.registers["$r31"] = self.simulator.programCounter
-                self.simulator.programCounter = self.instr.source1RegValue
-                # Set the o  instructions currently in the pipeline to a Nop
-                self.simulator.pipeline[0] = FetchStage(Nop, self)
-                self.simulator.pipeline[2] = ReadStage(Nop, self)  
+                # self.simulator.pipeline[0] = FetchStage(Nop, self)
             elif self.instr.op == 'bne':
                 if int(self.instr.source1RegValue) != int(self.instr.source2RegValue):
                     self.doBranch()
@@ -367,9 +411,9 @@ class ExecStage(PipelineStage):
             elif (self.instr.op == "addu"):
                 self.instr.result = int(self.instr.source1RegValue) + int(self.instr.source2RegValue)
             elif (self.instr.op == "mflo"):
-                self.instr.result = self.lo
+                self.instr.result = self.simulator.lo
             elif (self.instr.op == "mfhi"):
-                self.instr.result = self.hi
+                self.instr.result = self.simulator.hi
             elif (self.instr.op in ["mult", "multu"]):
                     a = int(self.instr.source1RegValue)
                     b = int(self.instr.source2RegValue)
@@ -421,7 +465,8 @@ class ExecStage(PipelineStage):
         self.simulator.programCounter = targetval + 4
         # Set the other instructions currently in the pipeline to Nops
         self.simulator.pipeline[0] = FetchStage(Nop, self)
-        self.simulator.pipeline[2] = ReadStage(Nop, self)
+        if(self.simulator.UseBranchDelaySlot == False):
+            self.simulator.pipeline[2] = ReadStage(Nop, self)
         self.simulator.branched = True
                 
     def __str__(self):
@@ -433,6 +478,11 @@ class DataStage(PipelineStage):
         If we have to write to main memory, write it first
         and then read from main memory second
         """
+
+        # Data forwarding from memory stage
+        self.simulator.memStageWBE = self.instr.regWrite
+        self.simulator.memStageFwd = self.instr.result
+        self.simulator.memStageDest = self.instr.dest
 
         if(self.instr.op == "li"):
             self.simulator.dataMemory[self.instr.source1RegValue] = self.instr.immed
@@ -470,6 +520,11 @@ class WriteStage(PipelineStage):
         """
         Write to the register file
         """
+        # Data forwarding from wb stage
+        self.simulator.wbStageWBE = self.instr.regWrite
+        self.simulator.wbStageFwd = self.instr.result
+        self.simulator.wbStageDest = self.instr.dest
+
         self.simulator.changedRegs = []
         self.simulator.changedRegsVal = []
         if self.instr.regWrite:
