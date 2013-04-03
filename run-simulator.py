@@ -12,6 +12,13 @@ import sys
 
 def main() :
 
+	# Open the input file
+	try:
+		inputFile = open(sys.argv[1], "r");
+	except IOError:
+		print "There was an error opening the input file."
+		sys.exit()
+
 	defaultSimASMFile = "simasm.sim"
 	defaultDataMemFile = "datamem.sim"
 	defaultPreProcLogFile = "preprocLog.sim"
@@ -31,6 +38,7 @@ def main() :
 	eparser.convertToSimASM(sys.argv[1], defaultSimASMFile, defaultDataMemFile)
 	lines = eparser.getLines()
 	datamem = eparser.getDataMem() 
+	mainAddr = eparser.getMainAddr()
 
 	# Parse in lines and check for dependencies
 	PPLogFileName = sys.argv[3] if len(sys.argv) > 3 else defaultPreProcLogFile
@@ -40,7 +48,7 @@ def main() :
 	# Get line by line
 	lines = iparser.parseLines(lines)
 
-	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem)
+	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr)
 	
 	# Set logfile
 	simulationFileName = sys.argv[2] if len(sys.argv) > 2 else defaultSimRunFile

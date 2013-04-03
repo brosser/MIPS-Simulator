@@ -12,6 +12,7 @@ class elf32parser:
 	def __init__(self):	
 		self.doSimConv = True
 		self.parseDataMem = False
+		self.foundMain = False
 		self.inputFile = None
 		self.instructions = []
 		self.dataMemory = dict([(x*4, 0) for x in range(0xffc/4)])
@@ -50,10 +51,14 @@ class elf32parser:
 
 			# Find assembly instructions (ignoring whitespace lines, C-code and assembler directives)
 			# Normal instruction
-
 			if('.rodata:' in line):
 				self.parseDataMem = True
 			if(self.parseDataMem == False):
+				if(self.foundMain == False):
+					match = re.match('([0-9a-fA-F]+)' + '\s+' + '<main>:', line)
+					if match:
+						self.mainAddr = int(match.group(1),16)
+						self.foundMain = True
 				match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + '(\w+)' + '\s+' + '((\w+)(,\s*-?\w+)*)(\([a-zA-Z0-9_]+\))*', line)
 				if match:
 					operands = [x.strip() for x in match.group(4).split(',')]
@@ -107,3 +112,6 @@ class elf32parser:
 
 	def getLines(self):
 		return self.lines
+
+	def getMainAddr(self):
+		return self.mainAddr
