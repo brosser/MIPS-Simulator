@@ -111,7 +111,7 @@ int rt;
 int rd;
 int shamt;
 int funct;
-short address;
+int /*short*/ address;
 int tgtadr;
 
 while (1){
@@ -238,13 +238,13 @@ while (1){
 		        break;
 
 		    case ANDI:
-		        reg[rt] = reg[rs] & (unsigned short) address;
+		        reg[rt] = reg[rs] & (unsigned int /*short*/) address;
 		        break;
 		    case ORI:
-		        reg[rt] = reg[rs] | (unsigned short) address;
+		        reg[rt] = reg[rs] | (unsigned int /*short*/) address;
 		        break;
 		    case XORI:
-		        reg[rt] = reg[rs] ^ (unsigned short) address;
+		        reg[rt] = reg[rs] ^ (unsigned int /*short*/) address;
 		        break;
 
 		    case LW:
@@ -276,7 +276,7 @@ while (1){
 		        break;
 
 		    case SLTIU:
- 		        reg[rt] = (unsigned int) reg[rs] < (unsigned short) address;
+ 		        reg[rt] = (unsigned int) reg[rs] < (unsigned int /*short*/) address;
 		        break;
 
 		    default:
