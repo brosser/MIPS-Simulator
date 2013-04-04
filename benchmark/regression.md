@@ -15,7 +15,7 @@
 | sha_driver   | P | P | P | F
 | **Toy** |||||
 | fib		| P | P | P | P |
-| fir		| F | F | F | P |
+| fir		| P | P | P | P |
 | median | F | F | F | F |
 | bubble  	| P | P | P | P |
-| factorial  	| F | P | P | P |
+| factorial  	| P | P | P | P |
