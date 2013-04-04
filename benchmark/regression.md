@@ -11,7 +11,6 @@
 | jpeg		|||||
 | mips		|||||
 | motion	|||||
-| sha   ||||
 | sha_driver   | P | P | P | F
 | fib		| P | P | P | P |
 | fir		| F | F | F | P |
