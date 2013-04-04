@@ -48,8 +48,10 @@ def main() :
 	# Get line by line
 	lines = iparser.parseLines(lines)
 
-	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr)
+	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout)
 	
+	print "> Starting Simulation"
+
 	# Set logfile
 	simulationFileName = sys.argv[2] if len(sys.argv) > 2 else defaultSimRunFile
 	simulationFile = open(simulationFileName, 'w')
@@ -60,6 +62,8 @@ def main() :
 
 	# Print out line by line
 	#print lines
+
+	oldstdout.write("\n> Simulation Completed")
 
 	simulationFile.close()
 	PPLogFile.close()

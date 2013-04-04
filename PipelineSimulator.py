@@ -1,6 +1,7 @@
 from Instruction import *
 import collections 
 import ast
+import sys
 
 class PipelineSimulator(object): 
     alu_operations = {  'add':'+',  'addi':'+',  'sub':'-',  'subi':'-',
@@ -10,7 +11,9 @@ class PipelineSimulator(object):
                     'sra':'>>', 'srav':'>>',
                     'div':'/',   'mul':'*',  'xor':'^',  'xori':'^'  }
                   
-    def __init__(self,instrCollection,dataMem,mainAddr):
+    def __init__(self,instrCollection,dataMem,mainAddr,oldstdout):
+        sys.stdout = oldstdout
+        self.oldstdout = oldstdout
         self.instrCount = 0
         self.nopCount = 0
         self.cycles = 0
@@ -48,6 +51,7 @@ class PipelineSimulator(object):
         #   2 = Read
         #   3 = Execute 
         #   4 = Data Access
+        print "> Initializing Pipeline"
         self.pipeline = [None for x in range(0,5)]
 
         self.pipeline[0] = FetchStage(Nop, self)
@@ -56,6 +60,7 @@ class PipelineSimulator(object):
         self.pipeline[3] = ExecStage(Nop, self)
         self.pipeline[4] = DataStage(Nop, self)
         
+        print "> Initializing Registers"
         # ex: {'$r0' : 0, '$r1' : 0 ... '$r31' : 0 }
         self.registers = dict([("$r%s" % x, 0) for x in range(32)]) 
 
@@ -65,26 +70,28 @@ class PipelineSimulator(object):
         self.hi = 0
 
         # Stack Initalization
-        self.registers["$r29"] = 0x1000
-        
-        # set up the main memory construct, a list index starting at 0
-        # and continuing to 0xffc
-        # self.mainmemory = dict([(x*4, 0) for x in range(0xffc/4)])
-
-        self.dataMemory = dict([(x*4, 0) for x in range(self.dataMemoryWords/4)])
-        self.instructionMemory = dict([(x*4, 0) for x in range(self.instructionMemoryWords/4)])
+        print "> Initializing Stack and Main pointers"
+        self.registers["$r29"] = 0xfffc
 
         # programCounter to state where in the instruction collection
         # we are. to find correct spot in instruction memory  
         #self.programCounter = 0x0
         self.programCounter = mainAddr
 
+        # set up the main memory construct, a list index starting at 0
+        # and continuing to 0xffc
+        # self.mainmemory = dict([(x*4, 0) for x in range(0xffc/4)])
+
+        print "> Initializing Data Memory"
+        self.dataMemory = dict([(x, 0) for x in range(self.dataMemoryWords)])
+        # Input data memory
+        self.dataMemIn = dataMem
+        print "> Initializing Instruction Memory"
+        self.instructionMemory = dict([(x, 0) for x in range(self.instructionMemoryWords)])
+
         # the list of instruction objects passed into the simulator,
         # most likely created by parsing text 
         self.instrCollection = instrCollection
-
-        # Input data memory
-        self.dataMemIn = dataMem
        
         # populate main memory with our text of the instructions
         # starting at 0x1000
@@ -197,9 +204,12 @@ class PipelineSimulator(object):
     ### DEBUGGING INFORMATION PRINTING ### 
     def debug_lite(self):
         print "###################### PC = " + str(hex(self.programCounter)) + " ######################"
+        print "Cycles: ", self.cycles
+        self.oldstdout.write("\r{}".format("Cycles: [" + str(self.cycles) + "]"))
+        self.oldstdout.flush()
         #self.printStageCollection() 
         self.printPipeline()
-        self.printRegFile()
+        self.printRegFile(True)
         #self.printDataMemory()
         print "\n<Hazard List> : " , self.hazardList
         print "<Updated Registers> : ", self.changedRegs, " = ", self.changedRegsVal, "\n"
@@ -207,7 +217,7 @@ class PipelineSimulator(object):
     def debug(self):
         print "\n######################## Debug ###########################"
         #self.printStageCollection()     
-        self.printRegFile()
+        self.printRegFile(False)
         self.printPipeline()   
         self.printInstructionMemory()
         self.printDataMemory()
@@ -242,23 +252,45 @@ class PipelineSimulator(object):
         print repr(self.pipeline[4]) 
         print repr(self.pipeline[1]) 
 
-    def printRegFile(self):
+    def printRegFile(self, compact):
         #"""
         print "\n<Register File>"
+        regstr = ""
         for k,v in sorted(self.registers.iteritems()):
             if len(k) == 3:
-                print k, ":" , v
+                if(not compact):
+                    print k, ":" , v
+                regstr +=  str(k) + ":  " + str(v) + "\t"
+        if(compact):
+            print regstr  
+        regstr = ""
         for k,v in sorted(self.registers.iteritems()):
             if len(k) == 4 and k[2] == '1':
-                print k, ":" , v
+                if(not compact):
+                    print k, ":" , v
+                regstr +=  str(k) + ": " + str(v) + "\t"
+        if(compact):
+            print regstr  
+        regstr = ""
         for k,v in sorted(self.registers.iteritems()):
             if len(k) == 4 and k[2] == '2':
-                print k, ":" , v
+                if(not compact):
+                    print k, ":" , v
+                regstr +=  str(k) + ": " + str(v) + "\t"
+        if(compact):
+            print regstr  
+        regstr = ""
         for k,v in sorted(self.registers.iteritems()):
             if len(k) == 4 and k[2] == '3': 
-                print k, ":" , v
-        print "hi: ", self.hi
-        print "lo: ", self.lo
+                if(not compact):
+                    print k, ":" , v
+                regstr +=  str(k) + ": " + str(v) + "\t"
+        #print "hi: ", self.hi
+        regstr +=  "hi: " + str(self.hi) + "\t"
+        #print "lo: ", self.lo
+        regstr +=  "lo: " + str(self.lo) 
+        if(compact):
+            print regstr
                 
     def printStageCollection(self):
         print "\n<Instruction Collection>"
@@ -304,7 +336,7 @@ class ReadStage(PipelineStage):
         """
 
         if(self.instr.regRead):
-            self.instr.source1RegValue = self.simulator.registers[self.instr.s1]
+            self.instr.source1RegValue = int(self.simulator.registers[self.instr.s1])
             if (self.instr.immed and
                 #these instructions require special treatment
                 (self.instr.op not in ['lw', 'sw', 'bne', 'beq', 'beqz', 'bnez', 'blez', 
@@ -314,14 +346,14 @@ class ReadStage(PipelineStage):
                 #    self.instr.source2RegValue = int(self.instr.immed,16)
                 #else :
                 self.instr.source2RegValue = int(self.instr.immed)
-            if(self.instr.op in ['srl', 'sll', 'sra', 'sla']):
+            if(self.instr.op in ['srlv', 'sllv', 'srav']):
                 #if "0x" in self.instr.s2:
                 #    self.instr.source2RegValue = int(self.instr.s2,16)
                 #else :
                 self.instr.source2RegValue = int(self.instr.s2)
 
             elif self.instr.s2:
-                self.instr.source2RegValue = self.simulator.registers[self.instr.s2]
+                self.instr.source2RegValue = int(self.simulator.registers[self.instr.s2])
 
         # Update PC
         if self.instr.op == 'jal':
@@ -499,7 +531,12 @@ class ExecStage(PipelineStage):
                     b = int(self.instr.source2RegValue)
                     z = a * b
                     self.simulator.lo = z & 0x0000FFFF
-                    self.simulator.hi = z & 0x0000FFFF
+                    self.simulator.hi = z & 0xFFFF0000
+            elif (self.instr.op in ["div", "divu"]):
+                    a = int(self.instr.source1RegValue)
+                    b = int(self.instr.source2RegValue)
+                    self.simulator.lo = (a / b) & 0x0000FFFF
+                    self.simulator.hi = (a % b) & 0xFFFF0000
             elif self.instr.op == 'bne':
                 if int(self.instr.source1RegValue) != int(self.instr.source2RegValue):
                     self.doBranch()
@@ -524,6 +561,12 @@ class ExecStage(PipelineStage):
             elif self.instr.op == 'blez':
                 if int(self.instr.source1RegValue) <= 0:
                     self.doBranch()
+            elif self.instr.op in ['sll']:
+                
+                self.instr.result = int(self.instr.source1RegValue) << int(self.instr.shamt)
+                print "DOING SLL : ", int(self.instr.source1RegValue), "<<", int(self.instr.shamt), "=", self.instr.result
+            elif self.instr.op in ['srl', 'sra']:
+                self.instr.result = int(self.instr.source1RegValue) >> int(self.instr.shamt)
             else :         
                 if (self.instr.op in ['slt', 'sltu']):
                     a = int(self.instr.source1RegValue)
@@ -547,6 +590,9 @@ class ExecStage(PipelineStage):
                     self.instr.result = eval("%d %s %d" % (int((self.instr.source1RegValue)), 
                             self.simulator.alu_operations[self.instr.op], 
                             int((self.instr.source2RegValue))))
+
+        if(self.instr.result is not None):
+            self.instr.result = self.instr.result & 0xFFFFFFFF
 
     def doBranch(self):
         # Set the program counter to the target address
@@ -600,14 +646,40 @@ class DataStage(PipelineStage):
         
         if self.instr.writeMem:
             writeValue = 0
+
+            addr = self.instr.source2RegValue
+            byteoffset = addr%4
+            addr -= byteoffset        
+
+            # Write byte
             if(self.instr.op in ["sb", "sbu"]):
                 writeValue = (self.instr.source1RegValue & 0x000000FF)
+
+                # Make room for new byte to be written
+                mask = (0x00FFFFFF>>byteoffset)
+                self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
+                mask = writeValue<<(3-byteoffset)
+                self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
+
+            # Write halfowrd
             elif(self.instr.op in ["sh", "shu"]):
                 writeValue = (self.instr.source1RegValue & 0x0000FFFF)
+                addr = self.instr.source2RegValue
+
+                # Make room for new byte to be written
+                mask = (0x0000FFFF>>byteoffset)
+                self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
+                mask = writeValue<<(3-byteoffset)
+                self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
+
+            # Write word
             else:
-                writeValue = self.instr.source1RegValue
-            self.simulator.dataMemory[self.instr.source2RegValue] = self.instr.source1RegValue
-            self.simulator.accessedDataMem.append(self.instr.source2RegValue)
+                writeValue = self.instr.source1RegValue    
+
+            self.simulator.dataMemory[addr] = writeValue
+
+            self.simulator.accessedDataMem.append(addr)
+
             checked = []
             for e in self.simulator.accessedDataMem:
                 if e not in checked:
@@ -615,7 +687,55 @@ class DataStage(PipelineStage):
             self.simulator.accessedDataMem = checked
 
         elif self.instr.readMem:
-            self.instr.result = self.simulator.dataMemory[self.instr.source1RegValue]
+            #if(self.instr.source1RegValue%4 != 0):
+                #self.instr.source1RegValue = (self.instr.source1RegValue/4)*4
+
+
+            
+            addr = self.instr.source1RegValue
+            if(addr is None):
+                print "No s1: ", self.instr
+            byteoffset = addr%4
+            addr -= byteoffset   
+
+            # Read Word
+            if self.instr.op == 'lw':
+                if(addr in self.simulator.dataMemory):
+                    self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
+                else:
+                    print "MEMORY ACCESS ERROR", self.instr
+                    print "ON ADDRESS ", hex(addr)
+                    self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
+
+            # Read Half-word
+            elif self.instr.op in ['lh', 'lhu']:
+                # Read corresponding half-word in word
+                byteoffset = addr%4
+                addr -= byteoffset
+                if(addr in self.simulator.dataMemory):
+                    self.instr.result = self.simulator.dataMemory[addr] & (0xFFFF0000>>(byteoffset*2))
+                else:
+                    print "MEMORY ACCESS ERROR", self.instr
+                    self.instr.result = self.simulator.dataMemory[addr] & (0xFFFF0000>>(byteoffset*2))
+
+            # Read single byte
+            elif self.instr.op in ['lb', 'lbu']:
+                # Read corresponding byte in word
+                byteoffset = addr%4
+                addr -= byteoffset
+                if(addr in self.simulator.dataMemory):
+                    self.instr.result = self.simulator.dataMemory[addr] & (0xFF000000>>(byteoffset*2))
+                else:
+                    print "MEMORY ACCESS ERROR", self.instr
+                    self.instr.result = self.simulator.dataMemory[addr] & (0xFF000000>>(byteoffset*2))
+            
+            #if(addr in self.simulator.dataMemory):
+            #    self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
+            #else:
+            #    print "MEMORY ACCESS ERROR", self.instr
+            #    self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
+            #    #sys.exit()
+            #    #self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
 
     def __str__(self):
         return 'Main Memory'
@@ -637,10 +757,10 @@ class WriteStage(PipelineStage):
                 #Edit: don't raise exception just ignore it
                 #raise Exception('Cannot assign to register $r0')    
                 pass
-            if (self.instr.op == "mult"):
+            if (self.instr.op in ['mult', 'multu', 'div', 'divu']):
                 pass
             elif self.instr.dest:
-                self.simulator.registers[self.instr.dest] = self.instr.result
+                self.simulator.registers[self.instr.dest] = self.instr.result & 0xFFFFFFFF
                 self.simulator.changedRegs.append(self.instr.dest)
                 self.simulator.changedRegsVal.append(self.instr.result)
                 

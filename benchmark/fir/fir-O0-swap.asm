@@ -11,150 +11,168 @@ Disassembly of section .text:
                         0, 0, 0, 0}; // Padded line for y[49]
 
 int main () {
-   0:	27bdff20 	addiu	sp,sp,-224
+   0:	27bdff00 	addiu	sp,sp,-256
+   4:	afbe00fc 	sw	s8,252(sp)
+   8:	03a0f021 	addu	s8,sp,zero
+
+    int i;
+    int main_result = 0;
+   c:	afc00004 	sw	zero,4(s8)
+
     int k, n;
     int sum;
     
     int ndata = 50;
+  10:	24020032 	addiu	v0,zero,50
+  14:	afc20014 	sw	v0,20(s8)
     int ncoeff = 5;
+  18:	24020005 	addiu	v0,zero,5
+  1c:	afc20018 	sw	v0,24(s8)
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
-   4:	24020003 	addiu	v0,zero,3
-   8:	afa20000 	sw	v0,0(sp)
-   c:	24020005 	addiu	v0,zero,5
-  10:	afa20004 	sw	v0,4(sp)
-  14:	2402000f 	addiu	v0,zero,15
-  18:	afa20008 	sw	v0,8(sp)
-  1c:	2402000c 	addiu	v0,zero,12
-  20:	afa2000c 	sw	v0,12(sp)
-  24:	24020007 	addiu	v0,zero,7
-  28:	afa20010 	sw	v0,16(sp)
-  2c:	27a70014 	addiu	a3,sp,20
+  20:	24020003 	addiu	v0,zero,3
+  24:	afc2001c 	sw	v0,28(s8)
+  28:	24020005 	addiu	v0,zero,5
+  2c:	afc20020 	sw	v0,32(s8)
+  30:	2402000f 	addiu	v0,zero,15
+  34:	afc20024 	sw	v0,36(s8)
+  38:	2402000c 	addiu	v0,zero,12
+  3c:	afc20028 	sw	v0,40(s8)
+  40:	24020007 	addiu	v0,zero,7
+  44:	afc2002c 	sw	v0,44(s8)
         int y[50];
 
     for (n = 0; n < ndata; n++) {
-  30:	00003021 	addu	a2,zero,zero
-                        33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
-                        16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
-                        25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
-                        0, 0, 0, 0}; // Padded line for y[49]
-
-int main () {
-  34:	3c0a0000 	lui	t2,0x0
-  38:	254a0000 	addiu	t2,t2,0
-  3c:	00e02821 	addu	a1,a3,zero
-    int ndata = 50;
-    int ncoeff = 5;
-    int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
-        int y[50];
-
-    for (n = 0; n < ndata; n++) {
-  40:	0800001f 	j	7c <main+0x7c>
-  44:	24090032 	addiu	t1,zero,50
-        sum = 0;
-        for (k = 0; k < ncoeff; k++) {
-            sum = sum + coeff[k] * data[k+n];
-  48:	8c6c0000 	lw	t4,0(v1)
-  4c:	8c4b0000 	lw	t3,0(v0)
+  48:	afc0000c 	sw	zero,12(s8)
+  4c:	08000043 	j	10c <main+0x10c>
   50:	00000000 	sll	zero,zero,0x0
-  54:	018b0018 	mult	t4,t3
-  58:	00005812 	mflo	t3
-  5c:	008b2021 	addu	a0,a0,t3
-  60:	24420004 	addiu	v0,v0,4
+        sum = 0;
+  54:	afc00010 	sw	zero,16(s8)
+        for (k = 0; k < ncoeff; k++) {
+  58:	afc00008 	sw	zero,8(s8)
+  5c:	08000039 	j	e4 <main+0xe4>
+  60:	00000000 	sll	zero,zero,0x0
+            sum = sum + coeff[k] * data[k+n];
+  64:	8fc20008 	lw	v0,8(s8)
+  68:	00000000 	sll	zero,zero,0x0
+  6c:	00021080 	sll	v0,v0,0x2
+  70:	03c21021 	addu	v0,s8,v0
+  74:	8c44001c 	lw	a0,28(v0)
+  78:	8fc30008 	lw	v1,8(s8)
+  7c:	8fc2000c 	lw	v0,12(s8)
+  80:	00000000 	sll	zero,zero,0x0
+  84:	00621821 	addu	v1,v1,v0
+  88:	3c020000 	lui	v0,0x0
+  8c:	00031880 	sll	v1,v1,0x2
+  90:	24420000 	addiu	v0,v0,0
+  94:	00621021 	addu	v0,v1,v0
+  98:	8c420000 	lw	v0,0(v0)
+  9c:	00000000 	sll	zero,zero,0x0
+  a0:	00820018 	mult	a0,v0
+  a4:	00001812 	mflo	v1
+  a8:	8fc20010 	lw	v0,16(s8)
+  ac:	00000000 	sll	zero,zero,0x0
+  b0:	00431021 	addu	v0,v0,v1
+  b4:	afc20010 	sw	v0,16(s8)
+            y[n] = sum;           
+  b8:	8fc2000c 	lw	v0,12(s8)
+  bc:	00000000 	sll	zero,zero,0x0
+  c0:	00021080 	sll	v0,v0,0x2
+  c4:	03c21021 	addu	v0,s8,v0
+  c8:	8fc30010 	lw	v1,16(s8)
+  cc:	00000000 	sll	zero,zero,0x0
+  d0:	ac430030 	sw	v1,48(v0)
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
         int y[50];
 
     for (n = 0; n < ndata; n++) {
         sum = 0;
         for (k = 0; k < ncoeff; k++) {
-  64:	1445fff8 	bne	v0,a1,48 <main+0x48>
-  68:	24630004 	addiu	v1,v1,4
-  6c:	ad040000 	sw	a0,0(t0)
+  d4:	8fc20008 	lw	v0,8(s8)
+  d8:	00000000 	sll	zero,zero,0x0
+  dc:	24420001 	addiu	v0,v0,1
+  e0:	afc20008 	sw	v0,8(s8)
+  e4:	8fc30008 	lw	v1,8(s8)
+  e8:	8fc20018 	lw	v0,24(s8)
+  ec:	00000000 	sll	zero,zero,0x0
+  f0:	0062102a 	slt	v0,v1,v0
+  f4:	1440ffdb 	bnez	v0,64 <main+0x64>
+  f8:	00000000 	sll	zero,zero,0x0
     int ndata = 50;
     int ncoeff = 5;
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
         int y[50];
 
     for (n = 0; n < ndata; n++) {
-  70:	24c60001 	addiu	a2,a2,1
-  74:	10c90007 	beq	a2,t1,94 <main+0x94>
-  78:	24e70004 	addiu	a3,a3,4
-                        33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
-                        16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
-                        25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
-                        0, 0, 0, 0}; // Padded line for y[49]
-
-int main () {
-  7c:	00e04021 	addu	t0,a3,zero
-  80:	03a01021 	addu	v0,sp,zero
-  84:	00061880 	sll	v1,a2,0x2
-  88:	01431821 	addu	v1,t2,v1
-  8c:	08000012 	j	48 <main+0x48>
-  90:	00002021 	addu	a0,zero,zero
-    int ndata = 50;
-    int ncoeff = 5;
-    int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
-        int y[50];
-
-    for (n = 0; n < ndata; n++) {
-  94:	00001821 	addu	v1,zero,zero
-  98:	00001021 	addu	v0,zero,zero
-                        33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
-                        16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
-                        25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
-                        0, 0, 0, 0}; // Padded line for y[49]
-
-int main () {
-  9c:	3c080000 	lui	t0,0x0
-  a0:	25080000 	addiu	t0,t0,0
-  a4:	27a70014 	addiu	a3,sp,20
+  fc:	8fc2000c 	lw	v0,12(s8)
+ 100:	00000000 	sll	zero,zero,0x0
+ 104:	24420001 	addiu	v0,v0,1
+ 108:	afc2000c 	sw	v0,12(s8)
+ 10c:	8fc3000c 	lw	v1,12(s8)
+ 110:	8fc20014 	lw	v0,20(s8)
+ 114:	00000000 	sll	zero,zero,0x0
+ 118:	0062102a 	slt	v0,v1,v0
+ 11c:	1440ffcd 	bnez	v0,54 <main+0x54>
+ 120:	00000000 	sll	zero,zero,0x0
             sum = sum + coeff[k] * data[k+n];
             y[n] = sum;           
         }
     }
     
     for (i = 0; i < 50; i++){
-  a8:	240600c8 	addiu	a2,zero,200
-                        33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
-                        16, 26, 22, 29, 25, 11, 33, 20, 21, 9,
-                        25, 21, 4, 21, 14, 14, 32, 30, 13, 1,
-                        0, 0, 0, 0}; // Padded line for y[49]
+ 124:	afc00000 	sw	zero,0(s8)
 
-int main () {
-  ac:	01032821 	addu	a1,t0,v1
-  b0:	00e32021 	addu	a0,a3,v1
-            y[n] = sum;           
-        }
-    }
-    
  // Manually inserted by Fred, Apr. 4 2013
-  //888: 88888888  addu a1,a1,a0
-  888: 88888888  addiu a1,a1,0xd8
+ 888: 88888888  addiu v0,v0,0xc8
 
-    for (i = 0; i < 50; i++){
+ 128:	08000063 	j	18c <main+0x18c>
+ 12c:	00000000 	sll	zero,zero,0x0
         main_result += (output[i] != y[i]);
-  b4:	8ca50000 	lw	a1,0(a1)
-  b8:	8c840000 	lw	a0,0(a0)
-
-  bc:	00000000 	sll	zero,zero,0x0
-  c0:	00a42026 	xor	a0,a1,a0
-  c4:	0004202b 	sltu	a0,zero,a0
-  c8:	24630004 	addiu	v1,v1,4
+ 130:	3c020000 	lui	v0,0x0
+ 134:	8fc30000 	lw	v1,0(s8)
+ 138:	00000000 	sll	zero,zero,0x0
+ 13c:	00031880 	sll	v1,v1,0x2
+ 140:	24420000 	addiu	v0,v0,0
+ 144:	00621021 	addu	v0,v1,v0
+ 148:	8c430000 	lw	v1,0(v0)
+ 14c:	8fc20000 	lw	v0,0(s8)
+ 150:	00000000 	sll	zero,zero,0x0
+ 154:	00021080 	sll	v0,v0,0x2
+ 158:	03c21021 	addu	v0,s8,v0
+ 15c:	8c420030 	lw	v0,48(v0)
+ 160:	00000000 	sll	zero,zero,0x0
+ 164:	00621026 	xor	v0,v1,v0
+ 168:	0002102b 	sltu	v0,zero,v0
+ 16c:	8fc30004 	lw	v1,4(s8)
+ 170:	00000000 	sll	zero,zero,0x0
+ 174:	00621021 	addu	v0,v1,v0
+ 178:	afc20004 	sw	v0,4(s8)
             sum = sum + coeff[k] * data[k+n];
             y[n] = sum;           
         }
     }
     
     for (i = 0; i < 50; i++){
-  cc:	1466fff7 	bne	v1,a2,ac <main+0xac>
-  d0:	00441021 	addu	v0,v0,a0
+ 17c:	8fc20000 	lw	v0,0(s8)
+ 180:	00000000 	sll	zero,zero,0x0
+ 184:	24420001 	addiu	v0,v0,1
+ 188:	afc20000 	sw	v0,0(s8)
+ 18c:	8fc20000 	lw	v0,0(s8)
+ 190:	00000000 	sll	zero,zero,0x0
+ 194:	28420032 	slti	v0,v0,50
+ 198:	1440ffe5 	bnez	v0,130 <main+0x130>
+ 19c:	00000000 	sll	zero,zero,0x0
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);
     
     return main_result;
+ 1a0:	8fc20004 	lw	v0,4(s8)
 }
-  d4:	03e00008 	jr	ra
-  d8:	27bd00e0 	addiu	sp,sp,224
+ 1a4:	03c0e821 	addu	sp,s8,zero
+ 1a8:	8fbe00fc 	lw	s8,252(sp)
+ 1ac:	27bd0100 	addiu	sp,sp,256
+ 1b0:	03e00008 	jr	ra
+ 1b4:	00000000 	sll	zero,zero,0x0
 
 Disassembly of section .rodata:
 
@@ -215,7 +233,7 @@ Disassembly of section .rodata:
  d4: 00000000  0x0
 
 000000c8 <data>:
-   d8: 00000498  0x498
+   d8 : 00000498  0x498
    dc: 00000458  0x458
    e0: 000002cc  syscall 0xb
    e4: 000002d0  0x2d0

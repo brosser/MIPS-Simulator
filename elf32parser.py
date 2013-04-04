@@ -62,8 +62,9 @@ class elf32parser:
 				match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+' + '(\w+)' + '\s+' + '((\w+)(,\s*-?\w+)*)(\([a-zA-Z0-9_]+\))*', line)
 				if match:
 					operands = [x.strip() for x in match.group(4).split(',')]
+					mnemonic = match.group(3)
 					# If hex operand, convert to decimal
-					if(ishex):
+					if(ishex or mnemonic in ['j', 'jal', 'bne', 'beq', 'bltz', 'bgtz', 'bnez', 'beqz', 'blez', 'bgez']) :
 						operands[-1] = str(int(str(operands[-1]), 16))
 					self.instructions.append(elf32instr('', match.group(1), match.group(2), match.group(3), len(operands), operands, match.group(7)))
 					continue
