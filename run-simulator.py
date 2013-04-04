@@ -6,11 +6,25 @@ import Instruction
 import InstructionParser
 import Sourceline
 import Checker
+from optparse import OptionParser
 
 import os
 import sys
 
 def main() :
+
+	verboseFlag = False
+
+	parser = OptionParser(usage="usage: run-simulator.py [-v] filename", version="1.0")
+	parser.add_option("-v", "--verbose", 
+					action="store_true",
+					dest="verboseFlag",
+					default=False,
+					help="Print cycle by cycle debug information to simulation log file")
+	(options, args) = parser.parse_args()
+
+	if len(args) != 1:
+		parser.error("Wrong number of arguments")
 
 	# Open the input file
 	try:
@@ -48,7 +62,7 @@ def main() :
 	# Get line by line
 	lines = iparser.parseLines(lines)
 
-	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout)
+	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, verboseFlag)
 	
 	print "> Starting Simulation"
 

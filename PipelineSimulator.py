@@ -11,7 +11,7 @@ class PipelineSimulator(object):
                     'sra':'>>', 'srav':'>>',
                     'div':'/',   'mul':'*',  'xor':'^',  'xori':'^'  }
                   
-    def __init__(self,instrCollection,dataMem,mainAddr,oldstdout):
+    def __init__(self,instrCollection,dataMem,mainAddr,oldstdout,verbose):
         sys.stdout = oldstdout
         self.oldstdout = oldstdout
         self.instrCount = 0
@@ -27,6 +27,7 @@ class PipelineSimulator(object):
         self.accessedDataMem = []
         self.branchTaken = False
         self.branchAddr = 0
+        self.verbose = verbose
 
         self.UseBranchDelaySlot = True
         self.dataMemoryWords = 0xfffc
@@ -161,7 +162,9 @@ class PipelineSimulator(object):
         while not self.__done:
             #self.debug_lite()
             self.step()
-            self.debug_lite()
+            self.printCycles()
+            if(self.verbose):
+                self.debug_lite()
         #for index, item in sorted(self.instructionMemory.iteritems()):
         #    if item != 0:
         #        print index, ": ", str(item)
@@ -201,12 +204,15 @@ class PipelineSimulator(object):
         else :#this value used to be False, but python treats False and 0 the same
             return "NOVAL" 
 
+    # Print current cycle number to terminal
+    def printCycles(self):
+        self.oldstdout.write("\r{}".format("Cycles: [" + str(self.cycles) + "]"))
+        self.oldstdout.flush()
+
     ### DEBUGGING INFORMATION PRINTING ### 
     def debug_lite(self):
         print "###################### PC = " + str(hex(self.programCounter)) + " ######################"
         print "Cycles: ", self.cycles
-        self.oldstdout.write("\r{}".format("Cycles: [" + str(self.cycles) + "]"))
-        self.oldstdout.flush()
         #self.printStageCollection() 
         self.printPipeline()
         self.printRegFile(True)
