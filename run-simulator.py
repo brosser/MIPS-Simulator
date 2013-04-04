@@ -45,17 +45,19 @@ def main() :
 	eparser = elf32parser.elf32parser()
 	
 	# Convert elf32-bigmips to simulator friendly format
-	SimAsmFileName = sys.argv[3] if len(sys.argv) > 4 else defaultSimASMFile
+	SimAsmFileName = sys.argv[3] if len(sys.argv) > 3 else defaultSimASMFile
 	SimAsmFile = open(SimAsmFileName, 'w')
 	sys.stdout = SimAsmFile
 
-	eparser.convertToSimASM(sys.argv[1], defaultSimASMFile, defaultDataMemFile)
+	DataMemFileName = sys.argv[5] if len(sys.argv) > 5 else defaultDataMemFile
+
+	eparser.convertToSimASM(sys.argv[1], SimAsmFileName, DataMemFileName)
 	lines = eparser.getLines()
 	datamem = eparser.getDataMem() 
 	mainAddr = eparser.getMainAddr()
 
 	# Parse in lines and check for dependencies
-	PPLogFileName = sys.argv[3] if len(sys.argv) > 3 else defaultPreProcLogFile
+	PPLogFileName = sys.argv[4] if len(sys.argv) > 4 else defaultPreProcLogFile
 	PPLogFile = open(PPLogFileName, 'w')
 	sys.stdout = PPLogFile
 
