@@ -23,6 +23,6 @@ class Checker:
                 s = strp.split(' ')
 
         if re.match('0', s[2]): # Check if r2 = 0 "$r2 : 0"
-            print "\nSuccess", "$r2 = " + s[2]
+            print "\nSuccess: ", "$r2 = " + s[2]
         else:
             print "\nFail: ", "$r2 = " + s[2]

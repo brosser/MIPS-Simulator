@@ -447,7 +447,8 @@ class ExecStage(PipelineStage):
                 forwardVal = self.simulator.getForwardVal(self.instr.s1)
                 if forwardVal != "NOVAL":
                     self.instr.source1RegValue = forwardVal
-                    print "Forwarding register", self.instr.s1, " = ", forwardVal
+                    if(self.simulator.verbose):
+                        print "Forwarding register", self.instr.s1, " = ", forwardVal
                 else :
                     self.simulator.stall = True
                     return
@@ -455,7 +456,8 @@ class ExecStage(PipelineStage):
                 forwardVal = self.simulator.getForwardVal(self.instr.s2)
                 if forwardVal != "NOVAL" :
                     self.instr.source2RegValue = forwardVal
-                    print "Forwarding register", self.instr.s2, " = ", forwardVal
+                    if(self.simulator.verbose):
+                        print "Forwarding register", self.instr.s2, " = ", forwardVal
                 else :
                     self.simulator.stall = True
                     return
@@ -567,10 +569,8 @@ class ExecStage(PipelineStage):
             elif self.instr.op == 'blez':
                 if int(self.instr.source1RegValue) <= 0:
                     self.doBranch()
-            elif self.instr.op in ['sll']:
-                
+            elif self.instr.op in ['sll']:      
                 self.instr.result = int(self.instr.source1RegValue) << int(self.instr.shamt)
-                print "DOING SLL : ", int(self.instr.source1RegValue), "<<", int(self.instr.shamt), "=", self.instr.result
             elif self.instr.op in ['srl', 'sra']:
                 self.instr.result = int(self.instr.source1RegValue) >> int(self.instr.shamt)
             else :         
@@ -608,7 +608,8 @@ class ExecStage(PipelineStage):
             #    targetval = int(self.instr.immed, 16)
             #else :
         targetval = int(self.instr.immed)
-        print "BRANCHING TO TARGET ", hex(targetval)
+        if(self.simulator.verbose):
+            print "Branching to target ", hex(targetval)
             # HEX ?
             #targetval = int(str(self.instr.immed), 16)
         #self.simulator.programCounter = self.simulator.programCounter + (targetval * 4) - 8
