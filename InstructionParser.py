@@ -7,11 +7,12 @@ class InstructionParser(object):
 
         self.expandInstruction = False
         self.instructionSet = {
-            'pseudo': ['neg', 'negu', 'abs'],
+            'pseudo': ['neg', 'negu', 'abs', 'break'],
             'rtype': ['add', 'sub', 'and', 'or', 'jr', 'jalr', 'nor', 'slt',
                       'addu', 'subu', 'sltu', 'xor',
                       'sll', 'srl', 'sra', 'sllv', 'srlv', 'srav',
-                      'jr', 'nop', 'mult', 'multu', 'mflo', 'mfhi'],
+                      'jr', 'nop', 'mult', 'multu', 'div', 'divu',
+                    'mflo', 'mfhi', 'mtlo', 'mthi'],
             'itype': ['addi', 'subi', 'ori', 'lw', 'sw', 'lh', 'lb', 'sh', 'sb', 'lhu', 'lbu', 'shu', 'sbu',
                         'addiu', 'slti', 'sltiu', 'andi', 'xori', 'lui', 'li',
                         'bne', 'beq', 'blez', 'bgtz', 'bltz', 'bgez', 'bnez', 'beqz',
@@ -76,6 +77,8 @@ class InstructionParser(object):
             return Instruction(op="sub", dest=s[1], s1=s[2], s2="$0", regRead=1, regWrite=1, aluop=1)
         elif s[0] == "abs" and n == 0:
             return Instruction(op="abs", s1 = s[1], regRead = 1, regWrite=1, aluop=1)
+        elif s[0] == "break":
+            return Nop
 
     def createEndInstruction(self, instructions):
         replaceindex = -1
@@ -92,12 +95,17 @@ class InstructionParser(object):
     def createRTypeInstruction(self, s):
         if s[0] in ["jr", "jalr"]:
             return Instruction(op=s[0], s1 = s[1], regRead = 1, aluop=0, branch=1)
-        if(s[0] == "nop"):
+        if(s[0] == "nop" or (s[0] == "sll" and s[1] == "$r0")):
             return Nop
         if(s[0] in ["mult", "multu"]):
             return Instruction(op=s[0], dest=s[1], s1=s[1], s2=s[2], regRead=1, regWrite=1, aluop=1)
         if(s[0] in ["mflo", "mfhi"]):
             return Instruction(op=s[0], dest=s[1], s1=None, s2=None, regWrite=1, aluop=1)
+        if(s[0] in ["mtlo", "mthi"]):
+            return Instruction(op=s[0], dest=s[1], s1=None, s2=None, regWrite=1, aluop=1)
+        if(s[0] in ['sll', 'srl', 'sra']):
+            print "THIS IS A SHIFT: ", s
+            return Instruction(op=s[0], dest=s[1], s1=s[2], shamt=s[3], regRead=1, regWrite=1, aluop=1)
         return Instruction(op=s[0], dest=s[1], s1=s[2], s2=s[3], regRead=1, regWrite=1, aluop=1)
 
     def createITypeInstruction(self, s):
@@ -105,7 +113,8 @@ class InstructionParser(object):
         memwrite = s[0] in ['sw', 'sb', 'sh', 'sbu', 'shu']
         if (memread or memwrite):
             import re 
-            regex = re.compile("(\d+)\((\$r\d+)\)")
+            #regex = re.compile("(\d+)\((\$r\d+)\)")
+            regex = re.compile("(-?\d+)\((\$r\d+)\)")
             match = regex.match(s[2])
             immedval = match.group(1) 
             sval = match.group(2)
@@ -113,10 +122,11 @@ class InstructionParser(object):
                 return Instruction(op=s[0], dest = s[1], s1=sval, immed = immedval, regRead = 1,regWrite = 1, aluop=1,  readMem = 1)
             else:
                 return Instruction(op=s[0],  s1 = s[1], s2=sval,immed = immedval, regRead = 1, aluop=1, writeMem = 1)
-        if ( s[0] in ['bne', 'beq'] ) :
+        elif ( s[0] in ['bne', 'beq'] ) :
             return Instruction(op=s[0], s1=s[1] , s2= s[2], immed = s[3], regRead = 1, aluop = 1, branch=1)
         elif( s[0] in ['beqz', 'bnez', 'blez', 'bgtz', 'bltz', 'bgez'] ) :
             return Instruction(op=s[0], s1=s[1], s2 = None, immed=s[2], regRead = 1, aluop = 1, branch=1)
+
                                                         # HEX
             #return Instruction(op=s[0], s1=s[1], immed= int(str(s[2]), 16), regRead = 1, aluop = 1, branch=1)
         # Pseudoinstructions

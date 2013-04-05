@@ -31,6 +31,7 @@ class Instruction(object):
                        's1': None,
                        's2': None,
                        'immed': None,
+                       'shamt': None,
                        'target': None
         }
         self.controls = {'aluop'   : None,
@@ -65,6 +66,11 @@ class Instruction(object):
     def s2(self):
         """ Get this Instruction's second source register """
         return self.values['s2']
+
+    @property
+    def shamt(self):
+        """ Get this Instruction's shift amount """
+        return self.values['shamt']
     
     @property
     def immed(self):
@@ -107,10 +113,11 @@ class Instruction(object):
         return self.controls['branch']
     
     def __str__(self):
-        str = "%s\t%s %s %s %s %s" % (self.values['op'],
+        str = "%s\t%s %s %s %s %s %s" % (self.values['op'],
                                   self.values['dest'] if self.values['dest'] else "",
                                   self.values['s1'] if self.values['s1'] else "",
                                   self.values['s2'] if self.values['s2'] else "",
+                                  self.values['shamt'] if self.values['shamt'] else "",
                                   self.values['immed'] if self.values['immed'] else "",
                                   self.values['target'] if self.values['target'] else "")
         return str
