@@ -30,3 +30,26 @@ Original repo: https://github.com/maguire/MIPS-Simulator
 * Simulator
 	* Accepts the asm code generated and emulates the execution of the code instructions.
 	* Dumps a log file of instruction pipelines.
+	
+------
+
+### Usage
+
+`python run-simulator.py [options] <Input ASM> <Sim. Log> <Sim. ASM File> <Preproc. Log> <Memory Dump>`.
+
+Only the Assembler Input File is a required input, others are optional (default filenames are used).
+
+The input file uses the format elf32-bigmips.
+
+#### Options
+
+- `--version` Show program's version number and exit.
+- `-h, --help` Show help message and exit.
+- `-v, --verbose` Print cycle by cycle debug information to simulaton log file.
+ 
+#### Output
+
+- `<Simulation Run Log File>` Log file from simulation, showing final register file state, accessed data memory and run statistics
+- `<Simulation Assembly File>` The processed Assembly code as input to the simulator
+- `<Preprocessing Log File>` Preprocessing logfile, specifying NOP-insertions, branch address recalculations and parse log
+- `<Data Memory Dump File>` Pre-simulation data memory dump
