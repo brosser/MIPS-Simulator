@@ -212,7 +212,7 @@ class PipelineSimulator(object):
     ### DEBUGGING INFORMATION PRINTING ### 
     def debug_lite(self):
         print "###################### PC = " + str(hex(self.programCounter)) + " ######################"
-        print "Cycles: ", self.cycles
+        print "Cycles: ", str(self.cycles)
         #self.printStageCollection() 
         self.printPipeline()
         self.printRegFile(True)

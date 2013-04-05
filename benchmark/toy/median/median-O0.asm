@@ -412,7 +412,8 @@ Disassembly of section .rodata:
   28:	00000001 	0x1
   2c:	00000020 	add	zero,zero,zero
   30:	000000f8 	0xf8
-	...
+	34: 00000000  0x0
+  38: 00000000  0x0
   3c:	00000020 	add	zero,zero,zero
   40:	00000001 	0x1
   44:	00000002 	srl	zero,zero,0x0
@@ -441,7 +442,9 @@ Disassembly of section .rodata:
   a0:	0000000a 	0xa
   a4:	0000000b 	0xb
   a8:	0000000c 	syscall
-	...
+	ac: 00000000  0x0
+  b0: 00000000  0x0
+  b4: 00000000  0x0
   b8:	00000002 	srl	zero,zero,0x0
   bc:	00000003 	sra	zero,zero,0x0
   c0:	00000004 	sllv	zero,zero,zero
@@ -454,7 +457,9 @@ Disassembly of section .rodata:
   dc:	0000000b 	0xb
   e0:	0000000c 	syscall
   e4:	0000000d 	break
-	...
+	e8: 00000000  0x0
+  ec: 00000000  0x0
+  f0: 00000000  0x0
   f4:	00000015 	0x15
   f8:	00000016 	0x16
   fc:	00000017 	0x17
@@ -542,7 +547,9 @@ Disassembly of section .rodata:
  244:	00000029 	0x29
  248:	0000002b 	sltu	zero,zero,zero
  24c:	0000002b 	sltu	zero,zero,zero
-	...
+ 250: 00000000  0x0
+ 254: 00000000  0x0
+ 258: 00000000  0x0
  25c:	00000020 	add	zero,zero,zero
  260:	00000021 	addu	zero,zero,zero
  264:	00000022 	neg	zero,zero
@@ -593,9 +600,13 @@ Disassembly of section .rodata:
  318:	00000023 	negu	zero,zero
  31c:	00000061 	0x61
  320:	00000002 	srl	zero,zero,0x0
-	...
+ 324: 00000000  0x0
+ 328: 00000000  0x0
+ 32c: 00000000  0x0
  330:	00000001 	0x1
-	...
+ 334: 00000000  0x0
+ 338: 00000000  0x0
+ 33c: 00000000  0x0
  340:	000000e0 	0xe0
  344:	0000006e 	0x6e
  348:	00000013 	mtlo	zero
@@ -608,7 +619,10 @@ Disassembly of section .rodata:
  364:	00000072 	0x72
  368:	00000018 	mult	zero,zero
  36c:	00000061 	0x61
-	...
+ 370: 00000000  0x0
+ 374: 00000000  0x0
+ 378: 00000000  0x0
+ 37c: 00000000  0x0
  380:	000000f0 	0xf0
 
 00000384 <image_i>:

@@ -104,7 +104,6 @@ class InstructionParser(object):
         if(s[0] in ["mtlo", "mthi"]):
             return Instruction(op=s[0], dest=s[1], s1=None, s2=None, regWrite=1, aluop=1)
         if(s[0] in ['sll', 'srl', 'sra']):
-            print "THIS IS A SHIFT: ", s
             return Instruction(op=s[0], dest=s[1], s1=s[2], shamt=s[3], regRead=1, regWrite=1, aluop=1)
         return Instruction(op=s[0], dest=s[1], s1=s[2], s2=s[3], regRead=1, regWrite=1, aluop=1)
 
