@@ -21,7 +21,7 @@ class Checker:
             lineN -= 1
             if re.match( ".*" + "Debug" + ".*" , line): # Caveat: Debug sequence must not change.
                 #string = self.lines[max(0,i+5)] # Store the 5th line after Debug.
-                string = self.lines[lineN+5] # Store the 5th line after Debug.         
+                string = self.lines[lineN+6] # Store the 5th line after Debug.         
                 strp = string.strip()
                 s = strp.split(' ')
                 if re.match('0', s[2]): # Check if r2 = 0 "$r2 : 0"

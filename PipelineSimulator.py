@@ -452,6 +452,7 @@ class ExecStage(PipelineStage):
                 else :
                     self.simulator.stall = True
                     return
+
             if self.instr.s2 in self.simulator.hazardList and self.instr.s2 is not '$r0':
                 forwardVal = self.simulator.getForwardVal(self.instr.s2)
                 if forwardVal != "NOVAL" :
