@@ -1,4 +1,0 @@
-addi $r5,$r0,5
-add  $r5,$r5,$r5
-subi $r5,$r5,5
-slt  $r5,$r0,$r5
