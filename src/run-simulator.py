@@ -15,25 +15,16 @@ import sys
 
 def main() :
 
-	verboseFlag = False
-
 	parser = OptionParser(usage="usage: run-simulator.py [-v] filename", version="1.0")
 	parser.add_option("-v", "--verbose", 
 					action="store_true",
-					dest="verboseFlag",
+					dest="verbose",
 					default=False,
 					help="Print cycle by cycle debug information to simulation log file")
 	(options, args) = parser.parse_args()
 
-	#if len(args) != 1:
-	#	parser.error("Wrong number of arguments")
-
-	#for k, v in options.iteritems():
-	#	print "Run with Options"
-	#	print k, ": ", v
-	#print args
-
 	inputFile = None
+	
 	# Open the input file
 	try:
 		inputFile = open(args[0], "r");
@@ -41,10 +32,10 @@ def main() :
 		print "There was an error opening the input file."
 		sys.exit()
 
-	defaultSimASMFile = "simasm.sim"
-	defaultDataMemFile = "datamem.sim"
-	defaultPreProcLogFile = "preprocLog.sim"
-	defaultSimRunFile = "simrun.sim"
+	defaultSimASMFile = "../simasm.sim"
+	defaultDataMemFile = "../datamem.sim"
+	defaultPreProcLogFile = "../preprocLog.sim"
+	defaultSimRunFile = "../simrun.sim"
 
 	oldstdout = sys.stdout
 
@@ -76,10 +67,10 @@ def main() :
 	# Get line by line
 	lines = iparser.parseLines(lines)
 
-	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, verboseFlag)
+	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose)
 	
 	print "> Starting Simulation..."
-	
+
 	startTime = time.clock()
 
 	# Set logfile
@@ -96,7 +87,6 @@ def main() :
 	elapsedTime = (time.clock() - startTime)
 
 	oldstdout.write("\n> Simulation Completed in ")
-	#oldstdout.write("\n> Simulation Time: ")
 	oldstdout.write(str(elapsedTime))
 	oldstdout.write(" s")
 
@@ -104,7 +94,7 @@ def main() :
 	PPLogFile.close()
 
 	sys.stdout = oldstdout
-	checker = Checker.Checker(defaultSimRunFile)
+	checker = Checker.Checker(simulationFileName)
 	checker.runCheck()
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ Original repo: https://github.com/maguire/MIPS-Simulator
 
 ### Justification
 * An instruction set simulator to model and accurately predict the behavior of instructions' execution.
-* Starts with a MIPS model, and will progressively modify according to the iDEA model (still no idea how).
+* Starts with a MIPS model, and will progressively modify according to the iDEA model (https://github.com/brosser/iDEA-Simulator).
 * Main motivations:
 	- to obtain instruction count.
 	- to identify hazards / data dependencies.
