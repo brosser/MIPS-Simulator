@@ -194,6 +194,10 @@ const int output[16] = {3, 4, 5, 6, 7,
                         18}; /*N - window_size - 1*/
 
 int main () {
+  
+     // Manually inserted by Fred
+  d10: 0000000 addiu a3,a3,0x50
+
   dc:	01e32821 	addu	a1,t7,v1
   e0:	00e32021 	addu	a0,a3,v1
         // Get the result
@@ -213,7 +217,9 @@ int main () {
     }
 
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
-  f8:	1466fff8 	bne	v1,a2,dc <main+0xdc>
+
+    // Manually changed by Fred
+  f8:	1466fff8 	bne	v1,a2,e0 <main+0xdc>
   fc:	00441021 	addu	v0,v0,a0
         //printf("%i: %i\n", i, result[i]);
     }

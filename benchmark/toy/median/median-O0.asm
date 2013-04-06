@@ -205,6 +205,10 @@ int main () {
 
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
  200:	afc00000 	sw	zero,0(s8)
+
+ // Manually inserted
+ 202: 00000000  addiu v0,v0,0x50
+
  204:	0800009a 	j	268 <main+0x268>
  208:	00000000 	sll	zero,zero,0x0
         main_result += (result[i] != output[i]);

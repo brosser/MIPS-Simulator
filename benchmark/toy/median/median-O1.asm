@@ -205,6 +205,10 @@ int main () {
 
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
   f8:	24060040 	addiu	a2,zero,64
+
+     // Manually inserted by Fred
+  f10: 0000000 addiu a3,a3,0x50
+
 const int output[16] = {3, 4, 5, 6, 7,
                         8, 9, 10, 11, 12,
                         13, 14, 15, 16, 17,
@@ -213,10 +217,10 @@ const int output[16] = {3, 4, 5, 6, 7,
 int main () {
   fc:	01032821 	addu	a1,t0,v1
  100:	00e32021 	addu	a0,a3,v1
+
         // Get the result
         result[i - 2] = window[2];    
     }
-
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
         main_result += (result[i] != output[i]);
  104:	8ca50000 	lw	a1,0(a1)
@@ -231,7 +235,9 @@ int main () {
     }
 
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
- 11c:	1466fff7 	bne	v1,a2,fc <main+0xfc>
+
+    // Manually Changed by Fred
+ 11c:	1466fff7 	bne	v1,a2,100 <main+0xfc>
  120:	00441021 	addu	v0,v0,a0
         //printf("%i: %i\n", i, result[i]);
     }
