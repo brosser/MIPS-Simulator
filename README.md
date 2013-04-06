@@ -35,7 +35,11 @@ Original repo: https://github.com/maguire/MIPS-Simulator
 
 ### Usage
 
-`python run-simulator.py [options] <Input ASM> <Sim. Log> <Sim. ASM File> <Preproc. Log> <Memory Dump>`.
+`python run-simulator.py [options] <Input ASM> <Sim. Log> <Sim. ASM File> <Preproc. Log> <Memory Dump>`
+
+Example:
+
+`python src/run-simulator.py -v benchmark/toy/median/median-O2.asm`
 
 Only the Assembler Input File is a required input, others are optional (default filenames are used).
 
@@ -53,3 +57,10 @@ The input file uses the format elf32-bigmips.
 - `<Simulation Assembly File>` The processed Assembly code as input to the simulator
 - `<Preprocessing Log File>` Preprocessing logfile, specifying NOP-insertions, branch address recalculations and parse log
 - `<Data Memory Dump File>` Pre-simulation data memory dump
+
+#### Automated testing
+
+`./runSimulations.sh`.
+
+Bash script that automatically runs all benchmarks and outputs cycle count.
+
