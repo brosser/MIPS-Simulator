@@ -50,3 +50,5 @@ python src/run-simulator.py -q ./benchmark/toy/mmult/mmult-O3.asm
 
 # Negative test (supposed to fail)
 python src/run-simulator.py -q ./benchmark/toy/negative/This_test_should_fail.asm
+
+echo -e "\n"
