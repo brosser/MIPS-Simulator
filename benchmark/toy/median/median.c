@@ -22,6 +22,8 @@ int main () {
 
     int main_result = 0;
     
+    printf("a");
+
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
         // Pick up the window elements
