@@ -24,6 +24,7 @@ int main()
   10:	afc00018 	sw	zero,24(s8)
 
     for (i = 0; i < 5; i++) {
+START
   14:	afc00000 	sw	zero,0(s8)
   18:	08000053 	j	14c <main+0x14c>
   1c:	00000000 	sll	zero,zero,0x0
@@ -215,6 +216,7 @@ int main()
  // Manually
  64:  24820000  addu v0,zero,zero
 }
+END
  240:	03c0e821 	addu	sp,s8,zero
  244:	8fbe0084 	lw	s8,132(sp)
  248:	27bd0088 	addiu	sp,sp,136

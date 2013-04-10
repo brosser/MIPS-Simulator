@@ -40,6 +40,7 @@ int main()
     for (c = 0 ; c < ( n - 1 ); c++)
       {
         for (d = 0 ; d < n - c - 1; d++)
+START
   34:	0066202a 	slt	a0,v1,a2
   38:	1080000c 	beqz	a0,6c <main+0x6c>
   3c:	03a01021 	addu	v0,sp,zero
@@ -104,6 +105,7 @@ int main()
 
   return main_result;
 }
+END
   c0:	00621021 	addu	v0,v1,v0
   c4:	03e00008 	jr	ra
   c8:	27bd0018 	addiu	sp,sp,24

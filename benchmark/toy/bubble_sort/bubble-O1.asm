@@ -34,6 +34,7 @@ int main()
         for (d = 0 ; d < n - c - 1; d++)
         {
           if (array[d] > array[d+1]) /* For decreasing order use < */
+START
   34:	8c440000 	lw	a0,0(v0)
   38:	8c450004 	lw	a1,4(v0)
   3c:	00000000 	sll	zero,zero,0x0
@@ -130,6 +131,7 @@ int main()
 
   return main_result;
 }
+END
   b4:	03e00008 	jr	ra
   b8:	27bd0018 	addiu	sp,sp,24
 

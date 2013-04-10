@@ -56,6 +56,7 @@ int main()
     int c;
 
     c = calc_factorial (number);
+START
   40:	0c000000 	jal	0 <calc_factorial>
   44:	24040003 	addiu	a0,zero,3
 
@@ -66,6 +67,7 @@ int main()
 
     return main_result;
 }
+END
   4c:	0002102b 	sltu	v0,zero,v0
   50:	8fbf0014 	lw	ra,20(sp)
   54:	00000000 	sll	zero,zero,0x0

@@ -33,6 +33,7 @@ int main()
   3c:	afc20028 	sw	v0,40(s8)
 
     for (c = 0 ; c < ( n - 1 ); c++)
+START
   40:	afc00004 	sw	zero,4(s8)
   44:	08000051 	j	144 <main+0x144>
   48:	00000000 	sll	zero,zero,0x0
@@ -177,6 +178,7 @@ int main()
   return main_result;
  1e0:	8fc2000c 	lw	v0,12(s8)
 }
+END
  1e4:	03c0e821 	addu	sp,s8,zero
  1e8:	8fbe0034 	lw	s8,52(sp)
  1ec:	27bd0038 	addiu	sp,sp,56

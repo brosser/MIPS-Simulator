@@ -64,6 +64,7 @@ int main()
             sum = 0;
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
+START
   2c:	01844821 	addu	t1,t4,a0
         }
     }
@@ -594,6 +595,7 @@ int main()
  2b0:	00621021 	addu	v0,v1,v0
    // Manually
   2310: 0000000 addu v0,zero,zero
+END
  2b4:	8fbe008c 	lw	s8,140(sp)
  2b8:	8fb70088 	lw	s7,136(sp)
  2bc:	8fb60084 	lw	s6,132(sp)

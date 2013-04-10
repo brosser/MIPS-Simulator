@@ -11,6 +11,7 @@ Disassembly of section .text:
     short factorial_number = 1;
 
     for (i=1; i <= n; ++i){
+START
    0:	1880000b 	blez	a0,30 <calc_factorial+0x30>
    4:	24030001 	addiu	v1,zero,1
    8:	24020001 	addiu	v0,zero,1
@@ -42,6 +43,7 @@ Disassembly of section .text:
 
     return(factorial_number);
 }
+END
   30:	03e00008 	jr	ra
   34:	24020001 	addiu	v0,zero,1
 

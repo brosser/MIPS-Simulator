@@ -53,6 +53,7 @@ int main()
             sum = 0;
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
+START
   48:	8c8d0000 	lw	t5,0(a0)
   4c:	8c6e0000 	lw	t6,0(v1)
     int main_result = 0;
@@ -188,6 +189,7 @@ int main()
 
     return main_result;
 }
+END
   e4:	03e00008 	jr	ra
   e8:	27bd0068 	addiu	sp,sp,104
 

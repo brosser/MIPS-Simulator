@@ -22,6 +22,7 @@ int calc_factorial (int n)
   14:	a7c20004 	sh	v0,4(s8)
 
     for (i=1; i <= n; ++i){
+START
   18:	24020001 	addiu	v0,zero,1
   1c:	afc20000 	sw	v0,0(s8)
   20:	08000017 	j	5c <calc_factorial+0x5c>
@@ -58,6 +59,7 @@ int calc_factorial (int n)
     return(factorial_number);
   74:	87c20004 	lh	v0,4(s8)
 }
+END
   78:	03c0e821 	addu	sp,s8,zero
   7c:	8fbe000c 	lw	s8,12(sp)
   80:	27bd0010 	addiu	sp,sp,16
