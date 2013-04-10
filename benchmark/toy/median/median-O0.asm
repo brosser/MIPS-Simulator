@@ -28,6 +28,7 @@ int main () {
     
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
+START
   18:	24020002 	addiu	v0,zero,2
   1c:	afc20000 	sw	v0,0(s8)
   20:	08000078 	j	1e0 <main+0x1e0>
@@ -254,6 +255,7 @@ int main () {
 return main_result;
  27c:	8fc20010 	lw	v0,16(s8)
 }
+END
  280:	03c0e821 	addu	sp,s8,zero
  284:	8fbe0084 	lw	s8,132(sp)
  288:	27bd0088 	addiu	sp,sp,136

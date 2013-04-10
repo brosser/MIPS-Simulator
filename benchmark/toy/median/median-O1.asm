@@ -55,6 +55,7 @@ int main () {
     
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
+START
   20:	08000034 	j	d0 <main+0xd0>
   24:	240e0010 	addiu	t6,zero,16
         // Pick up the window elements
@@ -245,6 +246,7 @@ int main () {
     
 return main_result;
 }
+END
  124:	03e00008 	jr	ra
  128:	27bd0068 	addiu	sp,sp,104
 

@@ -38,7 +38,8 @@ int main ()
   int main_result = 0;
     
     for ( i = 0; i < n; i++)			
-    {							 
+    {			
+START				 
         sum[i] = a + b;
   14:	afa30000 	sw	v1,0(sp)
   18:	24030002 	addiu	v1,zero,2
@@ -120,6 +121,7 @@ int main ()
     
   return main_result;
 }
+END
   fc:	00431021 	addu	v0,v0,v1
  100:	8fbe0014 	lw	s8,20(sp)
  104:	03e00008 	jr	ra

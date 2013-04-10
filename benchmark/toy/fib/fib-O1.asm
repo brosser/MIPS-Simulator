@@ -46,7 +46,8 @@ int main ()
   
   int main_result = 0;
     
-    for ( i = 0; i < n; i++)			
+    for ( i = 0; i < n; i++)	
+START		
   20:	0800000b 	j	2c <main+0x2c>
   24:	2407000a 	addiu	a3,zero,10
     {							 
@@ -111,6 +112,7 @@ int main ()
     
   return main_result;
 }
+END
   8c:	03c0e821 	addu	sp,s8,zero
   90:	8fbe0014 	lw	s8,20(sp)
   94:	03e00008 	jr	ra

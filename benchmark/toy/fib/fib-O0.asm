@@ -63,7 +63,8 @@ int main ()
   int main_result = 0;
   a0:	afc0000c 	sw	zero,12(s8)
     
-    for ( i = 0; i < n; i++)			
+    for ( i = 0; i < n; i++)	
+START		
   a4:	afc00008 	sw	zero,8(s8)
   a8:	08000045 	j	114 <main+0x114>
   ac:	00000000 	sll	zero,zero,0x0
@@ -161,6 +162,7 @@ int main ()
  1ac:	8fc2000c 	lw	v0,12(s8)
  1b0:	0160e821 	addu	sp,t3,zero
 }
+END
  1b4:	03c0e821 	addu	sp,s8,zero
  1b8:	8fbe0024 	lw	s8,36(sp)
  1bc:	27bd0028 	addiu	sp,sp,40

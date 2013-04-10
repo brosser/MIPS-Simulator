@@ -75,6 +75,7 @@ int main () {
     
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
+START
         // Pick up the window elements
         for (j = 0; j < 5; j++) {
             window[j] = signal[i - 2 + j];        
@@ -227,6 +228,7 @@ int main () {
     
 return main_result;
 }
+END
  100:	03e00008 	jr	ra
  104:	27bd0068 	addiu	sp,sp,104
 

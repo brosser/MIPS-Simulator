@@ -26,8 +26,10 @@ int main () {
     int ncoeff = 5;
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
     int y[50];
-
-    for (n = 0; n < ndata; n++) {
+    
+    
+for (n = 0; n < ndata; n++) {
+    
         sum = 0;
         for (k = 0; k < ncoeff; k++) {
             sum = sum + coeff[k] * data[k+n];
@@ -39,6 +41,6 @@ int main () {
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);
-    
+        
     return main_result;
 }
