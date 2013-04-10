@@ -18,6 +18,7 @@ int main()
     int main_result = 0;
 
     for (i = 0; i < 5; i++) {
+START
    4:	00004821 	addu	t1,zero,zero
                             {31, 15, 31, 16, 32},
                             {51, 25, 51, 26, 52},
@@ -39,7 +40,6 @@ int main()
             sum = 0;
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
-START
   1c:	8c6e0000 	lw	t6,0(v1)
   20:	8c8d0000 	lw	t5,0(a0)
   24:	00000000 	sll	zero,zero,0x0

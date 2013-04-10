@@ -11,6 +11,7 @@ Disassembly of section .text:
             sum = 0;
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
+START
    0:	3c0a0000 	lui	t2,0x0
    4:	25430000 	addiu	v1,t2,0
    8:	8c650018 	lw	a1,24(v1)
@@ -64,7 +65,6 @@ int main()
             sum = 0;
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
-START
   2c:	01844821 	addu	t1,t4,a0
         }
     }

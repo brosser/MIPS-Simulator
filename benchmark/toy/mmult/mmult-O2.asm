@@ -20,6 +20,7 @@ int main()
     int main_result = 0;
 
     for (i = 0; i < 5; i++) {
+START
    c:	00005821 	addu	t3,zero,zero
   10:	258c0000 	addiu	t4,t4,0
   14:	254a0000 	addiu	t2,t2,0
@@ -53,7 +54,6 @@ int main()
             sum = 0;
             for (k = 0; k < 5 ; k++) {
                 sum = sum + a[i][k] * b[k][j];
-START
   48:	8c8d0000 	lw	t5,0(a0)
   4c:	8c6e0000 	lw	t6,0(v1)
     int main_result = 0;
