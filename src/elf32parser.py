@@ -1,23 +1,39 @@
+##################################################################
+#
+# iDEA Simulator
+#   elf32parser.py
+#
 # elf32-bigmips to MIPS-Simulator format converter
-# Fredrik Brosser 2013-02-15
+# Fredrik Brosser 2013-05-14
+# HuiYan Cheah 2012-11-01
+##################################################################
 
+# Imports
 import sys
 import re
+import collections
+
 from elf32instr import elf32instr
 from pprint import pprint
-import collections
 
 class elf32parser:
 
+	## Constructor
 	def __init__(self):	
 		self.doSimConv = True
 		self.parseDataMem = False
 		self.foundMain = False
 		self.inputFile = None
 		self.instructions = []
-		self.dataMemory = dict([(x*4, 0) for x in range(0xffc/4)])
+
+		# Modelling data memory as a python dict
+		self.dataMemory = dict([(x*4, 0) for x in range(0xffc/4)]) # how did fred get this one?
 		self.dataMemory.clear()
+
 		self.lines = []
+		
+		# <main> start address
+		self.mainAddr = 0
 
 	# Parse instructions from file
 	def parseInstructions(self):
@@ -25,8 +41,9 @@ class elf32parser:
 		# Read line by line in file, stripping the newline character
 		lines = [line.strip() for line in self.inputFile]
 
+		# Iterate line by line
 		for line in lines:
-			
+
 			# Hexadecimal operand/imm?
 			ishex = False
 			if("0x" in line):
@@ -34,11 +51,13 @@ class elf32parser:
 
 			# Find assembly instructions (ignoring whitespace lines, C-code and assembler directives)
 			# Normal instruction
-			if('.rodata:' in line):
+			if('.rodata:' in line or 'Disassembly of section .data:' in line):
 				self.parseDataMem = True
 			if(self.parseDataMem == False):
+				# Look for <main> start address
 				if(self.foundMain == False):
 					match = re.match('([0-9a-fA-F]+)' + '\s+' + '<main>:', line)
+					# Found the <main> start address
 					if match:
 						self.mainAddr = int(match.group(1),16)
 						self.foundMain = True
@@ -62,7 +81,7 @@ class elf32parser:
 					self.dataMemory[int(str(match.group(1)),16)] = int(str(match.group(2)),16)
 		return
 
-	# Convert from elf32-bigmips to simulator friendly format
+	## Convert from elf32-bigmips to simulator assembly format
 	def convertToSimASM(self, inputFileName, SimAsmFilename, DataMemFilename):
 
 		# Open the input file
@@ -75,26 +94,34 @@ class elf32parser:
 		self.parseInstructions()
 		self.inputFile.close()
 
+		# Fill lines array with converted instructions on simulator format
 		for instruction in self.instructions:
 			self.lines.append(instruction.getSimData())
 
+		# Open simulator assembly code file for writing
 		SimAsmFile = open(SimAsmFilename, 'w')
 		sys.stdout = SimAsmFile
 		
+		# Print converted assembly code to simulation code file
 		for line in self.lines:
 			print line
 
+		# Open data memory file
 		DataMemFile = open(DataMemFilename, 'w')
 		sys.stdout = DataMemFile
 		
+		# Print all read data memory to data memory file
 		pprint(self.dataMemory)
 		return 
 
+	## Getter function for data memory
 	def getDataMem(self):
 		return self.dataMemory
 
+	## Getter function for converted assembly code lines
 	def getLines(self):
 		return self.lines
 
+	## Getter function for <main> start adress
 	def getMainAddr(self):
 		return self.mainAddr
