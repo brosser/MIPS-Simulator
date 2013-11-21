@@ -1,0 +1,112 @@
+clang -emit-llvm -c main.c -o main.bc
+
+In file included from main.c:42:
+./marker.c:197:7: warning: implicitly declaring C library function 'exit' with type
+      'void (int) __attribute__((noreturn))'
+      EXIT;
+      ^
+./global.h:46:29: note: expanded from:
+#define EXIT                exit(0)
+                            ^
+./marker.c:197:7: note: please include the header <stdlib.h> or explicitly provide a declaration for 'exit'
+In file included from main.c:45:
+./decode.c:200:4: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer
+      types with different sign [-Wpointer-sign]
+                 p_out_buf,
+                 ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:211:7: warning: expression result unused [-Wunused-value]
+      *p_out_vpos--;
+      ^~~~~~~~~~~~~
+./decode.c:206:3: warning: expression result unused [-Wunused-value]
+  *p_out_hpos++;
+  ^~~~~~~~~~~~~
+./decode.c:207:3: warning: expression result unused [-Wunused-value]
+  *p_out_vpos++;
+  ^~~~~~~~~~~~~
+./decode.c:234:26: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer
+      types with different sign [-Wpointer-sign]
+  WriteOneBlock (store1, p_out_buf,
+                         ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:242:26: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer
+      types with different sign [-Wpointer-sign]
+  WriteOneBlock (store2, p_out_buf,
+                         ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:251:26: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer
+      types with different sign [-Wpointer-sign]
+  WriteOneBlock (store3, p_out_buf,
+                         ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:261:4: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer
+      types with different sign [-Wpointer-sign]
+                 p_out_buf, p_jinfo_image_width, p_jinfo_image_height,
+                 ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:340:25: warning: passing 'unsigned int *' to parameter of type 'int *' converts between pointers to integer
+      types with different sign [-Wpointer-sign]
+  IQuantize (QuantBuff, p_quant_tbl);
+                        ^~~~~~~~~~~
+./decode.c:91:30: note: passing argument to parameter 'qmatrix' here
+IQuantize (int *matrix, int *qmatrix)
+                             ^
+10 warnings generated.
+llc -march=mipsel main.bc -o main.s	
+In file included from main.c:46:
+./decode.c:200:4: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer types with different sign
+                 p_out_buf,
+                 ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:211:7: warning: expression result unused
+      *p_out_vpos--;
+      ^~~~~~~~~~~~~
+./decode.c:206:3: warning: expression result unused
+  *p_out_hpos++;
+  ^~~~~~~~~~~~~
+./decode.c:207:3: warning: expression result unused
+  *p_out_vpos++;
+  ^~~~~~~~~~~~~
+./decode.c:234:26: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer types with different sign
+  WriteOneBlock (store1, p_out_buf,
+                         ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:242:26: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer types with different sign
+  WriteOneBlock (store2, p_out_buf,
+                         ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:251:26: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer types with different sign
+  WriteOneBlock (store3, p_out_buf,
+                         ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:261:4: warning: passing 'unsigned char *' to parameter of type 'char *' converts between pointers to integer types with different sign
+                 p_out_buf, p_jinfo_image_width, p_jinfo_image_height,
+                 ^~~~~~~~~
+./decode.c:143:34: note: passing argument to parameter 'out_buf' here
+WriteOneBlock (int *store, char *out_buf, int width, int height,
+                                 ^
+./decode.c:340:25: warning: passing 'unsigned int *' to parameter of type 'int *' converts between pointers to integer types with different sign
+  IQuantize (QuantBuff, p_quant_tbl);
+                        ^~~~~~~~~~~
+./decode.c:91:30: note: passing argument to parameter 'qmatrix' here
+IQuantize (int *matrix, int *qmatrix)
+                             ^
+9 warnings generated.

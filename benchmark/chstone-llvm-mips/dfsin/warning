@@ -1,0 +1,7 @@
+clang -cc1 -emit-llvm dfsin.c
+
+dfsin.c:47:1: warning: incompatible redeclaration of library function 'sin'
+sin (float64 rad)
+^
+dfsin.c:47:1: note: 'sin' is a builtin with type 'double (double)'
+1 warning generated.

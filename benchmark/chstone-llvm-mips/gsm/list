@@ -1,0 +1,898 @@
+WARNING: You're attempting to print out a bitcode file.
+This is inadvisable as it may cause display problems. If
+you REALLY want to taste LLVM bitcode first-hand, you
+can force output with the `-f' option.
+
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %4 = shl nsw i64 %3, 1 (shl) (NumUses:2)
+	use:  %. = sub nsw i64 %4, %6 (sub)
+def:  %7 = shl nsw i64 %., 1 (shl) (NumUses:3)
+	use:  %10 = sub nsw i64 %7, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %13 = shl nsw i64 %L_num.0.be.1, 1 (shl) (NumUses:3)
+	use:  %16 = sub nsw i64 %13, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %19 = shl i64 %L_num.0.be.2, 1 (shl) (NumUses:3)
+	use:  %22 = sub nsw i64 %19, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %25 = shl i64 %L_num.0.be.3, 1 (shl) (NumUses:3)
+	use:  %28 = sub nsw i64 %25, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %31 = shl i64 %L_num.0.be.4, 1 (shl) (NumUses:3)
+	use:  %34 = sub nsw i64 %31, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %37 = shl i64 %L_num.0.be.5, 1 (shl) (NumUses:3)
+	use:  %40 = sub nsw i64 %37, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %43 = shl i64 %L_num.0.be.6, 1 (shl) (NumUses:3)
+	use:  %46 = sub nsw i64 %43, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %49 = shl i64 %L_num.0.be.7, 1 (shl) (NumUses:3)
+	use:  %52 = sub nsw i64 %49, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %55 = shl i64 %L_num.0.be.8, 1 (shl) (NumUses:3)
+	use:  %58 = sub nsw i64 %55, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %61 = shl i64 %L_num.0.be.9, 1 (shl) (NumUses:3)
+	use:  %64 = sub nsw i64 %61, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %67 = shl i64 %L_num.0.be.10, 1 (shl) (NumUses:3)
+	use:  %70 = sub nsw i64 %67, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %73 = shl i64 %L_num.0.be.11, 1 (shl) (NumUses:3)
+	use:  %76 = sub nsw i64 %73, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %79 = shl i64 %L_num.0.be.12, 1 (shl) (NumUses:3)
+	use:  %82 = sub nsw i64 %79, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %sext = shl i32 %57, 16 (shl) (NumUses:3)
+	use:  %sext.off = add i32 %sext, -1 (add)
+def:  %phitmp = ashr exact i32 %sext, 16 (ashr) (NumUses:4)
+	use:  %60 = add nsw i32 %phitmp, -1 (add)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %201 = add nsw i64 %200, %196 (add) (NumUses:2)
+	use:  %185 = shl i64 %201, 1 (shl)
+def:  %204 = add nsw i64 %203, %195 (add) (NumUses:2)
+	use:  %184 = shl i64 %204, 1 (shl)
+def:  %209 = add nsw i64 %208, %194 (add) (NumUses:2)
+	use:  %183 = shl i64 %209, 1 (shl)
+def:  %214 = add nsw i64 %213, %193 (add) (NumUses:2)
+	use:  %182 = shl i64 %214, 1 (shl)
+def:  %219 = add nsw i64 %218, %192 (add) (NumUses:2)
+	use:  %181 = shl i64 %219, 1 (shl)
+def:  %224 = add nsw i64 %223, %191 (add) (NumUses:2)
+	use:  %180 = shl i64 %224, 1 (shl)
+def:  %229 = add nsw i64 %228, %190 (add) (NumUses:2)
+	use:  %179 = shl i64 %229, 1 (shl)
+def:  %234 = add nsw i64 %233, %189 (add) (NumUses:2)
+	use:  %178 = shl i64 %234, 1 (shl)
+def:  %239 = add nsw i64 %238, %188 (add) (NumUses:2)
+	use:  %177 = shl i64 %239, 1 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %31 = add nsw i64 %sext77, 2048 (add) (NumUses:3)
+	use:  %sext79 = shl i64 %31, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %49 = add nsw i64 %sext88, -2560 (add) (NumUses:3)
+	use:  %sext90 = shl i64 %49, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %67 = add nsw i64 %sext99, 94 (add) (NumUses:3)
+	use:  %sext101 = shl i64 %67, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %85 = add nsw i64 %sext110, -1792 (add) (NumUses:3)
+	use:  %sext112 = shl i64 %85, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %103 = add nsw i64 %sext121, -341 (add) (NumUses:3)
+	use:  %sext123 = shl i64 %103, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %121 = add nsw i64 %sext132, -1144 (add) (NumUses:3)
+	use:  %sext134 = shl i64 %121, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %76 = add nsw i32 %75, %main_result.04 (add) (NumUses:2)
+	use:  %32 = add nsw i32 %31, %76 (add)
+===-------------------------------------------------------------------------===
+                          ... Statistics Collected ...
+===-------------------------------------------------------------------------===
+
+32 STAT two nodes - Counts number of 2-node pattern that cannot be fused: def node used in other inst
+
+WARNING: You're attempting to print out a bitcode file.
+This is inadvisable as it may cause display problems. If
+you REALLY want to taste LLVM bitcode first-hand, you
+can force output with the `-f' option.
+
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %4 = shl nsw i64 %3, 1 (shl) (NumUses:2)
+	use:  %. = sub nsw i64 %4, %6 (sub)
+def:  %7 = shl nsw i64 %., 1 (shl) (NumUses:3)
+	use:  %10 = sub nsw i64 %7, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %13 = shl nsw i64 %L_num.0.be.1, 1 (shl) (NumUses:3)
+	use:  %16 = sub nsw i64 %13, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %19 = shl i64 %L_num.0.be.2, 1 (shl) (NumUses:3)
+	use:  %22 = sub nsw i64 %19, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %25 = shl i64 %L_num.0.be.3, 1 (shl) (NumUses:3)
+	use:  %28 = sub nsw i64 %25, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %31 = shl i64 %L_num.0.be.4, 1 (shl) (NumUses:3)
+	use:  %34 = sub nsw i64 %31, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %37 = shl i64 %L_num.0.be.5, 1 (shl) (NumUses:3)
+	use:  %40 = sub nsw i64 %37, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %43 = shl i64 %L_num.0.be.6, 1 (shl) (NumUses:3)
+	use:  %46 = sub nsw i64 %43, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %49 = shl i64 %L_num.0.be.7, 1 (shl) (NumUses:3)
+	use:  %52 = sub nsw i64 %49, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %55 = shl i64 %L_num.0.be.8, 1 (shl) (NumUses:3)
+	use:  %58 = sub nsw i64 %55, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %61 = shl i64 %L_num.0.be.9, 1 (shl) (NumUses:3)
+	use:  %64 = sub nsw i64 %61, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %67 = shl i64 %L_num.0.be.10, 1 (shl) (NumUses:3)
+	use:  %70 = sub nsw i64 %67, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %73 = shl i64 %L_num.0.be.11, 1 (shl) (NumUses:3)
+	use:  %76 = sub nsw i64 %73, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %79 = shl i64 %L_num.0.be.12, 1 (shl) (NumUses:3)
+	use:  %82 = sub nsw i64 %79, %1 (sub)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %sext = shl i32 %57, 16 (shl) (NumUses:3)
+	use:  %sext.off = add i32 %sext, -1 (add)
+def:  %phitmp = ashr exact i32 %sext, 16 (ashr) (NumUses:4)
+	use:  %60 = add nsw i32 %phitmp, -1 (add)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %201 = add nsw i64 %200, %196 (add) (NumUses:2)
+	use:  %185 = shl i64 %201, 1 (shl)
+def:  %204 = add nsw i64 %203, %195 (add) (NumUses:2)
+	use:  %184 = shl i64 %204, 1 (shl)
+def:  %209 = add nsw i64 %208, %194 (add) (NumUses:2)
+	use:  %183 = shl i64 %209, 1 (shl)
+def:  %214 = add nsw i64 %213, %193 (add) (NumUses:2)
+	use:  %182 = shl i64 %214, 1 (shl)
+def:  %219 = add nsw i64 %218, %192 (add) (NumUses:2)
+	use:  %181 = shl i64 %219, 1 (shl)
+def:  %224 = add nsw i64 %223, %191 (add) (NumUses:2)
+	use:  %180 = shl i64 %224, 1 (shl)
+def:  %229 = add nsw i64 %228, %190 (add) (NumUses:2)
+	use:  %179 = shl i64 %229, 1 (shl)
+def:  %234 = add nsw i64 %233, %189 (add) (NumUses:2)
+	use:  %178 = shl i64 %234, 1 (shl)
+def:  %239 = add nsw i64 %238, %188 (add) (NumUses:2)
+	use:  %177 = shl i64 %239, 1 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %31 = add nsw i64 %sext77, 2048 (add) (NumUses:3)
+	use:  %sext79 = shl i64 %31, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %49 = add nsw i64 %sext88, -2560 (add) (NumUses:3)
+	use:  %sext90 = shl i64 %49, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %67 = add nsw i64 %sext99, 94 (add) (NumUses:3)
+	use:  %sext101 = shl i64 %67, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %85 = add nsw i64 %sext110, -1792 (add) (NumUses:3)
+	use:  %sext112 = shl i64 %85, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %103 = add nsw i64 %sext121, -341 (add) (NumUses:3)
+	use:  %sext123 = shl i64 %103, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %121 = add nsw i64 %sext132, -1144 (add) (NumUses:3)
+	use:  %sext134 = shl i64 %121, 48 (shl)
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+
+---- Basic Block ----
+def:  %76 = add nsw i32 %75, %main_result.04 (add) (NumUses:2)
+	use:  %32 = add nsw i32 %31, %76 (add)
+===-------------------------------------------------------------------------===
+                          ... Statistics Collected ...
+===-------------------------------------------------------------------------===
+
+32 STAT two nodes - Counts number of 2-node pattern that cannot be fused: def node used in other inst
+

@@ -1,0 +1,9 @@
+clang -emit-llvm -c bf.c -o bf.bc
+
+In file included from bf.c:81:
+./bf_skey.c:78:1: warning: incompatible redeclaration of library function 'memcpy'
+memcpy (BF_LONG * s1, const BF_LONG * s2, int n)
+^
+./bf_skey.c:78:1: note: 'memcpy' is a builtin with type 'void *(void *, const void *, unsigned long)'
+1 warning generated.
+llc -march=mipsel bf.bc -o bf.s	

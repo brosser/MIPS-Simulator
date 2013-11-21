@@ -1,0 +1,9 @@
+llvm-gcc -O0 -c -g sha_driver.c
+
+Potential incompatible plugin version. GCC: 4.6 (20120301). Expected: 4.6 (20120301)
+Defines 'dragonegg_disable_version_check' as env variable to remove this warning
+Please note that unexpected errors might occur.
+In file included from sha_driver.c:29:0:
+sha.c:51:1: warning: conflicting types for built-in function ‘memset’ [enabled by default]
+sha.c:71:1: warning: conflicting types for built-in function ‘memcpy’ [enabled by default]
+
