@@ -1,0 +1,1 @@
+python ../../../../idea-simulator/src/run-simulator.py -v bubble-mips.s
