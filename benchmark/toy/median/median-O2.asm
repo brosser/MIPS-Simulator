@@ -16,6 +16,7 @@ int main () {
 
     int main_result = 0;
     
+START_CCORE
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
    4:	27af0014 	addiu	t7,sp,20
@@ -56,6 +57,13 @@ const int output[16] = {3, 4, 5, 6, 7,
                         18}; /*N - window_size - 1*/
 
 int main () {
+
+<<<<<<< HEAD
+
+=======
+START_CCORE
+>>>>>>> 03f5c8031ed4d641b182c1a2d0bcc40eb3b597d4
+  
   24:	000c1880 	sll	v1,t4,0x2
   28:	03231821 	addu	v1,t9,v1
     int result[20];
@@ -75,7 +83,6 @@ int main () {
     
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
-START
         // Pick up the window elements
         for (j = 0; j < 5; j++) {
             window[j] = signal[i - 2 + j];        
@@ -186,6 +193,7 @@ int main () {
         // Get the result
         result[i - 2] = window[2];    
     }
+END_CCORE
 
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
   d8:	24060040 	addiu	a2,zero,64
@@ -195,9 +203,9 @@ const int output[16] = {3, 4, 5, 6, 7,
                         18}; /*N - window_size - 1*/
 
 int main () {
-  
-     // Manually inserted by Fred
-  d10: 0000000 addiu a3,a3,0x50
+
+  // Manually inserted by Fred
+  d10: 0000000 addiu a3,a3,0x50	
 
   dc:	01e32821 	addu	a1,t7,v1
   e0:	00e32021 	addu	a0,a3,v1
@@ -219,7 +227,7 @@ int main () {
 
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
 
-    // Manually changed by Fred
+  // Manually changed by Fred
   f8:	1466fff8 	bne	v1,a2,e0 <main+0xdc>
   fc:	00441021 	addu	v0,v0,a0
         //printf("%i: %i\n", i, result[i]);
@@ -228,7 +236,6 @@ int main () {
     
 return main_result;
 }
-END
  100:	03e00008 	jr	ra
  104:	27bd0068 	addiu	sp,sp,104
 

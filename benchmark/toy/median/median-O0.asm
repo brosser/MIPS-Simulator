@@ -11,7 +11,7 @@ const int output[16] = {3, 4, 5, 6, 7,
                         18}; /*N - window_size - 1*/
 
 int main () {
-   0:	27bdff78 	addiu	sp,sp,-136
+   0:                        27bdff78 	addiu	sp,sp,-136
    4:	afbe0084 	sw	s8,132(sp)
    8:	03a0f021 	addu	s8,sp,zero
 
@@ -28,13 +28,13 @@ int main () {
     
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
-START
   18:	24020002 	addiu	v0,zero,2
   1c:	afc20000 	sw	v0,0(s8)
   20:	08000078 	j	1e0 <main+0x1e0>
   24:	00000000 	sll	zero,zero,0x0
         // Pick up the window elements
         for (j = 0; j < 5; j++) {
+START_CCORE
   28:	afc00004 	sw	zero,4(s8)
   2c:	08000021 	j	84 <main+0x84>
   30:	00000000 	sll	zero,zero,0x0
@@ -199,6 +199,7 @@ START
  1f4:	0043102a 	slt	v0,v0,v1
  1f8:	1440ff8b 	bnez	v0,28 <main+0x28>
  1fc:	00000000 	sll	zero,zero,0x0
+END_CCORE
         }
         // Get the result
         result[i - 2] = window[2];    
@@ -247,6 +248,7 @@ START
  270:	28420010 	slti	v0,v0,16
  274:	1440ffe5 	bnez	v0,20c <main+0x20c>
  278:	00000000 	sll	zero,zero,0x0
+
         main_result += (result[i] != output[i]);
         //printf("%i: %i\n", i, result[i]);
     }
@@ -255,7 +257,6 @@ START
 return main_result;
  27c:	8fc20010 	lw	v0,16(s8)
 }
-END
  280:	03c0e821 	addu	sp,s8,zero
  284:	8fbe0084 	lw	s8,132(sp)
  288:	27bd0088 	addiu	sp,sp,136

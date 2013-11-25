@@ -1,5 +1,7 @@
 #include<stdio.h>
 
+// iteration 125 5x5x5
+
 const int a[5][5] = { {1, 2, 3, 4, 5},
                     {6, 7, 8, 9, 10},
                     {11, 12, 13, 14, 15},
@@ -20,14 +22,12 @@ const int output[5][5] = {  {11, 5, 11, 6, 12},
 
 int main()
 {
-    int c[5][5]; 
+    int volatile c[5][5]; 
     int i, j, k;
     int x, y;
     int sum = 0;
 
     int main_result = 0;
-    
-    //printf("a");
 
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 5; j++) {
