@@ -4,107 +4,160 @@ factorial.o:     file format elf32-bigmips
 
 Disassembly of section .text:
 
-00000000 <calc_factorial>:
+00000000 <main>:
 
-const int number = 3;
-const int output = 6;
-
-int calc_factorial (int n)
-{
-   0:	27bdfff0 	addiu	sp,sp,-16
-   4:	afbe000c 	sw	s8,12(sp)
-   8:	03a0f021 	addu	s8,sp,zero
-   c:	afc40010 	sw	a0,16(s8)
-
-    int i;
-    short factorial_number = 1;
-  10:	24020001 	addiu	v0,zero,1
-  14:	a7c20004 	sh	v0,4(s8)
-
-    for (i=1; i <= n; ++i){
-START
-  18:	24020001 	addiu	v0,zero,1
-  1c:	afc20000 	sw	v0,0(s8)
-  20:	08000017 	j	5c <calc_factorial+0x5c>
-  24:	00000000 	sll	zero,zero,0x0
-        factorial_number = factorial_number * i;
-  28:	8fc20000 	lw	v0,0(s8)
-  2c:	00000000 	sll	zero,zero,0x0
-  30:	3043ffff 	andi	v1,v0,0xffff
-  34:	97c20004 	lhu	v0,4(s8)
-  38:	00000000 	sll	zero,zero,0x0
-  3c:	00620018 	mult	v1,v0
-  40:	00001012 	mflo	v0
-  44:	3042ffff 	andi	v0,v0,0xffff
-  48:	a7c20004 	sh	v0,4(s8)
-{
-
-    int i;
-    short factorial_number = 1;
-
-    for (i=1; i <= n; ++i){
-  4c:	8fc20000 	lw	v0,0(s8)
-  50:	00000000 	sll	zero,zero,0x0
-  54:	24420001 	addiu	v0,v0,1
-  58:	afc20000 	sw	v0,0(s8)
-  5c:	8fc30000 	lw	v1,0(s8)
-  60:	8fc20010 	lw	v0,16(s8)
-  64:	00000000 	sll	zero,zero,0x0
-  68:	0043102a 	slt	v0,v0,v1
-  6c:	1040ffee 	beqz	v0,28 <calc_factorial+0x28>
-  70:	00000000 	sll	zero,zero,0x0
-        factorial_number = factorial_number * i;
-    }
-
-    return(factorial_number);
-  74:	87c20004 	lh	v0,4(s8)
-}
-END
-  78:	03c0e821 	addu	sp,s8,zero
-  7c:	8fbe000c 	lw	s8,12(sp)
-  80:	27bd0010 	addiu	sp,sp,16
-  84:	03e00008 	jr	ra
-  88:	00000000 	sll	zero,zero,0x0
-
-0000008c <main>:
+const unsigned int number = 8; // number of iterations
+const unsigned int output[] = {1,1,2,6,24,120,720,5040,40320};
 
 int main()
 {
-  8c:	27bdffe0 	addiu	sp,sp,-32
-  90:	afbf001c 	sw	ra,28(sp)
-  94:	afbe0018 	sw	s8,24(sp)
-  98:	03a0f021 	addu	s8,sp,zero
-    int main_result = 0;
-  9c:	afc00010 	sw	zero,16(s8)
-    int c;
+   0:	27bdffc8 	addiu	sp,sp,-56
+   4:	afbe0034 	sw	s8,52(sp)
+   8:	03a0f021 	addu	s8,sp,zero
+    unsigned int main_result = 0;
+   c:	afc00000 	sw	zero,0(s8)
+    unsigned int c[] = {1,1,1,1,1,1,1,1};
+  10:	24020001 	addiu	v0,zero,1
+  14:	afc2000c 	sw	v0,12(s8)
+  18:	24020001 	addiu	v0,zero,1
+  1c:	afc20010 	sw	v0,16(s8)
+  20:	24020001 	addiu	v0,zero,1
+  24:	afc20014 	sw	v0,20(s8)
+  28:	24020001 	addiu	v0,zero,1
+  2c:	afc20018 	sw	v0,24(s8)
+  30:	24020001 	addiu	v0,zero,1
+  34:	afc2001c 	sw	v0,28(s8)
+  38:	24020001 	addiu	v0,zero,1
+  3c:	afc20020 	sw	v0,32(s8)
+  40:	24020001 	addiu	v0,zero,1
+  44:	afc20024 	sw	v0,36(s8)
+  48:	24020001 	addiu	v0,zero,1
+  4c:	afc20028 	sw	v0,40(s8)
+	unsigned int i, j;
+START_CCORE
+	for (j=0; j < number; j++) {
+  50:	afc00008 	sw	zero,8(s8)
+  54:	08000037 	j	dc <main+0xdc>
+  58:	00000000 	sll	zero,zero,0x0
+		for (i=0; i < j; i++){
+  5c:	afc00004 	sw	zero,4(s8)
+  60:	0800002d 	j	b4 <main+0xb4>
+  64:	00000000 	sll	zero,zero,0x0
+			c[j] = c[j] * (i+1);
+  68:	8fc20008 	lw	v0,8(s8)
+  6c:	00000000 	sll	zero,zero,0x0
+  70:	00021080 	sll	v0,v0,0x2
+  74:	03c21021 	addu	v0,s8,v0
+  78:	8c43000c 	lw	v1,12(v0)
+  7c:	8fc20004 	lw	v0,4(s8)
+  80:	00000000 	sll	zero,zero,0x0
+  84:	24420001 	addiu	v0,v0,1
+  88:	00620018 	mult	v1,v0
+  8c:	00001812 	mflo	v1
+  90:	8fc20008 	lw	v0,8(s8)
+  94:	00000000 	sll	zero,zero,0x0
+  98:	00021080 	sll	v0,v0,0x2
+  9c:	03c21021 	addu	v0,s8,v0
+  a0:	ac43000c 	sw	v1,12(v0)
+    unsigned int main_result = 0;
+    unsigned int c[] = {1,1,1,1,1,1,1,1};
+	unsigned int i, j;
 
-    c = calc_factorial (number);
-  a0:	8f820000 	lw	v0,0(s8)
-  a4:	00000000 	sll	zero,zero,0x0
-  a8:	00402021 	addu	a0,v0,zero
-  ac:	0c000000 	jal	0 <calc_factorial>
-  b0:	00000000 	sll	zero,zero,0x0
-  b4:	afc20014 	sw	v0,20(s8)
+	for (j=0; j < number; j++) {
+		for (i=0; i < j; i++){
+  a4:	8fc20004 	lw	v0,4(s8)
+  a8:	00000000 	sll	zero,zero,0x0
+  ac:	24420001 	addiu	v0,v0,1
+  b0:	afc20004 	sw	v0,4(s8)
+  b4:	8fc30004 	lw	v1,4(s8)
+  b8:	8fc20008 	lw	v0,8(s8)
+  bc:	00000000 	sll	zero,zero,0x0
+  c0:	0062102b 	sltu	v0,v1,v0
+  c4:	1440ffe8 	bnez	v0,68 <main+0x68>
+  c8:	00000000 	sll	zero,zero,0x0
+{
+    unsigned int main_result = 0;
+    unsigned int c[] = {1,1,1,1,1,1,1,1};
+	unsigned int i, j;
 
-    main_result += (output != c);
-  b8:	8f830000 	lw	v1,0(s8)
-  bc:	8fc20014 	lw	v0,20(s8)
-  c0:	00000000 	sll	zero,zero,0x0
-  c4:	00621026 	xor	v0,v1,v0
-  c8:	0002102b 	sltu	v0,zero,v0
-  cc:	8fc30010 	lw	v1,16(s8)
+	for (j=0; j < number; j++) {
+  cc:	8fc20008 	lw	v0,8(s8)
   d0:	00000000 	sll	zero,zero,0x0
-  d4:	00621021 	addu	v0,v1,v0
-  d8:	afc20010 	sw	v0,16(s8)
-    
-    //printf ("%d\n", main_result);
-
+  d4:	24420001 	addiu	v0,v0,1
+  d8:	afc20008 	sw	v0,8(s8)
+  dc:	8f820000 	lw	v0,0(gp)
+  e0:	8fc30008 	lw	v1,8(s8)
+  e4:	00000000 	sll	zero,zero,0x0
+  e8:	0062102b 	sltu	v0,v1,v0
+  ec:	1440ffdb 	bnez	v0,5c <main+0x5c>
+  f0:	00000000 	sll	zero,zero,0x0
+		for (i=0; i < j; i++){
+			c[j] = c[j] * (i+1);
+		}
+	}
+	
+	for (j=0; j < number; j++) {
+  f4:	afc00008 	sw	zero,8(s8)
+  f8:	08000057 	j	15c <main+0x15c>
+  fc:	00000000 	sll	zero,zero,0x0
+		main_result += (output[j] != c[j]);
+ 100:	3c020000 	lui	v0,0x0
+ 104:	8fc30008 	lw	v1,8(s8)
+ 108:	00000000 	sll	zero,zero,0x0
+ 10c:	00031880 	sll	v1,v1,0x2
+ 110:	24420000 	addiu	v0,v0,0
+ 114:	00621021 	addu	v0,v1,v0
+ 118:	8c430000 	lw	v1,0(v0)
+ 11c:	8fc20008 	lw	v0,8(s8)
+ 120:	00000000 	sll	zero,zero,0x0
+ 124:	00021080 	sll	v0,v0,0x2
+ 128:	03c21021 	addu	v0,s8,v0
+ 12c:	8c42000c 	lw	v0,12(v0)
+ 130:	00000000 	sll	zero,zero,0x0
+ 134:	00621026 	xor	v0,v1,v0
+ 138:	0002102b 	sltu	v0,zero,v0
+ 13c:	8fc30000 	lw	v1,0(s8)
+ 140:	00000000 	sll	zero,zero,0x0
+ 144:	00621021 	addu	v0,v1,v0
+ 148:	afc20000 	sw	v0,0(s8)
+		for (i=0; i < j; i++){
+			c[j] = c[j] * (i+1);
+		}
+	}
+	
+	for (j=0; j < number; j++) {
+ 14c:	8fc20008 	lw	v0,8(s8)
+ 150:	00000000 	sll	zero,zero,0x0
+ 154:	24420001 	addiu	v0,v0,1
+ 158:	afc20008 	sw	v0,8(s8)
+ 15c:	8f820000 	lw	v0,0(gp)
+ 160:	8fc30008 	lw	v1,8(s8)
+ 164:	00000000 	sll	zero,zero,0x0
+ 168:	0062102b 	sltu	v0,v1,v0
+ 16c:	1440ffe4 	bnez	v0,100 <main+0x100>
+ 170:	00000000 	sll	zero,zero,0x0
+END_CCORE
+		main_result += (output[j] != c[j]);
+	}
+	
     return main_result;
-  dc:	8fc20010 	lw	v0,16(s8)
+ 174:	8fc20000 	lw	v0,0(s8)
 }
-  e0:	03c0e821 	addu	sp,s8,zero
-  e4:	8fbf001c 	lw	ra,28(sp)
-  e8:	8fbe0018 	lw	s8,24(sp)
-  ec:	27bd0020 	addiu	sp,sp,32
-  f0:	03e00008 	jr	ra
-  f4:	00000000 	sll	zero,zero,0x0
+ 178:	03c0e821 	addu	sp,s8,zero
+ 17c:	8fbe0034 	lw	s8,52(sp)
+ 180:	27bd0038 	addiu	sp,sp,56
+ 184:	03e00008 	jr	ra
+ 188:	00000000 	sll	zero,zero,0x0
+
+Disassembly of section .rodata:
+
+00000000 <output>:
+   0:	00000001 	0x1
+   4:	00000001 	0x1
+   8:	00000002 	srl	zero,zero,0x0
+   c:	00000006 	srlv	zero,zero,zero
+  10:	00000018 	mult	zero,zero
+  14:	00000078 	0x78
+  18:	000002d0 	0x2d0
+  1c:	000013b0 	0x13b0
+  20:	00009d80 	sll	s3,zero,0x16

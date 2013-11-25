@@ -1,31 +1,24 @@
 #include <stdio.h>
+// iteration 8
 
-const int number = 3;
-const int output = 6;
-
-int calc_factorial (int n)
-{
-
-    int i;
-    short factorial_number = 1;
-
-    for (i=1; i <= n; ++i){
-        factorial_number = factorial_number * i;
-    }
-
-    return(factorial_number);
-}
+const unsigned int number = 8; // number of iterations
+const unsigned int output[] = {1,1,2,6,24,120,720,5040,40320};
 
 int main()
 {
-    int main_result = 0;
-    int c;
+    unsigned int main_result = 0;
+    unsigned int c[] = {1,1,1,1,1,1,1,1};
+	unsigned int i, j;
 
-    c = calc_factorial (number);
-
-    main_result += (output != c);
-    
-    //printf ("%d\n", main_result);
-
+	for (j=0; j < number; j++) {
+		for (i=0; i < j; i++){
+			c[j] = c[j] * (i+1);
+		}
+	}
+	
+	for (j=0; j < number; j++) {
+		main_result += (output[j] != c[j]);
+	}
+	
     return main_result;
 }

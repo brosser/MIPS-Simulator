@@ -1,4 +1,6 @@
 #include <stdio.h>
+// iteration 95 16x5 + 3x5
+
 // Good tutorial on median filter: http://www.librow.com/articles/article-1
 // window size 5
 // sample size N = 20
@@ -22,8 +24,6 @@ int main () {
 
     int main_result = 0;
     
-    printf("a");
-
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
         // Pick up the window elements

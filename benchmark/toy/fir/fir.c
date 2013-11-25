@@ -1,6 +1,9 @@
 #include "stdio.h"
 // gcc -o fir fir.c
 // ./fir.exe
+
+// iteration 50
+
 const int data[54] = {   45, 1, 22, 53, 10, 12, 13, 25, 33, 14, 
                         12, 36, 12, 2, 24, 15, 5, 3, 42, 13,
                         33, 25, 35, 25, 14, 31, 41, 17, 15, 22,
@@ -26,10 +29,8 @@ int main () {
     int ncoeff = 5;
     int /*short*/ coeff[5] = { 3, 5, 15, 12, 7};
     int y[50];
-    
-    
-for (n = 0; n < ndata; n++) {
-    
+
+    for (n = 0; n < ndata; n++) {
         sum = 0;
         for (k = 0; k < ncoeff; k++) {
             sum = sum + coeff[k] * data[k+n];
@@ -41,6 +42,6 @@ for (n = 0; n < ndata; n++) {
         main_result += (output[i] != y[i]);
     }
     //printf ("%d\n", main_result);
-        
+    
     return main_result;
 }

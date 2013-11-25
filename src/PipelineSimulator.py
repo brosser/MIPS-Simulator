@@ -55,7 +55,7 @@ class PipelineSimulator(object):
 
         # Flags and constants
         self.UseBranchDelaySlot = True
-        self.dataMemoryWords = 0xfffc
+        self.dataMemoryWords = 0x1fffc
         self.instructionMemoryWords = 0xfffc
 
         self.memStageFwd = 0
@@ -101,7 +101,7 @@ class PipelineSimulator(object):
         # Stack Initalization
         if(not self.quiet):
             print "> Initializing Stack pointer"
-        self.registers["$r29"] = 0xfffc
+        self.registers["$r29"] = 0x1fffc
 
         # programCounter to state where in the instruction collection
         # we are to find correct spot in instruction memory  
@@ -501,7 +501,12 @@ class ExecStage(PipelineStage):
                 return
             # Calculate the offset of load instructions
             if  self.instr.op in ['lw', 'lh', 'lb', 'lhu', 'lbu']:
+
+                #self.simulator.oldstdout.write("\nLoad S1 " + str(self.instr.s1) + " = " + str(self.instr.source1RegValue) + "\n")
+                #self.simulator.oldstdout.write("Load Immed. " + " = " + str(self.instr.immed) + "\n")
                 self.instr.source1RegValue = self.instr.source1RegValue + int(self.instr.immed)
+                #self.simulator.oldstdout.write("Load S1 + immed " + str(self.instr.s1) + " = " + str(self.instr.source1RegValue) + "\n")
+
             # Calculate the offset of store instructions
             elif  self.instr.op in ['sw', 'sh', 'sb', 'shu', 'sbu']:
                 self.instr.source2RegValue = self.instr.source2RegValue + int(self.instr.immed)
@@ -601,6 +606,8 @@ class ExecStage(PipelineStage):
 
         if(self.instr.result is not None):
             self.instr.result = self.instr.result & 0xFFFFFFFF
+        if(self.instr.result is not None and self.instr.result > 2147483648):
+            self.instr.result = -4294967296 + (self.instr.result)
 
     def doBranch(self):
         targetval = int(self.instr.immed)
@@ -698,12 +705,23 @@ class DataStage(PipelineStage):
             # Read whole word (32 bit)
             if self.instr.op == 'lw':
                 if(addr in self.simulator.dataMemory):
-                    self.instr.result = self.simulator.dataMemory[addr] #& 0xFFFFFFFF
+                    self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
+                    if(self.instr.result is not None and self.instr.result > 2147483648):
+                        self.instr.result = -4294967296 + (self.instr.result)
                 # Trying to access a memory location outside of the data memory range
                 else:
+                    self.simulator.oldstdout.write("\nMEMORY ACCESS ERROR : " + str(self.instr) + "\n")
                     print "MEMORY ACCESS ERROR", self.instr
+                    self.simulator.oldstdout.write("ON ADDRESS : " + hex(addr) + "\n")
                     print "ON ADDRESS ", hex(addr)
-                    self.instr.result = self.simulator.dataMemory[addr] #& 0xFFFFFFFF
+                    self.simulator.oldstdout.write("Dest: " + str(self.instr.dest) + " = " + str(self.instr.source1RegValue) + "\n")
+                    self.simulator.oldstdout.write("S1: " + str(self.instr.s1) + " = " + str(self.instr.source1RegValue) + "\n")
+                    self.simulator.oldstdout.write("S2: " + str(self.instr.s2) + " = " + str(self.instr.source2RegValue) + "\n")
+                    self.simulator.oldstdout.write("Press Enter to Continue" + "\n")
+                    self.simulator.printDataMemory()
+                    self.simulator.printRegFile(False)
+                    var = raw_input("\n")
+                    #self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
 
             # Read Halfword (16 bit)
             elif self.instr.op in ['lh', 'lhu']:

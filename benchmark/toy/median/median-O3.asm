@@ -44,10 +44,10 @@ int main () {
     
     // Move window through all elements of input signal
     for (i = 2; i < N - 2; i++) {
-START
         // Pick up the window elements
         for (j = 0; j < 5; j++) {
             window[j] = signal[i - 2 + j];        
+START_CCORE
   18:	8d860000 	lw	a2,0(t4)
   1c:	8d850004 	lw	a1,4(t4)
   20:	8d840008 	lw	a0,8(t4)
@@ -159,6 +159,8 @@ int main () {
         result[i - 2] = window[2];    
     }
 
+END_CCORE
+
     for (i = 0; i < 16 /*N - (window size -1)*/; i++){
         main_result += (result[i] != output[i]);
   cc:	8fa40014 	lw	a0,20(sp)
@@ -227,9 +229,8 @@ int main () {
     }
     //printf("%i\n", main_result);
     
- return main_result;
+return main_result;
 }
-END
  1c4:	00621021 	addu	v0,v1,v0
  1c8:	03e00008 	jr	ra
  1cc:	27bd0068 	addiu	sp,sp,104
