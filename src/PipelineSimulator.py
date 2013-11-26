@@ -784,3 +784,4 @@ class WriteStage(PipelineStage):
         return 'Write to Register\t'
 
 # END
+
