@@ -164,7 +164,7 @@ class PipelineSimulator(object):
             self.hazardList.pop(0)
         
         # Check for END directive
-        self.checkDone()
+        self.checkDone() 
 
         # If we stalled the pipeline, keep the program counter where it is
         if self.stall or self.branched: 
@@ -172,12 +172,19 @@ class PipelineSimulator(object):
             self.branched = False
 
     ## Check for END directive and stop execution if found
-    def checkDone(self):
+    def checkDone(self): # hycheah -- re-write this!
         """ Check if we are done and set __done variable """
+        self.__done = False
+	"""
         self.__done = False
         if self.pipeline[1].instr.op == 'END':
             self.__done = True
-    
+	"""
+	if (self.pipeline[1].instr.op == 'jr' and
+		self.registers["$r31"] == 8) : # ra to main is 0x8 -- hardcoded here
+			#print "hello " + self.pipeline[0].instr.op, self.registers["$r31"]
+            		self.__done = True
+
     ## Main stepping (clock cycle) loop
     def run(self):
         """ Run the simulator, call step until we are done """
@@ -431,7 +438,7 @@ class ReadStage(PipelineStage):
             targetval = int(self.instr.target)
             self.simulator.programCounter = targetval
             if(self.simulator.verbose):
-                print "Jump to address", hex(targetval)
+                print "J Jump to address", hex(targetval)
             # Set the o  instructions currently in the pipeline to a Nop
             # Branch Delay Slot or Stall
             if(self.simulator.UseBranchDelaySlot == False):
@@ -440,7 +447,7 @@ class ReadStage(PipelineStage):
         # Jump to Register
         if self.instr.op == 'jr':
             if(self.simulator.verbose):
-                print "Jump to address", hex(self.instr.source1RegValue)
+                print "JR Jump to address", hex(self.instr.source1RegValue)
             self.simulator.programCounter = self.instr.source1RegValue
             # Branch Delay Slot or Stall
             if(self.simulator.UseBranchDelaySlot == False):
@@ -452,7 +459,7 @@ class ReadStage(PipelineStage):
             self.simulator.registers["$r31"] = self.simulator.programCounter
             self.simulator.changedRegs.append("$r31")
             if(self.simulator.verbose):
-                print "Jump to address", hex(self.instr.source1RegValue)
+                print "JALR Jump to address", hex(self.instr.source1RegValue)
             self.simulator.changedRegsVal.append(hex(self.simulator.programCounter))
             self.simulator.programCounter = self.instr.source1RegValue
             # Branch Delay slot or  or Stall

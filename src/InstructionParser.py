@@ -5,6 +5,7 @@
 #
 # Parsing and preprocessing assembly code for simulation
 # Generates the preprocLog.sim
+# Creates instructions
 # Fredrik Brosser 2013-05-14
 # HuiYan Cheah 2013-11-01
 ##################################################################
@@ -67,7 +68,7 @@ class InstructionParser(object):
 	instructions = [self.parse(a.replace(',',' ')) for a in lines]
         
         # Insert END instruction for simulation
-        instructions = self.createEndInstruction(instructions)
+        #instructions = self.createEndInstruction(instructions) # -- hycheah what happens is no END is inserted? -- execute indefinitely
         print "<Successfully parsed instructions>"
         print "\tInstruction Count: ", len(instructions) 
 
@@ -123,10 +124,10 @@ class InstructionParser(object):
 
     ## Append END instruction to the end of the file (replacing the last JR)
     def createEndInstruction(self, instructions):
-        replaceindex = -1
+        replaceindex = -1 # hycheah -- jr is always followed by a nop (1 line from the end)
         # Find index to input END in
         for idx, instr in enumerate(reversed(instructions)):
-            if instr.op == 'jr':
+            if instr.op == 'jr': 
                 replaceindex = len(instructions)-idx
                 break
         if(replaceindex != -1):
