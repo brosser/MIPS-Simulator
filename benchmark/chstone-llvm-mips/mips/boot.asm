@@ -33,10 +33,10 @@ entry:
 #   bnez  $3, $BSS_CLEAR
 #   addiu $5, $5, 4
 
-#   jal   main
-#   nop
-#$L1:
-#   j $L1
+   jal   main
+   nop
+$L1:
+   j $L1
 
    .end entry
 

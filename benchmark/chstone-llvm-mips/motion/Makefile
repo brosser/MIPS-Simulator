@@ -27,4 +27,4 @@ prof:
 	llvm-prof -A $(FILENAME).bc llvmprof.out > $(FILENAME).profile.out
 
 clean:
-	rm -rf *.o *.bc *.out *.dot *.s *.ll *.profile *.elf *.map
+	rm -rf *.o *.bc *.out *.dot *.s *.ll *.profile *.elf *.map *.sim
