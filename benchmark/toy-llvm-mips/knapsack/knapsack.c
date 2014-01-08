@@ -1,7 +1,8 @@
 // The 0-1 knapSack Problem
 #include<stdio.h>
 
-const int output = 5;
+//const int output = 5;
+const int output = 3;
 
 int max(int a, int b) { return (a > b)? a : b; }
 
@@ -20,27 +21,29 @@ int knapSack(int W, int wt[], int val[], int n){
               			K[i][w] = K[i-1][w];
     		}
   	}
-  
- /* 	for (i = 0; i <= n; i++){
+/*  
+ 	for (i = 0; i <= n; i++){
     		for (w = 0; w <= W; w++){
       			printf("%d\t", K[i][w]);
     		}
     			printf("\n");
-  	}*/
+	}*/
 
   	return K[n][W];
 }
  
 int main() {
 
-	int i, n, /*val[100], wt[100], */W;
-	int val[5] = { 1, 2, 3, 4, 5 }; // Item values
-	int wt[5] = { 10, 20, 30, 40, 50}; // Item weights
+	int i, n, W;
+	//int val[5] = { 1, 2, 3, 4, 5 }; // Item values
+	//int wt[5] = { 10, 20, 30, 40, 50}; // Item weights
+	int val[3] = { 1, 2, 3 }; // Item values
+	int wt[3] = { 10, 12, 15 }; // Item weights
 	int return_value;
 	int main_result = 0;
 
-	n = 5; // Number of items
-	W = 50; // Maximum weight
+	n = 3; // Number of items
+	W = 15; // Maximum weight
 
   	return_value = knapSack(W, wt, val, n);
 	

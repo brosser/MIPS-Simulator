@@ -22,20 +22,20 @@
  */
 
 #define LowerLimit 0
-#define UpperLimit 1
+#define UpperLimit 5
 
 /* Function prototypes */
 
 static int Fact(int n);
 
-const int output[2] = {1, 1}; 
+const int output[6] = {1, 1, 2, 6, 24, 120}; 
 
 /* Main program */
 
 int main()
 {
 	int i;
- 	int result[3];
+ 	int result[6];
 	int main_result = 0;
 
     	for (i = LowerLimit; i <= UpperLimit; i++) {
@@ -51,15 +51,6 @@ int main()
 
 return main_result;
 }
-
-
-/*
- * Function: Fact
- * Usage: f = Fact(n);
- * -------------------
- * This function returns the factorial of n, which is defined
- * as the product of all integers from 1 up to n.
- */
 
 static int Fact(int n)
 {
