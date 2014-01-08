@@ -65,7 +65,7 @@ def main() :
 	eparser.convertToSimASM(args[0], SimAsmFileName, DataMemFileName)
 	lines = eparser.getLines()
 	datamem = eparser.getDataMem() 
-	mainAddr = eparser.getMainAddr()
+	mainAddr = eparser.getMainAddr() # TODO: change this mainAdder = 0x48 from first line of "0: jal 0x48"
 
 	# Parse in lines and check for dependencies
 	PPLogFileName = args[3] if len(args) >= 4 else defaultPreProcLogFile

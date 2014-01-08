@@ -105,7 +105,7 @@ class PipelineSimulator(object):
 
         # programCounter to state where in the instruction collection
         # we are to find correct spot in instruction memory  
-        self.programCounter = mainAddr
+        self.programCounter = mainAddr # programCounter = 0
 
         # set up the data memory construct, a list index starting at 0 and continuing to 0xfffc
         if(not self.quiet):
@@ -172,7 +172,7 @@ class PipelineSimulator(object):
             self.branched = False
 
     ## Check for END directive and stop execution if found
-    def checkDone(self): # hycheah -- re-write this!
+    def checkDone(self): 
         """ Check if we are done and set __done variable """
         self.__done = False
 	"""
@@ -282,7 +282,7 @@ class PipelineSimulator(object):
 
     ## Print full data memory
     def printDataMemory(self):
-        print "\n<Accessed Data>"
+        print "\n<Accessed Memory>"
         self.accessedDataMem = sorted(self.accessedDataMem)
         for k,v in sorted(self.dataMemory.iteritems()):
             # Do not print empty "0" data memory entries and non-accessed memory
@@ -381,7 +381,7 @@ class FetchStage(PipelineStage):
         Fetch the next instruction according to simulator program counter
         """
         if self.simulator.programCounter < (len(self.simulator.instrCollection) * 4 + 0x0):
-            self.instr = self.simulator.instructionMemory[self.simulator.programCounter]
+            self.instr = self.simulator.instructionMemory[self.simulator.programCounter] # hycheah -- what does this do?
             if(self.instr and self.instr.op != "nop" and self.instr.op != None):
                 self.simulator.instrCount += 1
             if(self.instr.op is 'nop'):
@@ -392,7 +392,7 @@ class FetchStage(PipelineStage):
         self.simulator.programCounter += 4
          
     def __str__(self):
-        return 'Fetch Stage\t'
+        return 'IF'
     
 class ReadStage(PipelineStage):
     def advance(self):
@@ -467,7 +467,7 @@ class ReadStage(PipelineStage):
                 self.simulator.pipeline[0] = FetchStage(Nop, self)
 
     def __str__(self):
-        return 'Read from Register'
+        return 'ID'
     
 class ExecStage(PipelineStage):
     def advance(self):
@@ -628,7 +628,7 @@ class ExecStage(PipelineStage):
         self.simulator.branched = True
 
     def __str__(self):
-        return 'Execute Stage\t'
+        return 'EX'
     
 class DataStage(PipelineStage):
     def advance(self):
@@ -757,7 +757,7 @@ class DataStage(PipelineStage):
                     self.instr.result = self.simulator.dataMemory[addr] & (0xFF000000>>(byteoffset*2))
 
     def __str__(self):
-        return 'Main Memory'
+        return 'MEM'
 
 ## Writeback Stage
 # Pipeline stage type, child class to PipelineStage  
@@ -788,7 +788,7 @@ class WriteStage(PipelineStage):
                 self.simulator.changedRegsVal.append(self.instr.result)
                 
     def __str__(self):
-        return 'Write to Register\t'
+        return 'WB'
 
 # END
 
