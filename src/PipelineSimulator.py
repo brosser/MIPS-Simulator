@@ -403,13 +403,13 @@ class ReadStage(PipelineStage):
 
         # Read only if instruction has operands (read from register file)
         if(self.instr.regRead):
+	
             # Read operand1
-
             try:
 	    	self.instr.source1RegValue = int(self.simulator.registers[self.instr.s1]) # TypeError: int() argument must be a string or a number, not 'NoneType'
 	    except TypeError:
 	    	# Throw an exception if value read from register is None and then, exit.
-		print "TypeError", self.instr.s1, self.simulator.registers[self.instr.s1]
+		print "TypeError", self.instr.s1, self.simulator.registers[self.instr.s1] # -- hycheah
 		sys.exit()
 
             if (self.instr.immed and
@@ -418,13 +418,23 @@ class ReadStage(PipelineStage):
                     'bgtz', 'bltz', 'bgez'])):
                 # Read operand2
                 self.instr.source2RegValue = int(self.instr.immed)
+
             if(self.instr.op in ['srlv', 'sllv', 'srav']):
                 # Read operand2
-                self.instr.source2RegValue = int(self.instr.s2)
+                try:
+			#self.instr.source2RegValue = int(self.instr.s2)
+			self.instr.source2RegValue = int(self.simulator.registers[self.instr.s2])
+		except ValueError:
+			print "ValueError", self.instr.s2, self.instr.source2RegValue # -- hycheah
+			sys.exit()
 
             elif self.instr.s2:
                 # Read operand2
-                self.instr.source2RegValue = int(self.simulator.registers[self.instr.s2])
+		try:
+                	self.instr.source2RegValue = int(self.simulator.registers[self.instr.s2])
+		except KeyError:
+			print "KeyError", self.instr.s2
+			sys.exit() 
 
         # Update PC
         if self.instr.op == 'jal':
@@ -676,8 +686,17 @@ class DataStage(PipelineStage):
 
                 # Make room for new byte to be written
                 mask = (0x00FFFFFF>>byteoffset)
-                self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
-                mask = writeValue<<(3-byteoffset)
+               
+	        if addr not in self.simulator.dataMemory: # hycheah
+			self.simulator.dataMemory[addr] = 0
+		
+		try:
+			self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask #  hycheah -- what if the key does not exist?
+                except KeyError:
+			print "KeyError", addr
+			sys.exit()
+		
+		mask = writeValue<<(3-byteoffset)
                 self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
 
             # Write halfword (16 bit)
@@ -685,7 +704,11 @@ class DataStage(PipelineStage):
                 writeValue = (self.instr.source1RegValue & 0x0000FFFF)
                 addr = self.instr.source2RegValue
 
-                # Make room for new halfword to be written
+                # In case the addr does not exist -- create a new one.
+		if addr not in self.simulator.dataMemory:
+			self.simulator.dataMemory[addr] = 0
+
+		# Make room for new halfword to be written
                 mask = (0x0000FFFF>>byteoffset)
                 self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
                 mask = writeValue<<(3-byteoffset)
@@ -694,12 +717,13 @@ class DataStage(PipelineStage):
             # Write whole word (32 bit)
             else:
                 writeValue = self.instr.source1RegValue    
+		print "WRITE VALUE SW", writeValue
 
             # Debug output if in verbose mode
             if(self.simulator.verbose):
                 print "Storing ", writeValue, "to memory address", addr
             self.simulator.dataMemory[addr] = writeValue
-
+	    
             # Add the memory location to accessed data memory location list
             self.simulator.accessedDataMem.append(addr)
             checked = []
@@ -786,7 +810,7 @@ class WriteStage(PipelineStage):
             if self.instr.dest == '$r0':    
                 pass
             # Mult and Div use special registers Hi and Lo - Ignore
-            if (self.instr.op in ['mult', 'multu', 'div', 'divu']):
+            if (self.instr.op in ["mult", "multu", "div", "divu"]):
                 pass
             # Normal instruction
             elif self.instr.dest:

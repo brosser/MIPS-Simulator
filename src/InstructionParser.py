@@ -116,7 +116,7 @@ class InstructionParser(object):
 
     def translatePseudoInstruction(self, s):
         if(s[0] in ["neg", "negu"]):
-            return Instruction(op="sub", dest=s[1], s1=s[2], s2="$0", regRead=1, regWrite=1, aluop=1)
+            return Instruction(op="sub", dest=s[1], s1=s[2], s2="$r0", regRead=1, regWrite=1, aluop=1)
         elif s[0] == "abs" and n == 0:
             return Instruction(op="abs", s1 = s[1], regRead = 1, regWrite=1, aluop=1)
         elif s[0] == "break":
