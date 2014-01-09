@@ -23,7 +23,7 @@ class PipelineSimulator(object):
                     'and':'&',  'andi':'&',   'or':'|',   'ori':'|',
                     'sll':'<<', 'sllv':'<<', 'srl':'>>', 'srlv':'>>',
                     'sra':'>>', 'srav':'>>',
-                    'div':'/',   'mul':'*',  'xor':'^',  'xori':'^'  }
+                    'div':'/',   'mult':'*',  'xor':'^',  'xori':'^'  }
     
     ## Constructor
     #   instrCollection : Array containing all the instructions to be executed
@@ -404,7 +404,14 @@ class ReadStage(PipelineStage):
         # Read only if instruction has operands (read from register file)
         if(self.instr.regRead):
             # Read operand1
-            self.instr.source1RegValue = int(self.simulator.registers[self.instr.s1])
+
+            try:
+	    	self.instr.source1RegValue = int(self.simulator.registers[self.instr.s1]) # TypeError: int() argument must be a string or a number, not 'NoneType'
+	    except TypeError:
+	    	# Throw an exception if value read from register is None and then, exit.
+		print "TypeError", self.instr.s1, self.simulator.registers[self.instr.s1]
+		sys.exit()
+
             if (self.instr.immed and
                 #these instructions require special treatment
                 (self.instr.op not in ['lw', 'sw', 'bne', 'beq', 'beqz', 'bnez', 'blez', 
@@ -427,6 +434,7 @@ class ReadStage(PipelineStage):
             self.simulator.changedRegsVal.append(hex(self.simulator.programCounter))
             # Get target value
             targetval = int(self.instr.target)
+            #targetval = int(self.instr.target) - 0x10 # hack -- adding this caused other benchmarks to fail
             self.simulator.programCounter = targetval
             # Set the o  instructions currently in the pipeline to a Nop
             # Branch Delay Slot or Stall
@@ -436,6 +444,7 @@ class ReadStage(PipelineStage):
         # Jump
         if self.instr.op == 'j':
             targetval = int(self.instr.target)
+            #targetval = int(self.instr.target) - 0x10 # hack -- adding this caused other benchmarks to fail
             self.simulator.programCounter = targetval
             if(self.simulator.verbose):
                 print "J Jump to address", hex(targetval)
@@ -539,11 +548,11 @@ class ExecStage(PipelineStage):
             elif (self.instr.op == "mfhi"):
                 self.instr.result = self.simulator.hi
             # Perform multiplication and place results in Lo and Hi
-            elif (self.instr.op in ["mul", "mult", "multu"]):
+            elif (self.instr.op in ["mult", "multu"]):
                     a = int(self.instr.source1RegValue)
                     b = int(self.instr.source2RegValue)
                     z = a * b
-                    self.simulator.lo = z & 0x0000FFFF
+                    self.simulator.lo = z & 0x0000FFFF # hycheah -- ???
                     self.simulator.hi = z & 0xFFFF0000
             # Perform division and place results in Lo and Hi
             elif (self.instr.op in ["div", "divu"]):
@@ -777,7 +786,7 @@ class WriteStage(PipelineStage):
             if self.instr.dest == '$r0':    
                 pass
             # Mult and Div use special registers Hi and Lo - Ignore
-            if (self.instr.op in ['mul', 'multu', 'div', 'divu']):
+            if (self.instr.op in ['mult', 'multu', 'div', 'divu']):
                 pass
             # Normal instruction
             elif self.instr.dest:
