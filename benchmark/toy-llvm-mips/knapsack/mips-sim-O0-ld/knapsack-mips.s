@@ -189,7 +189,8 @@ Disassembly of section .text:
  2d4:	8fcc0040 	lw	t4,64(s8)
  2d8:	01cd0018 	mult	t6,t5
  2dc:	00002012 	mflo	a0
-	...
+ 2e0: 00000000  sll zero,zero,0x0
+ 2e4: 00000000  sll zero,zero,0x0
  2e8:	018f0018 	mult	t4,t7
  2ec:	00001012 	mflo	v0
  2f0:	00822021 	addu	a0,a0,v0
@@ -239,7 +240,8 @@ Disassembly of section .text:
  3a0:	8fd40060 	lw	s4,96(s8)
  3a4:	02d50018 	mult	s6,s5
  3a8:	00002012 	mflo	a0
-	...
+ 3ac: 00000000  sll zero,zero,0x0
+ 3b0: 00000000  sll zero,zero,0x0
  3b4:	02970018 	mult	s4,s7
  3b8:	00001012 	mflo	v0
  3bc:	00822021 	addu	a0,a0,v0

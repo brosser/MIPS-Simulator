@@ -460,13 +460,16 @@ class ReadStage(PipelineStage):
             targetval = int(self.instr.target)
             #targetval = int(self.instr.target) - 0x10 # hack -- adding this caused other benchmarks to fail
             self.simulator.programCounter = targetval
+            if(self.simulator.verbose):
+                print "JAL Jump to address", hex(targetval), "and store $r31 =", hex(self.simulator.programCounter)
+                print "Next fetch is", self.simulator.instructionMemory[self.simulator.programCounter]
             # Set the o  instructions currently in the pipeline to a Nop
             # Branch Delay Slot or Stall
             if(self.simulator.UseBranchDelaySlot == False):
                 self.simulator.pipeline[0] = FetchStage(Nop, self)      
 
         # Jump
-        if self.instr.op == 'j':
+        elif self.instr.op == 'j':
             targetval = int(self.instr.target)
             #targetval = int(self.instr.target) - 0x10 # hack -- adding this caused other benchmarks to fail
             self.simulator.programCounter = targetval
@@ -478,7 +481,7 @@ class ReadStage(PipelineStage):
                 self.simulator.pipeline[0] = FetchStage(Nop, self)
        
         # Jump to Register
-        if self.instr.op == 'jr':
+        elif self.instr.op == 'jr':
             if(self.simulator.verbose):
                 print "JR Jump to address", hex(self.instr.source1RegValue)
             self.simulator.programCounter = self.instr.source1RegValue
