@@ -5,7 +5,7 @@
 #
 # Main pipeline simulator file
 # Fredrik Brosser 2013-05-14
-# HuiYan Cheah 2012-11-01 
+# HuiYan Cheah 2013-11-01 
 ##################################################################
 
 import collections 
@@ -32,7 +32,8 @@ class PipelineSimulator(object):
     #   oldstdout : stdout channel to terminal
     #   verbose : Verbose output flag
     #   quiet   : Quiet output flag
-    def __init__(self,instrCollection,dataMem,mainAddr,oldstdout,verbose,quiet):
+    #	timeout : Flag to terminate a looping program
+    def __init__(self, instrCollection, dataMem, mainAddr, oldstdout, verbose, quiet, timeout):
         sys.stdout = oldstdout
         self.oldstdout = oldstdout
         self.instrCount = 0
@@ -52,6 +53,10 @@ class PipelineSimulator(object):
         # Output options from main program
         self.verbose = verbose
         self.quiet = quiet
+
+	# Timeout flags
+	self.timeout = timeout
+	self.timeoutReached = False
 
         # Flags and constants
         self.UseBranchDelaySlot = True
@@ -149,7 +154,7 @@ class PipelineSimulator(object):
         if self.stall:
             self.pipeline[4] = DataStage(Nop,self)
             self.stall = False
-        else :
+        else:
             self.pipeline[4] = DataStage(self.pipeline[3].instr,self)
             self.pipeline[3] = ExecStage(self.pipeline[2].instr,self)
             self.pipeline[2] = ReadStage(self.pipeline[0].instr,self)
@@ -184,6 +189,10 @@ class PipelineSimulator(object):
 		self.registers["$r31"] == 8) : # ra to main is 0x8 -- hardcoded here
 			#print "hello " + self.pipeline[0].instr.op, self.registers["$r31"]
             		self.__done = True
+
+	if (self.timeout and self.cycles == self.timeout):
+		self.__done = True
+		self.timeoutReached = True
 
     ## Main stepping (clock cycle) loop
     def run(self):
@@ -243,6 +252,8 @@ class PipelineSimulator(object):
     ## Print current cycle number to terminal
     def printCycles(self):
         self.oldstdout.write("\r{}".format("Cycles: [" + str(self.cycles) + "]"))
+	if self.timeoutReached is True:
+		self.oldstdout.write("\r{}".format("Cycles: [" + str(self.cycles) + "]" + " -- Timed-out!"))
         self.oldstdout.flush()
 
     ## Print basic debug information (pipeline state)

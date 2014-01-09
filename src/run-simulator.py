@@ -16,7 +16,7 @@ import sys
 
 def main() :
 
-	parser = OptionParser(usage="usage: run-simulator.py [-v] filename", version="1.0")
+	parser = OptionParser(usage="usage: run-simulator.py [-v] [-t <clock cycles>] filename", version="1.0")
 	parser.add_option("-v", "--verbose", 
 					action="store_true",
 					dest="verbose",
@@ -26,7 +26,13 @@ def main() :
 					action="store_true",
 					dest="quiet",
 					default=False,
-					help="Supress terminal output")
+					help="Supress terminal output. Be vewwy quiet (I'm hunting wabbits...)")
+	parser.add_option("-t", "--timeout", 
+					action="store",
+					type="int",
+					dest="timeout",
+					help="Terminal looping program. Specify number of clock cycles TIMEOUT")
+
 	(options, args) = parser.parse_args()
 
 	inputFile = None
@@ -78,7 +84,7 @@ def main() :
 	# Get line by line
 	lines = iparser.parseLines(lines)
 
-	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet)
+	pipelinesim = PipelineSimulator.PipelineSimulator(lines, datamem, mainAddr, oldstdout, options.verbose, options.quiet, options.timeout)
 	
 	if(not options.quiet):
 		print "> Starting Simulation..."
