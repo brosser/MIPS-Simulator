@@ -281,6 +281,9 @@ class PipelineSimulator(object):
         print "<Instructions Executed> : " , float(self.instrCount)
         print "<NOPs> : " , float(self.nopCount)
         print "<CPI> : " , float(self.cycles) / (float(self.instrCount)-float(self.nopCount)) , "\n"
+	
+	if self.timeoutReached is True:
+		print "This benchmark Timed-Out! @", self.timeout
 
     ## Print the accessed instructions from instruction memory
     def printInstructionMemory(self):
