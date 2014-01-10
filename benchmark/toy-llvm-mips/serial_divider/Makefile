@@ -1,4 +1,4 @@
-FILENAME = add
+FILENAME = serial_divider
 CLANG = clang 
 DIS = llvm-dis
 OPT = O0

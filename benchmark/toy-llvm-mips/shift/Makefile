@@ -1,4 +1,4 @@
-FILENAME = add
+FILENAME = shift
 CLANG = clang 
 DIS = llvm-dis
 OPT = O0
