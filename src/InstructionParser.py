@@ -28,7 +28,7 @@ class InstructionParser(object):
             'rtype':  [ 'add', 'sub', 'and', 'or', 'jr', 'jalr', 'nor', 'slt',
                         'addu', 'subu', 'sltu', 'xor',
                         'sll', 'srl', 'sra', 'sllv', 'srlv', 'srav',
-                        'jr', 'nop', 'mul', 'mult', 'multu', 'div', 'divu',
+                        'jr', 'nop', 'mult', 'multu', 'div', 'divu',
                         'mflo', 'mfhi', 'mtlo', 'mthi',
                         'mac'],
             'itype':  [ 'addi', 'subi', 'ori', 'lw', 'sw', 'lh', 'lb', 'sh', 'sb', 'lhu', 'lbu', 'shu', 'sbu',
@@ -123,6 +123,7 @@ class InstructionParser(object):
             return Instruction(op='nop')
 
     ## Append END instruction to the end of the file (replacing the last JR)
+    """
     def createEndInstruction(self, instructions):
         replaceindex = -1 # hycheah -- jr is always followed by a nop (1 line from the end)
         # Find index to input END in
@@ -135,6 +136,7 @@ class InstructionParser(object):
             instructions.pop(replaceindex-1)
             instructions.insert(replaceindex, Instruction(op="END", dest=None, s1=None, s2=None, regRead=0, regWrite=0, aluop=0))
         return instructions
+    """
 
     ## Create and return an R-Type instruction, setting the instruction fields and classifications accordingly
     #   s : instruction line
@@ -143,7 +145,7 @@ class InstructionParser(object):
             return Instruction(op=s[0], s1 = s[1], regRead = 1, aluop=0, branch=1)
         if(s[0] == "nop" or (s[0] == "sll" and s[1] == "$r0")):
             return Instruction(op='nop')
-        if(s[0] in ["mul", "mult", "multu"]):
+        if(s[0] in ["mult", "multu"]):
             return Instruction(op=s[0], dest=s[1], s1=s[1], s2=s[2], regRead=1, regWrite=1, aluop=1)
         if(s[0] in ["mflo", "mfhi"]):
             return Instruction(op=s[0], dest=s[1], s1=None, s2=None, regWrite=1, aluop=1)

@@ -461,7 +461,7 @@ class ReadStage(PipelineStage):
             #targetval = int(self.instr.target) - 0x10 # hack -- adding this caused other benchmarks to fail
             self.simulator.programCounter = targetval
             if(self.simulator.verbose):
-                print "JAL Jump to address", hex(targetval), "and store $r31 =", hex(self.simulator.programCounter)
+                print "JAL Jump to address", hex(targetval), "and PC ", hex(self.simulator.programCounter)
                 print "Next fetch is", self.simulator.instructionMemory[self.simulator.programCounter]
             # Set the o  instructions currently in the pipeline to a Nop
             # Branch Delay Slot or Stall
@@ -552,7 +552,8 @@ class ExecStage(PipelineStage):
 
             # Calculate the offset of store instructions
             elif  self.instr.op in ['sw', 'sh', 'sb', 'shu', 'sbu']:
-                self.instr.source2RegValue = self.instr.source2RegValue + int(self.instr.immed)
+                #self.instr.source2RegValue = self.instr.source2RegValue + int(self.instr.immed) # -- hycheah
+		print ""
             # Load immediate
             elif (self.instr.op == 'li'):
                 self.instr.result = int(self.instr.immed, 10)
@@ -693,9 +694,9 @@ class DataStage(PipelineStage):
             writeValue = 0
 
             # Address calculation and byte offset
-            addr = self.instr.source2RegValue
+      	    """      addr = self.instr.source2RegValue
             byteoffset = addr%4
-            addr -= byteoffset        
+            addr -= byteoffset""" # hycheah        
 
             # Write byte (8 bit)
             if(self.instr.op in ["sb", "sbu"]):
@@ -718,27 +719,50 @@ class DataStage(PipelineStage):
 
             # Write halfword (16 bit)
             elif(self.instr.op in ["sh", "shu"]):
-                writeValue = (self.instr.source1RegValue & 0x0000FFFF)
-                addr = self.instr.source2RegValue
-
+                
+		# Value
+		writeValue = (self.instr.source1RegValue & 0x00FF) # hycheah writeValue is correct
+		#print "SH", hex(self.instr.source1RegValue), hex(writeValue)
+                #addr = self.instr.source2RegValue
+		
+		# Address
                 # In case the addr does not exist -- create a new one.
-		if addr not in self.simulator.dataMemory:
-			self.simulator.dataMemory[addr] = 0
+		#if addr not in self.simulator.dataMemory:
+		#	self.simulator.dataMemory[addr] = 0
 
-		# Make room for new halfword to be written
-                mask = (0x0000FFFF>>byteoffset)
-                self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
+		# The offset for hw is 16 bits.
+		# Sign-extend the imm to 32 bits.
+                offset = int(self.instr.immed)
+		mask = 0x8000 # single out the sign bit -- bit 15
+		sign = (mask & offset) >> 15 # if negative -- sign-extend
+		if sign:
+			offset = offset + 0xff00
+
+		# Add to form effective addresss.
+		addr = self.instr.source2RegValue + offset
+		print "SH", addr, offset, self.instr.source2RegValue
+                
+	        """ mask = (0x0000FFFF>>byteoffset) # 0xFFFF
+		print "SH", byteoffset, hex(mask)
+                self.simulator.printDataMemory()
+                
+		self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
                 mask = writeValue<<(3-byteoffset)
-                self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask
+                self.simulator.dataMemory[addr] = self.simulator.dataMemory[addr] & mask"""
 
             # Write whole word (32 bit)
             else:
-                writeValue = self.instr.source1RegValue    
-		print "WRITE VALUE SW", writeValue
+		# Address
+		self.instr.source2RegValue = self.instr.source2RegValue + int(self.instr.immed)
+		addr = self.instr.source2RegValue
+            	byteoffset = addr%4
+            	addr -= byteoffset        
+		# Value
+		writeValue = self.instr.source1RegValue    
 
             # Debug output if in verbose mode
             if(self.simulator.verbose):
-                print "Storing ", writeValue, "to memory address", addr
+                print "Storing ", self.instr.op , writeValue, "to memory address", addr
             self.simulator.dataMemory[addr] = writeValue
 	    
             # Add the memory location to accessed data memory location list
