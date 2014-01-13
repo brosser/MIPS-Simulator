@@ -6,7 +6,7 @@
 
 struct record {
    volatile struct record * next;
-   short a, b, c, d;
+   int a, b, c, d;
 };
 
 volatile struct record tail = {NULL, 1, 2, 3, 4};
@@ -25,6 +25,7 @@ int main()
    while (ptr) {
        result += ptr->a + ptr->b + ptr->c + ptr->d;
        ptr = ptr->next;
+       //printf("in while loop\n");
    }
 
    //printf("Result: %d\n", result);
