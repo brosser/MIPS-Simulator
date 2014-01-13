@@ -547,13 +547,21 @@ class ExecStage(PipelineStage):
 
                 #self.simulator.oldstdout.write("\nLoad S1 " + str(self.instr.s1) + " = " + str(self.instr.source1RegValue) + "\n")
                 #self.simulator.oldstdout.write("Load Immed. " + " = " + str(self.instr.immed) + "\n")
-                self.instr.source1RegValue = self.instr.source1RegValue + int(self.instr.immed)
+                #self.instr.source1RegValue = self.instr.source1RegValue + int(self.instr.immed)
                 #self.simulator.oldstdout.write("Load S1 + immed " + str(self.instr.s1) + " = " + str(self.instr.source1RegValue) + "\n")
+
+		#if self.instr.op in ['lh', 'lhu']:
+		#	print "LHU", self.instr.source1RegValue, int(self.instr.immed)
+		print "" # do nothing
+	    
+	    # Calculate the offset of hw load instructions
+	    #elif self.instr.op in ['lh', 'lhu']:
 
             # Calculate the offset of store instructions
             elif  self.instr.op in ['sw', 'sh', 'sb', 'shu', 'sbu']:
                 #self.instr.source2RegValue = self.instr.source2RegValue + int(self.instr.immed) # -- hycheah
-		print ""
+		print "" # do nothing
+
             # Load immediate
             elif (self.instr.op == 'li'):
                 self.instr.result = int(self.instr.immed, 10)
@@ -740,7 +748,7 @@ class DataStage(PipelineStage):
 
 		# Add to form effective addresss.
 		addr = self.instr.source2RegValue + offset
-		print "SH", addr, offset, self.instr.source2RegValue
+		#print "SH", addr, offset, self.instr.source2RegValue
                 
 	        """ mask = (0x0000FFFF>>byteoffset) # 0xFFFF
 		print "SH", byteoffset, hex(mask)
@@ -775,16 +783,27 @@ class DataStage(PipelineStage):
 
         # All load instructions go here
         elif self.instr.readMem:
-            addr = self.instr.source1RegValue
+            #addr = self.instr.source1RegValue
+	    """
             # Address error due to faulty instruction format
             if(addr is None):
                 print "No s1: ", self.instr
             # Byte offset
             byteoffset = addr%4
-            addr -= byteoffset   
+            addr -= byteoffset   """
 
             # Read whole word (32 bit)
             if self.instr.op == 'lw':
+                self.instr.source1RegValue = self.instr.source1RegValue + int(self.instr.immed)
+            	addr = self.instr.source1RegValue
+		
+		# Address error due to faulty instruction format
+            	if(addr is None):
+                	print "No s1: ", self.instr
+            	# Byte offset
+            	byteoffset = addr%4
+            	addr -= byteoffset   
+
                 if(addr in self.simulator.dataMemory):
                     self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
                     if(self.instr.result is not None and self.instr.result > 2147483648):
@@ -804,8 +823,31 @@ class DataStage(PipelineStage):
                     var = raw_input("\n")
                     #self.instr.result = self.simulator.dataMemory[addr] & 0xFFFFFFFF
 
+		print "LW", self.instr.result, addr, self.instr.source1RegValue, int(self.instr.immed)
+
             # Read Halfword (16 bit)
-            elif self.instr.op in ['lh', 'lhu']:
+            elif self.instr.op in ['lh', 'lhu']: # -- hycheah
+		# Offset calculation	
+		offset = int(self.instr.immed)
+		mask = 0x8000
+		sign = (mask & offset) >> 15
+		if sign:
+			offset = offset + 0xFF00 # sign-extend
+		
+		addr = self.instr.source1RegValue + offset
+
+		# Fetch value from memory and concatenate with 16 zeros
+		if (addr in self.simulator.dataMemory):
+			self.instr.result = self.simulator.dataMemory[addr] & 0x0000FFFF
+                # Trying to access a memory location outside of the data memory range
+                else:
+			print "MEMORY ACCESS ERROR", self.instr
+                    	self.instr.result = self.simulator.dataMemory[addr] & 0x0000FFFF
+		
+		print "LHU", self.instr.result, addr, self.instr.source1RegValue, int(self.instr.immed)
+
+		"""
+		self.instr.source1RegValue = self.instr.source1RegValue + int(self.instr.immed)
                 # Read corresponding halfword in word
                 byteoffset = addr%4
                 addr -= byteoffset
@@ -815,7 +857,7 @@ class DataStage(PipelineStage):
                 # Trying to access a memory location outside of the data memory range
                 else:
                     print "MEMORY ACCESS ERROR", self.instr
-                    self.instr.result = self.simulator.dataMemory[addr] & (0xFFFF0000>>(byteoffset*2))
+                    self.instr.result = self.simulator.dataMemory[addr] & (0xFFFF0000>>(byteoffset*2)) """
 
             # Read single byte (8 bit)
             elif self.instr.op in ['lb', 'lbu']:

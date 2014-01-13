@@ -51,7 +51,8 @@ class elf32parser:
 
 			# Find assembly instructions (ignoring whitespace lines, C-code and assembler directives)
 			# Normal instruction
-			if('.rodata:' in line or 'Disassembly of section .data:' in line):
+			#if('.rodata:' in line or 'Disassembly of section .data:' in line): # hycheah -- commented out ???
+			if('.rodata:' in line or '.data:' in line):
 				self.parseDataMem = True
 			if(self.parseDataMem == False):
 				# Look for <main> start address
@@ -79,6 +80,10 @@ class elf32parser:
 				match = re.match('([0-9a-fA-F]+)' + ':' + '\s+' + '([0-9a-fA-F]+)' + '\s+?' + '(\w+)?' + '\s+?' + '((\w+)(,\s*-?\w+)*)(\([a-zA-Z0-9_]+\))*', line)
 				if match:
 					self.dataMemory[int(str(match.group(1)),16)] = int(str(match.group(2)),16)
+
+			# Debug -- hycheah
+			#for key in self.dataMemory:
+			#	print "HY", key, self.dataMemory[key]
 		return
 
 	## Convert from elf32-bigmips to simulator assembly format
