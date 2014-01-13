@@ -6,7 +6,8 @@
 
 struct record {
    volatile struct record * next;
-   int a, b, c, d;
+   short a, b, c, d;
+   //int a, b, c, d;
 };
 
 volatile struct record tail = {NULL, 1, 2, 3, 4};
